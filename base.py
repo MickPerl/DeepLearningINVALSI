@@ -324,6 +324,16 @@ all_features = layers.concatenate(
     ]
 )
 
+"""
+TODO:
+- cambiare sigmoind in softmax (forse softmax e' sbagliato per la classificazione binaria)
+- aggiungere piu' neuroni (cosa vuol dire? aumentare i batch)
+- aggiungere piu' layer
+- cambiare ottimizzatore (da Adam a SGD)
+- cambiare il learning rate dell'ottimizzatore
+- rimuovere il layer di dropout
+"""
+
 x = layers.Dense(32, activation="relu")(all_features)
 x = layers.Dropout(0.5)(x)
 output = layers.Dense(1, activation="sigmoid")(x)
