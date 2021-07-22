@@ -1,3 +1,5 @@
+import sys
+
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
@@ -7,15 +9,14 @@ from tensorflow.keras.layers.experimental.preprocessing import IntegerLookup
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
 from tensorflow.keras.layers.experimental.preprocessing import StringLookup
 from tensorflow.keras import metrics
-from tensorflow.keras import optimizers
 from tensorflow.keras import losses
 
-AP_DATASET_PATH = "dataset_with_AP.csv"
+import config as cfg
 
 """
 Lettura del dataset
 """
-dataset = pd.read_csv(AP_DATASET_PATH, sep=',')
+dataset = pd.read_csv(cfg.AP_DATASET_PATH, sep=',')
 
 dataset['DROPOUT'] = dataset['DROPOUT'].astype('int64')
 dataset['Pon'] = dataset['Pon'].astype('int64')
@@ -53,8 +54,12 @@ def dataframe_to_dataset(dataframe):
     ds = ds.shuffle(buffer_size=len(dataframe))
     return ds
 
-
-train_dataset = train_dataset.sample(100) # reduce train_ds size
+if cfg.SMALL_DATASET:
+    if input("WARNING: test dataset of size 100. Do you want to proceed? [y/n]") == "y":
+        train_dataset = train_dataset.sample(100) # reduce train_ds size
+    else:
+        print("Closed")
+        sys.exit(0)
 train_ds = dataframe_to_dataset(train_dataset)
 val_ds = dataframe_to_dataset(validation_dataset)
 test_ds = dataframe_to_dataset(test_dataset)
@@ -62,9 +67,9 @@ test_ds = dataframe_to_dataset(test_dataset)
 """
 Batching
 """
-train_ds = train_ds.batch(32, drop_remainder=True)
-val_ds = val_ds.batch(32, drop_remainder=True)
-test_ds = test_ds.batch(32, drop_remainder=True)
+train_ds = train_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
+val_ds = val_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
+test_ds = test_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
 
 """
 Encoding feature
@@ -326,20 +331,23 @@ all_features = layers.concatenate(
 
 """
 TODO:
-- cambiare sigmoind in softmax (forse softmax e' sbagliato per la classificazione binaria)
+- cambiare sigmoind in softmax (forse softmax e' sbagliato per la classificazione binaria) -> cfg.OUTPUT_ACTIVATION_FUNCTION
 - aggiungere piu' neuroni (cosa vuol dire? aumentare i batch)
+- modificare la dimensione dei batch -> cfg.BATCH_SIZE
 - aggiungere piu' layer
-- cambiare ottimizzatore (da Adam a SGD)
-- cambiare il learning rate dell'ottimizzatore
-- rimuovere il layer di dropout
+- cambiare ottimizzatore (da Adam a SGD) -> cfg.OPTIMIZER
+- cambiare il learning rate dell'ottimizzatore -> cfg.LEARNING_RATE
+- rimuovere il layer di dropout -> cfg.DROPOUT_LAYER
+- cambiare la possibilita' di dropout -> cfg.DROPOUT_LAYER_RATE
 """
 
 x = layers.Dense(32, activation="relu")(all_features)
-x = layers.Dropout(0.5)(x)
-output = layers.Dense(1, activation="sigmoid")(x)
+if cfg.DROPOUT_LAYER:
+    x = layers.Dropout(cfg.DROPOUT_LAYER_RATE)(x)
+output = layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION)(x)
 model = keras.Model(all_inputs, output)
 
-model.compile(optimizer=optimizers.Adam(),
+model.compile(optimizer=cfg.OPTIMIZER,
               loss=losses.BinaryCrossentropy(),
               metrics=[metrics.Accuracy(),
                        metrics.Precision(),
@@ -353,7 +361,7 @@ model.compile(optimizer=optimizers.Adam(),
 Training
 """
 
-model.fit(train_ds, epochs=2, validation_data=val_ds)
+model.fit(train_ds, epochs=cfg.EPOCH, validation_data=val_ds)
 
 """
 Evaluation
