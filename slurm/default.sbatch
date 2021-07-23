@@ -8,7 +8,9 @@
 #SBATCH --output=default
 #SBATCH --gres=gpu:1
 
-. bin/activate # per attivare il virtual environment python
+cd  ../
+
+. venv/bin/activate # per attivare il virtual environment python
 
 pip3 install -r requirements.txt
 
