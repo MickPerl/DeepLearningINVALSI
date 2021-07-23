@@ -18,9 +18,9 @@ Lettura del dataset
 """
 dataset = pd.read_csv(cfg.AP_DATASET_PATH, sep=',')
 
-dataset['DROPOUT'] = dataset['DROPOUT'].astype('int64')
-dataset['Pon'] = dataset['Pon'].astype('int64')
-dataset['sesso'] = dataset['sesso'].astype('int64')
+dataset['DROPOUT'] = dataset['DROPOUT'].astype('int64') # Memorizzati come boolean e qui convertiti
+dataset['Pon'] = dataset['Pon'].astype('int64') # Memorizzati come boolean e qui convertiti
+dataset['sesso'] = dataset['sesso'].astype('int64') # Memorizzati come boolean e qui convertiti
 
 """
 Split
@@ -31,8 +31,8 @@ train_dataset, validation_dataset = train_test_split(train_dataset, test_size=0.
 """
 Undersampling
 """
-class_nodrop = train_dataset[train_dataset['DROPOUT'] == False]  # Sovrarappresentata
-class_drop = train_dataset[train_dataset['DROPOUT'] == True]  # Sottorappresentata
+class_nodrop = train_dataset[train_dataset['DROPOUT'] == False]  # Sovrarappresentata (== False funziona per casting implicito)
+class_drop = train_dataset[train_dataset['DROPOUT'] == True]  # Sottorappresentata (== True funziona per casting implicito)
 
 # Sotto campionamento di class_drop in modo che abbia stessa cardinalità di class_nodrop
 class_nodrop = class_nodrop.sample(len(class_drop))
@@ -67,7 +67,7 @@ test_ds = dataframe_to_dataset(test_dataset)
 """
 Batching
 """
-train_ds = train_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
+train_ds = train_ds.batch(cfg.BATCH_SIZE, drop_remainder=True) # drop_remainder=True rimuove i record che non rientrano nei batch da 32
 val_ds = val_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
 test_ds = test_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
 
@@ -331,14 +331,14 @@ all_features = layers.concatenate(
 
 """
 TODO:
-- cambiare sigmoind in softmax (forse softmax e' sbagliato per la classificazione binaria) -> cfg.OUTPUT_ACTIVATION_FUNCTION
-- aggiungere piu' neuroni (cosa vuol dire? aumentare i batch)
+- cambiare sigmoid in softmax (forse softmax è sbagliato per la classificazione binaria) -> cfg.OUTPUT_ACTIVATION_FUNCTION
+- aggiungere più neuroni (cosa vuol dire? aumentare i batch)
 - modificare la dimensione dei batch -> cfg.BATCH_SIZE
-- aggiungere piu' layer
+- aggiungere più layer
 - cambiare ottimizzatore (da Adam a SGD) -> cfg.OPTIMIZER
 - cambiare il learning rate dell'ottimizzatore -> cfg.LEARNING_RATE
 - rimuovere il layer di dropout -> cfg.DROPOUT_LAYER
-- cambiare la possibilita' di dropout -> cfg.DROPOUT_LAYER_RATE
+- cambiare la possibilità di dropout -> cfg.DROPOUT_LAYER_RATE
 """
 
 x = layers.Dense(32, activation="relu")(all_features)
