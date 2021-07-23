@@ -1,6 +1,6 @@
 from tensorflow.keras import optimizers
 
-AP_DATASET_PATH = "../dataset_with_AP.csv"
+AP_DATASET_PATH = "/home/students/michele.perlino/Downloads/dataset_with_AP.csv"
 OUTPUT_ACTIVATION_FUNCTION = "sigmoid"
 BATCH_SIZE = 32
 LEARNING_RATE = 0.001  # default value 0.001
