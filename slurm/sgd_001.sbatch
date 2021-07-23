@@ -2,7 +2,7 @@
 #SBATCH --job-name=default
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=tommaso.azzalin@studio.unibo.it
-#SBATCH --time=20:00:00
+#SBATCH --time=02:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --output=default
@@ -14,4 +14,4 @@ cd  ../
 
 pip3 install -r requirements.txt
 
-python3 src/base.py 
+python3 src/base.py --optimizer sgd --learningrate 0.01 

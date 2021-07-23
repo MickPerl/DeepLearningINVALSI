@@ -10,6 +10,7 @@ from tensorflow.keras.layers.experimental.preprocessing import Normalization
 from tensorflow.keras.layers.experimental.preprocessing import StringLookup
 from tensorflow.keras import metrics
 from tensorflow.keras import losses
+from tensorflow.keras import optimizers
 
 import config as cfg
 
@@ -41,7 +42,11 @@ except:
 print(f"LEARNING_RATE: {LEARNING_RATE}")
 
 try:
-    OPTIMIZER = sys.argv[sys.argv.index('--optimizer') + 1]
+    opt = sys.argv[sys.argv.index('--optimizer') + 1]
+    if opt == "adam":
+        OPTIMIZER = optimizers.Adam(learning_rate=LEARNING_RATE) 
+    else:
+        OPTIMIZER = optimizers.SGD(learning_rate=LEARNING_RATE, momentum=0.0, nesterov=False)
 except:
     OPTIMIZER = cfg.OPTIMIZER
 print(f"OPTIMIZER: {OPTIMIZER}")
@@ -420,7 +425,7 @@ model.compile(optimizer=cfg.OPTIMIZER,
 Training
 """
 
-model.fit(train_ds, epochs=cfg.EPOCH, validation_data=val_ds)
+model.fit(train_ds, epochs=cfg.EPOCH, validation_data=val_ds, verbose=2)
 
 """
 Evaluation
