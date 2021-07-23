@@ -13,6 +13,63 @@ from tensorflow.keras import losses
 
 import config as cfg
 
+print("Progetto IA - Dropout scolastico\n--------------------------------")
+
+print("Arguments:")
+try:
+    AP_DATASET_PATH = sys.argv[sys.argv.index('--dataset') + 1]
+except:
+    AP_DATASET_PATH = cfg.AP_DATASET_PATH
+print(f"AP_DATASET_PATH: {AP_DATASET_PATH}")
+
+try:
+    OUTPUT_ACTIVATION_FUNCTION = sys.argv[sys.argv.index('--activation') + 1]
+except:
+    OUTPUT_ACTIVATION_FUNCTION = cfg.OUTPUT_ACTIVATION_FUNCTION
+print(f"OUTPUT_ACTIVATION_FUNCTION: {OUTPUT_ACTIVATION_FUNCTION}")
+
+try:
+    BATCH_SIZE = int(sys.argv[sys.argv.index('--batchsize') + 1])
+except:
+    BATCH_SIZE = cfg.BATCH_SIZE
+print(f"BATCH_SIZE: {BATCH_SIZE}")
+
+try:
+    LEARNING_RATE = float(sys.argv[sys.argv.index('--learningrate') + 1])
+except:
+    LEARNING_RATE = cfg.LEARNING_RATE
+print(f"LEARNING_RATE: {LEARNING_RATE}")
+
+try:
+    OPTIMIZER = sys.argv[sys.argv.index('--optimizer') + 1]
+except:
+    OPTIMIZER = cfg.OPTIMIZER
+print(f"OPTIMIZER: {OPTIMIZER}")
+
+try:
+    DROPOUT_LAYER = sys.argv.index('--dropout')
+except:
+    DROPOUT_LAYER = cfg.DROPOUT_LAYER
+print(f"DROPOUT_LAYER: {DROPOUT_LAYER}")
+
+try:
+    DROPOUT_LAYER_RATE = float(sys.argv[sys.argv.index('--dropoutrate') + 1])
+except:
+    DROPOUT_LAYER_RATE = cfg.DROPOUT_LAYER_RATE
+print(f"DROPOUT_LAYER_RATE: {DROPOUT_LAYER_RATE}")
+
+try:
+    EPOCH = int(sys.argv[sys.argv.index('--epoch') + 1])
+except:
+    EPOCH = cfg.EPOCH
+print(f"EPOCH: {EPOCH}")
+
+try:
+    SMALL_DATASET = sys.argv[sys.argv.index('--small') + 1]
+except:
+    SMALL_DATASET = cfg.SMALL_DATASET
+print(f"SMALL_DATASET: {SMALL_DATASET}")
+
 print("GPU disponibili: ", len(tf.config.list_physical_devices('GPU')))
 
 """
