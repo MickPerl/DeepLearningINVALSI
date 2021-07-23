@@ -13,6 +13,8 @@ from tensorflow.keras import losses
 
 import config as cfg
 
+print("GPU disponibili: ", len(tf.config.list_physical_devices('GPU')))
+
 """
 Lettura del dataset
 """
