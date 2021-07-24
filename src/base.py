@@ -81,7 +81,7 @@ except:
 print(f"SMALL_DATASET: {SMALL_DATASET}")
 
 try:
-    MODEL = sys.argv[sys.argv.index('--model') + 1]
+    MODEL = int(sys.argv[sys.argv.index('--model') + 1])
 except:
     MODEL = cfg.MODEL
 print(f"MODEL: {MODEL}")
