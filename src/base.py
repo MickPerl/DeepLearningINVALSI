@@ -46,10 +46,12 @@ print(f"LEARNING_RATE: {LEARNING_RATE}")
 
 try:
     opt = sys.argv[sys.argv.index('--optimizer') + 1]
-    if opt == "adam":
-        OPTIMIZER = optimizers.Adam(learning_rate=LEARNING_RATE) 
-    else:
+    if opt == "sgd":
         OPTIMIZER = optimizers.SGD(learning_rate=LEARNING_RATE, momentum=0.0, nesterov=False)
+    elif opt == "rms":
+        OPTIMIZER = optimizers.RMSprop(learning_rate=LEARNING_RATE)
+    else:
+        OPTIMIZER = optimizers.Adam(learning_rate=LEARNING_RATE) 
 except:
     OPTIMIZER = cfg.OPTIMIZER
 print(f"OPTIMIZER: {OPTIMIZER}")
