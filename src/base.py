@@ -1,5 +1,6 @@
 import sys
 
+import numpy as np
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
@@ -16,7 +17,7 @@ import config as cfg
 
 print("Progetto IA - Dropout scolastico\n--------------------------------")
 
-np.random.seed(1) # affinché i training siano riproducibili
+np.random.seed(19) # affinché i training siano riproducibili
 
 print("Arguments:")
 try:
@@ -407,7 +408,7 @@ TODO:
 - cambiare la possibilità di dropout -> cfg.DROPOUT_LAYER_RATE
 """
 
-my_init = K.initializers.glorot_uniform(seed=1)
+my_init = keras.initializers.glorot_uniform(seed=19)
 
 x = layers.Dense(32, activation="relu", kernel_initializer=my_init)(all_features)
 if cfg.DROPOUT_LAYER:
