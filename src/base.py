@@ -80,6 +80,12 @@ except:
     SMALL_DATASET = cfg.SMALL_DATASET
 print(f"SMALL_DATASET: {SMALL_DATASET}")
 
+try:
+    MODEL = sys.argv[sys.argv.index('--model') + 1]
+except:
+    MODEL = cfg.MODEL
+print(f"MODEL: {MODEL}")
+
 print("GPU disponibili: ", len(tf.config.list_physical_devices('GPU')))
 
 """
@@ -412,11 +418,25 @@ TODO:
 
 my_init = keras.initializers.glorot_uniform(seed=19)
 
-x = layers.Dense(32, activation="relu", kernel_initializer=my_init)(all_features)
-if cfg.DROPOUT_LAYER:
-    x = layers.Dropout(cfg.DROPOUT_LAYER_RATE, kernel_initializer=my_init)(x)
-output = layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=my_init)(x)
-model = keras.Model(all_inputs, output)
+def model1(input_layer, input_data) -> keras.Model:
+    x = layers.Dense(32, activation="relu", kernel_initializer=my_init)(input_layer)
+    if cfg.DROPOUT_LAYER:
+        x = layers.Dropout(cfg.DROPOUT_LAYER_RATE, kernel_initializer=my_init)(x)
+    output = layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=my_init)(x)
+    return keras.Model(input_data, output)
+
+def model2(input_layer, input_data) -> keras.Model:
+    x = layers.Dense(32, activation="tanh", kernel_initializer=my_init)(input_layer)
+    x = layers.Dense(32, activation="tanh", kernel_initializer=my_init)(x)
+    if cfg.DROPOUT_LAYER:
+        x = layers.Dropout(cfg.DROPOUT_LAYER_RATE, kernel_initializer=my_init)(x)
+    output = layers.Dense(1, activation="sigmoid", kernel_initializer=my_init)(x)
+    return keras.Model(input_data, output)
+
+if MODEL == 1:
+    model = model1(all_features, all_inputs)
+else: # 2
+    model = model2(all_features, all_inputs)
 
 model.compile(optimizer=cfg.OPTIMIZER,
               loss=losses.BinaryCrossentropy(),
