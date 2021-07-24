@@ -16,6 +16,8 @@ import config as cfg
 
 print("Progetto IA - Dropout scolastico\n--------------------------------")
 
+np.random.seed(1) # affinché i training siano riproducibili
+
 print("Arguments:")
 try:
     AP_DATASET_PATH = sys.argv[sys.argv.index('--dataset') + 1]
@@ -405,10 +407,12 @@ TODO:
 - cambiare la possibilità di dropout -> cfg.DROPOUT_LAYER_RATE
 """
 
-x = layers.Dense(32, activation="relu")(all_features)
+my_init = K.initializers.glorot_uniform(seed=1)
+
+x = layers.Dense(32, activation="relu", kernel_initializer=my_init)(all_features)
 if cfg.DROPOUT_LAYER:
-    x = layers.Dropout(cfg.DROPOUT_LAYER_RATE)(x)
-output = layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION)(x)
+    x = layers.Dropout(cfg.DROPOUT_LAYER_RATE, kernel_initializer=my_init)(x)
+output = layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=my_init)(x)
 model = keras.Model(all_inputs, output)
 
 model.compile(optimizer=cfg.OPTIMIZER,
