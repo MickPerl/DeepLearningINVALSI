@@ -17,7 +17,7 @@ import config as cfg
 
 print("Progetto IA - Dropout scolastico\n--------------------------------")
 
-np.random.seed(19) # affinché i training siano riproducibili
+np.random.seed(19)  # affinché i training siano riproducibili
 
 print("Arguments:")
 try:
@@ -51,7 +51,7 @@ try:
     elif opt == "rms":
         OPTIMIZER = optimizers.RMSprop(learning_rate=LEARNING_RATE)
     else:
-        OPTIMIZER = optimizers.Adam(learning_rate=LEARNING_RATE) 
+        OPTIMIZER = optimizers.Adam(learning_rate=LEARNING_RATE)
 except:
     OPTIMIZER = cfg.OPTIMIZER
 print(f"OPTIMIZER: {OPTIMIZER}")
@@ -86,6 +86,12 @@ except:
     MODEL = cfg.MODEL
 print(f"MODEL: {MODEL}")
 
+try:
+    NEURONS = int(sys.argv[sys.argv.index('--neurons') + 1])
+except:
+    NEURONS = cfg.NEURONS
+print(f"NERUONS: {NEURONS}")
+
 print("GPU disponibili: ", len(tf.config.list_physical_devices('GPU')))
 
 """
@@ -93,9 +99,9 @@ Lettura del dataset
 """
 dataset = pd.read_csv(cfg.AP_DATASET_PATH, sep=',')
 
-dataset['DROPOUT'] = dataset['DROPOUT'].astype('int64') # Memorizzati come boolean e qui convertiti
-dataset['Pon'] = dataset['Pon'].astype('int64') # Memorizzati come boolean e qui convertiti
-dataset['sesso'] = dataset['sesso'].astype('int64') # Memorizzati come boolean e qui convertiti
+dataset['DROPOUT'] = dataset['DROPOUT'].astype('int64')  # Memorizzati come boolean e qui convertiti
+dataset['Pon'] = dataset['Pon'].astype('int64')  # Memorizzati come boolean e qui convertiti
+dataset['sesso'] = dataset['sesso'].astype('int64')  # Memorizzati come boolean e qui convertiti
 
 """
 Split
@@ -106,8 +112,10 @@ train_dataset, validation_dataset = train_test_split(train_dataset, test_size=0.
 """
 Undersampling
 """
-class_nodrop = train_dataset[train_dataset['DROPOUT'] == False]  # Sovrarappresentata (== False funziona per casting implicito)
-class_drop = train_dataset[train_dataset['DROPOUT'] == True]  # Sottorappresentata (== True funziona per casting implicito)
+class_nodrop = train_dataset[
+    train_dataset['DROPOUT'] == False]  # Sovrarappresentata (== False funziona per casting implicito)
+class_drop = train_dataset[
+    train_dataset['DROPOUT'] == True]  # Sottorappresentata (== True funziona per casting implicito)
 
 # Sotto campionamento di class_drop in modo che abbia stessa cardinalità di class_nodrop
 class_nodrop = class_nodrop.sample(len(class_drop))
@@ -129,9 +137,10 @@ def dataframe_to_dataset(dataframe):
     ds = ds.shuffle(buffer_size=len(dataframe))
     return ds
 
+
 if cfg.SMALL_DATASET:
     if input("WARNING: test dataset of size 100. Do you want to proceed? [y/n]") == "y":
-        train_dataset = train_dataset.sample(100) # reduce train_ds size
+        train_dataset = train_dataset.sample(100)  # reduce train_ds size
     else:
         print("Closed")
         sys.exit(0)
@@ -142,7 +151,8 @@ test_ds = dataframe_to_dataset(test_dataset)
 """
 Batching
 """
-train_ds = train_ds.batch(cfg.BATCH_SIZE, drop_remainder=True) # drop_remainder=True rimuove i record che non rientrano nei batch da 32
+train_ds = train_ds.batch(cfg.BATCH_SIZE,
+                          drop_remainder=True)  # drop_remainder=True rimuove i record che non rientrano nei batch da 32
 val_ds = val_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
 test_ds = test_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
 
@@ -182,6 +192,7 @@ def encode_categorical_feature(feature, name, dataset, is_string):
     # Turn the string input into integer indices
     encoded_feature = lookup(feature)
     return encoded_feature
+
 
 """
 Input layers
@@ -228,16 +239,28 @@ n_stud_prev = keras.Input(shape=(1,), name="n_stud_prev", dtype="float32")
 Numeri = keras.Input(shape=(1,), name="Numeri", dtype="float32")
 n_classi_prev = keras.Input(shape=(1,), name="n_classi_prev", dtype="float32")
 Dati = keras.Input(shape=(1,), name="Dati e previsioni", dtype="float32")
-Riconoscere_forme = keras.Input(shape=(1,), name="Riconoscere le forme nello spazio e utilizzarle per la risoluzione di problemi geometrici o di modellizzazione", dtype="float32")
-Conoscere_padr = keras.Input(shape=(1,), name="Conoscere e padroneggiare i contenuti specifici della matematica", dtype="float32")
+Riconoscere_forme = keras.Input(shape=(1,),
+                                name="Riconoscere le forme nello spazio e utilizzarle per la risoluzione di problemi geometrici o di modellizzazione",
+                                dtype="float32")
+Conoscere_padr = keras.Input(shape=(1,), name="Conoscere e padroneggiare i contenuti specifici della matematica",
+                             dtype="float32")
 Relazioni = keras.Input(shape=(1,), name="Relazioni e funzioni", dtype="float32")
 Spazio = keras.Input(shape=(1,), name="Spazio figure", dtype="float32")
-Acquisire = keras.Input(shape=(1,), name="Acquisire progressivamente forme tipiche del pensiero matematico", dtype="float32")
+Acquisire = keras.Input(shape=(1,), name="Acquisire progressivamente forme tipiche del pensiero matematico",
+                        dtype="float32")
 Conoscere_util = keras.Input(shape=(1,), name="Conoscere e utilizzare algoritmi e procedure", dtype="float32")
-Rappresentare = keras.Input(shape=(1,), name="Rappresentare relazioni e dati e, in situazioni significative, utilizzare le rappresentazioni per ricavare informazioni, formulare giudizi e prendere decisioni", dtype="float32")
-Riconoscere_contesti = keras.Input(shape=(1,), name="Riconoscere in contesti diversi il carattere misurabile di oggetti e fenomeni, utilizzare strumenti di misura, misurare grandezze, stimare misure di grandezze", dtype="float32")
-Risolvere = keras.Input(shape=(1,), name="Risolvere problemi utilizzando strategie in ambiti diversi – numerico, geometrico, algebrico –", dtype="float32")
-Utilizzare = keras.Input(shape=(1,), name="Utilizzare strumenti, modelli e rappresentazioni nel trattamento quantitativo dell'informazione in ambito scientifico, tecnologico, economico e sociale", dtype="float32")
+Rappresentare = keras.Input(shape=(1,),
+                            name="Rappresentare relazioni e dati e, in situazioni significative, utilizzare le rappresentazioni per ricavare informazioni, formulare giudizi e prendere decisioni",
+                            dtype="float32")
+Riconoscere_contesti = keras.Input(shape=(1,),
+                                   name="Riconoscere in contesti diversi il carattere misurabile di oggetti e fenomeni, utilizzare strumenti di misura, misurare grandezze, stimare misure di grandezze",
+                                   dtype="float32")
+Risolvere = keras.Input(shape=(1,),
+                        name="Risolvere problemi utilizzando strategie in ambiti diversi – numerico, geometrico, algebrico –",
+                        dtype="float32")
+Utilizzare = keras.Input(shape=(1,),
+                         name="Utilizzare strumenti, modelli e rappresentazioni nel trattamento quantitativo dell'informazione in ambito scientifico, tecnologico, economico e sociale",
+                         dtype="float32")
 
 all_inputs = [
     prog,
@@ -290,7 +313,6 @@ all_inputs = [
     Utilizzare
 ]
 
-
 """
 Encode layers
 """
@@ -310,16 +332,31 @@ WLE_MAT_200_CORR_encoded = encode_numerical_feature(WLE_MAT_200_CORR, "WLE_MAT_2
 pu_ma_no_corr_encoded = encode_numerical_feature(pu_ma_no_corr, "pu_ma_no_corr", train_ds)
 Numeri_encoded = encode_numerical_feature(Numeri, "Numeri", train_ds)
 Dati_encoded = encode_numerical_feature(Dati, "Dati e previsioni", train_ds)
-Riconoscere_forme_encoded = encode_numerical_feature(Riconoscere_forme, "Riconoscere le forme nello spazio e utilizzarle per la risoluzione di problemi geometrici o di modellizzazione", train_ds)
-Conoscere_padr_encoded = encode_numerical_feature(Conoscere_padr, "Conoscere e padroneggiare i contenuti specifici della matematica", train_ds)
+Riconoscere_forme_encoded = encode_numerical_feature(Riconoscere_forme,
+                                                     "Riconoscere le forme nello spazio e utilizzarle per la risoluzione di problemi geometrici o di modellizzazione",
+                                                     train_ds)
+Conoscere_padr_encoded = encode_numerical_feature(Conoscere_padr,
+                                                  "Conoscere e padroneggiare i contenuti specifici della matematica",
+                                                  train_ds)
 Relazioni_encoded = encode_numerical_feature(Relazioni, "Relazioni e funzioni", train_ds)
 Spazio_encoded = encode_numerical_feature(Spazio, "Spazio figure", train_ds)
-Acquisire_encoded = encode_numerical_feature(Acquisire, "Acquisire progressivamente forme tipiche del pensiero matematico", train_ds)
-Conoscere_util_encoded = encode_numerical_feature(Conoscere_util, "Conoscere e utilizzare algoritmi e procedure", train_ds)
-Rappresentare_encoded = encode_numerical_feature(Rappresentare, "Rappresentare relazioni e dati e, in situazioni significative, utilizzare le rappresentazioni per ricavare informazioni, formulare giudizi e prendere decisioni", train_ds)
-Riconoscere_contesti_encoded = encode_numerical_feature(Riconoscere_contesti, "Riconoscere in contesti diversi il carattere misurabile di oggetti e fenomeni, utilizzare strumenti di misura, misurare grandezze, stimare misure di grandezze", train_ds)
-Risolvere_encoded = encode_numerical_feature(Risolvere, "Risolvere problemi utilizzando strategie in ambiti diversi – numerico, geometrico, algebrico –", train_ds)
-Utilizzare_encoded = encode_numerical_feature(Utilizzare, "Utilizzare strumenti, modelli e rappresentazioni nel trattamento quantitativo dell'informazione in ambito scientifico, tecnologico, economico e sociale", train_ds)
+Acquisire_encoded = encode_numerical_feature(Acquisire,
+                                             "Acquisire progressivamente forme tipiche del pensiero matematico",
+                                             train_ds)
+Conoscere_util_encoded = encode_numerical_feature(Conoscere_util, "Conoscere e utilizzare algoritmi e procedure",
+                                                  train_ds)
+Rappresentare_encoded = encode_numerical_feature(Rappresentare,
+                                                 "Rappresentare relazioni e dati e, in situazioni significative, utilizzare le rappresentazioni per ricavare informazioni, formulare giudizi e prendere decisioni",
+                                                 train_ds)
+Riconoscere_contesti_encoded = encode_numerical_feature(Riconoscere_contesti,
+                                                        "Riconoscere in contesti diversi il carattere misurabile di oggetti e fenomeni, utilizzare strumenti di misura, misurare grandezze, stimare misure di grandezze",
+                                                        train_ds)
+Risolvere_encoded = encode_numerical_feature(Risolvere,
+                                             "Risolvere problemi utilizzando strategie in ambiti diversi – numerico, geometrico, algebrico –",
+                                             train_ds)
+Utilizzare_encoded = encode_numerical_feature(Utilizzare,
+                                              "Utilizzare strumenti, modelli e rappresentazioni nel trattamento quantitativo dell'informazione in ambito scientifico, tecnologico, economico e sociale",
+                                              train_ds)
 
 prog_encoded = encode_categorical_feature(prog, "prog", train_ds, False)
 mese_encoded = encode_categorical_feature(mese, "mese", train_ds, False)
@@ -337,7 +374,8 @@ prof_madre_encoded = encode_categorical_feature(prof_madre, "prof_madre", train_
 regolarita_encoded = encode_categorical_feature(regolarita, "regolarità", train_ds, False)
 cittadinanza_encoded = encode_categorical_feature(cittadinanza, "cittadinanza", train_ds, False)
 cod_provincia_ISTAT_encoded = encode_categorical_feature(cod_provincia_ISTAT, "cod_provincia_ISTAT", train_ds, False)
-sigla_provincia_istat_encoded = encode_categorical_feature(sigla_provincia_istat, "sigla_provincia_istat", train_ds, False)
+sigla_provincia_istat_encoded = encode_categorical_feature(sigla_provincia_istat, "sigla_provincia_istat", train_ds,
+                                                           False)
 Nome_reg_encoded = encode_categorical_feature(Nome_reg, "Nome_reg", train_ds, False)
 Cod_reg_encoded = encode_categorical_feature(Cod_reg, "Cod_reg", train_ds, False)
 Areageo_3_encoded = encode_categorical_feature(Areageo_3, "Areageo_3", train_ds, False)
@@ -345,7 +383,6 @@ Areageo_4_encoded = encode_categorical_feature(Areageo_4, "Areageo_4", train_ds,
 Areageo_5_encoded = encode_categorical_feature(Areageo_5, "Areageo_5", train_ds, False)
 Areageo_5_Istat_encoded = encode_categorical_feature(Areageo_5_Istat, "Areageo_5_Istat", train_ds, False)
 LIVELLI_encoded = encode_categorical_feature(LIVELLI, "LIVELLI", train_ds, False)
-
 
 """
 Neural network architecture
@@ -418,31 +455,39 @@ TODO:
 
 my_init = keras.initializers.glorot_uniform(seed=19)
 
+
 def model1(input_layer, input_data) -> keras.Model:
-    x = layers.Dense(32, activation="relu", kernel_initializer=my_init)(input_layer)
+    x = layers.Dense(NEURONS, activation="relu", kernel_initializer=my_init)(input_layer)
     if cfg.DROPOUT_LAYER:
         x = layers.Dropout(cfg.DROPOUT_LAYER_RATE, kernel_initializer=my_init)(x)
     output = layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=my_init)(x)
     return keras.Model(input_data, output)
 
+
 def model2(input_layer, input_data) -> keras.Model:
-    x = layers.Dense(32, activation="tanh", kernel_initializer=my_init)(input_layer)
-    x = layers.Dense(32, activation="tanh", kernel_initializer=my_init)(x)
+    x = layers.Dense(NEURONS, activation="tanh", kernel_initializer=my_init)(input_layer)
+    x = layers.Dense(NEURONS, activation="tanh", kernel_initializer=my_init)(x)
     if cfg.DROPOUT_LAYER:
         x = layers.Dropout(cfg.DROPOUT_LAYER_RATE, kernel_initializer=my_init)(x)
     output = layers.Dense(1, activation="sigmoid", kernel_initializer=my_init)(x)
     return keras.Model(input_data, output)
 
+
+""" TODOS:
+- Aumentare il numero di nodi 32 -> 128/256/512
+- Dropout abbassare il rate 0.5 -> 0.2/0.3
+"""
+
 if MODEL == 1:
     model = model1(all_features, all_inputs)
-else: # 2
+else:  # 2
     model = model2(all_features, all_inputs)
 
 model.compile(optimizer=cfg.OPTIMIZER,
               loss=losses.BinaryCrossentropy(),
               metrics=[metrics.Accuracy(),
                        metrics.Precision(),
-                       metrics.Recall(),
+                       metrics.Recall(),  # metrica più interessante
                        metrics.FalseNegatives(),
                        metrics.FalsePositives(),
                        metrics.TrueNegatives(),
@@ -453,6 +498,9 @@ Training
 """
 
 model.fit(train_ds, epochs=cfg.EPOCH, validation_data=val_ds, verbose=2)
+"""
+Vedere per Early stopping -> evita l' over-fitting 
+"""
 
 """
 Evaluation
