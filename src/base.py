@@ -19,30 +19,33 @@ print("Progetto IA - Dropout scolastico\n--------------------------------")
 
 np.random.seed(19)  # affinché i training siano riproducibili
 
+"""
+Lettura degli argomenti
+"""
 print("Arguments:")
 try:
     AP_DATASET_PATH = sys.argv[sys.argv.index('--dataset') + 1]
 except:
     AP_DATASET_PATH = cfg.AP_DATASET_PATH
-print(f"AP_DATASET_PATH: {AP_DATASET_PATH}")
+print(f"- AP_DATASET_PATH: {AP_DATASET_PATH}")
 
 try:
     OUTPUT_ACTIVATION_FUNCTION = sys.argv[sys.argv.index('--activation') + 1]
 except:
     OUTPUT_ACTIVATION_FUNCTION = cfg.OUTPUT_ACTIVATION_FUNCTION
-print(f"OUTPUT_ACTIVATION_FUNCTION: {OUTPUT_ACTIVATION_FUNCTION}")
+print(f"- OUTPUT_ACTIVATION_FUNCTION: {OUTPUT_ACTIVATION_FUNCTION}")
 
 try:
     BATCH_SIZE = int(sys.argv[sys.argv.index('--batchsize') + 1])
 except:
     BATCH_SIZE = cfg.BATCH_SIZE
-print(f"BATCH_SIZE: {BATCH_SIZE}")
+print(f"- BATCH_SIZE: {BATCH_SIZE}")
 
 try:
     LEARNING_RATE = float(sys.argv[sys.argv.index('--learningrate') + 1])
 except:
     LEARNING_RATE = cfg.LEARNING_RATE
-print(f"LEARNING_RATE: {LEARNING_RATE}")
+print(f"- LEARNING_RATE: {LEARNING_RATE}")
 
 try:
     opt = sys.argv[sys.argv.index('--optimizer') + 1]
@@ -54,44 +57,45 @@ try:
         OPTIMIZER = optimizers.Adam(learning_rate=LEARNING_RATE)
 except:
     OPTIMIZER = cfg.OPTIMIZER
-print(f"OPTIMIZER: {OPTIMIZER}")
+print(f"- OPTIMIZER: {OPTIMIZER}")
 
 try:
     DROPOUT_LAYER = sys.argv.index('--dropout')
 except:
     DROPOUT_LAYER = cfg.DROPOUT_LAYER
-print(f"DROPOUT_LAYER: {DROPOUT_LAYER}")
+print(f"- DROPOUT_LAYER: {DROPOUT_LAYER}")
 
 try:
     DROPOUT_LAYER_RATE = float(sys.argv[sys.argv.index('--dropoutrate') + 1])
 except:
     DROPOUT_LAYER_RATE = cfg.DROPOUT_LAYER_RATE
-print(f"DROPOUT_LAYER_RATE: {DROPOUT_LAYER_RATE}")
+print(f"- DROPOUT_LAYER_RATE: {DROPOUT_LAYER_RATE}")
 
 try:
     EPOCH = int(sys.argv[sys.argv.index('--epoch') + 1])
 except:
     EPOCH = cfg.EPOCH
-print(f"EPOCH: {EPOCH}")
+print(f"- EPOCH: {EPOCH}")
 
 try:
     SMALL_DATASET = sys.argv[sys.argv.index('--small') + 1]
 except:
     SMALL_DATASET = cfg.SMALL_DATASET
-print(f"SMALL_DATASET: {SMALL_DATASET}")
+print(f"- SMALL_DATASET: {SMALL_DATASET}")
 
 try:
     MODEL = int(sys.argv[sys.argv.index('--model') + 1])
 except:
     MODEL = cfg.MODEL
-print(f"MODEL: {MODEL}")
+print(f"- MODEL: {MODEL}")
 
 try:
     NEURONS = int(sys.argv[sys.argv.index('--neurons') + 1])
 except:
     NEURONS = cfg.NEURONS
-print(f"NERUONS: {NEURONS}")
+print(f"- NERUONS: {NEURONS}")
 
+# Se ci sono una o più GPU disponibili allora sono state rilevate.
 print("GPU disponibili: ", len(tf.config.list_physical_devices('GPU')))
 
 """
@@ -112,10 +116,10 @@ train_dataset, validation_dataset = train_test_split(train_dataset, test_size=0.
 """
 Undersampling
 """
-class_nodrop = train_dataset[
-    train_dataset['DROPOUT'] == False]  # Sovrarappresentata (== False funziona per casting implicito)
-class_drop = train_dataset[
-    train_dataset['DROPOUT'] == True]  # Sottorappresentata (== True funziona per casting implicito)
+# class_nodrop contiene i record della classe sovrarappresentata, ovvero SENZA DROPOUT (== False funziona per casting implicito)
+class_nodrop = train_dataset[train_dataset['DROPOUT'] == False] 
+# class_drop contiene i record della classe sottorappresentata, ovvero CON DROPOUT (== True funziona per casting implicito) 
+class_drop = train_dataset[train_dataset['DROPOUT'] == True]  
 
 # Sotto campionamento di class_drop in modo che abbia stessa cardinalità di class_nodrop
 class_nodrop = class_nodrop.sample(len(class_drop))
@@ -124,11 +128,10 @@ class_nodrop = class_nodrop.sample(len(class_drop))
 train_dataset = class_drop.append(class_nodrop)
 train_dataset = train_dataset.sample(frac=1)
 
-"""
-Convert from pandas DF to tensorflow DS
-"""
 
-
+"""
+Conversione da Pandas DataFrame a Tensorflow Dataset
+"""
 def dataframe_to_dataset(dataframe):
     dataframe = dataframe.copy()
     dataframe = dataframe.drop("Unnamed: 0", axis=1)
@@ -149,18 +152,17 @@ val_ds = dataframe_to_dataset(validation_dataset)
 test_ds = dataframe_to_dataset(test_dataset)
 
 """
-Batching
+Suddivisione in batch dei dataset di training, validazione, testing.
 """
-train_ds = train_ds.batch(cfg.BATCH_SIZE,
-                          drop_remainder=True)  # drop_remainder=True rimuove i record che non rientrano nei batch da 32
+# drop_remainder=True rimuove i record che non rientrano nei batch della dimensione fissata
+train_ds = train_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)  #
 val_ds = val_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
 test_ds = test_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
 
-"""
-Encoding feature
-"""
 
-
+"""
+Codifica delle feature
+"""
 def encode_numerical_feature(feature, name, dataset):
     # Create a Normalization layer for our feature
     normalizer = Normalization()
@@ -195,7 +197,7 @@ def encode_categorical_feature(feature, name, dataset, is_string):
 
 
 """
-Input layers
+Impostazione dei layer di input
 """
 # Categorical features encoded as integers
 prog = keras.Input(shape=(1,), name="prog", dtype="int64")
@@ -314,9 +316,8 @@ all_inputs = [
 ]
 
 """
-Encode layers
+Codifica dei layer di input
 """
-
 sesso_encoded = encode_categorical_feature(sesso, "sesso", train_ds, False)
 Pon_encoded = encode_categorical_feature(Pon, "Pon", train_ds, False)
 
@@ -385,7 +386,7 @@ Areageo_5_Istat_encoded = encode_categorical_feature(Areageo_5_Istat, "Areageo_5
 LIVELLI_encoded = encode_categorical_feature(LIVELLI, "LIVELLI", train_ds, False)
 
 """
-Neural network architecture
+Architettura della rete neurale
 """
 
 all_features = layers.concatenate(
@@ -453,27 +454,28 @@ TODO:
 - cambiare la possibilità di dropout -> cfg.DROPOUT_LAYER_RATE
 """
 
-my_init = keras.initializers.glorot_uniform(seed=19)
+initializer = keras.initializers.glorot_uniform(seed=19)
 
 
 def model1(input_layer, input_data) -> keras.Model:
-    x = layers.Dense(NEURONS, activation="relu", kernel_initializer=my_init)(input_layer)
+    x = layers.Dense(NEURONS, activation="relu", kernel_initializer=initializer)(input_layer)
     if cfg.DROPOUT_LAYER:
-        x = layers.Dropout(cfg.DROPOUT_LAYER_RATE, kernel_initializer=my_init)(x)
-    output = layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=my_init)(x)
+        x = layers.Dropout(cfg.DROPOUT_LAYER_RATE, kernel_initializer=initializer)(x)
+    output = layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=initializer)(x)
     return keras.Model(input_data, output)
 
 
 def model2(input_layer, input_data) -> keras.Model:
-    x = layers.Dense(NEURONS, activation="tanh", kernel_initializer=my_init)(input_layer)
-    x = layers.Dense(NEURONS, activation="tanh", kernel_initializer=my_init)(x)
+    x = layers.Dense(NEURONS, activation="tanh", kernel_initializer=initializer)(input_layer)
+    x = layers.Dense(NEURONS, activation="tanh", kernel_initializer=initializer)(x)
     if cfg.DROPOUT_LAYER:
-        x = layers.Dropout(cfg.DROPOUT_LAYER_RATE, kernel_initializer=my_init)(x)
-    output = layers.Dense(1, activation="sigmoid", kernel_initializer=my_init)(x)
+        x = layers.Dropout(cfg.DROPOUT_LAYER_RATE, kernel_initializer=initializer)(x)
+    output = layers.Dense(1, activation="sigmoid", kernel_initializer=initializer)(x)
     return keras.Model(input_data, output)
 
 
-""" TODOS:
+"""
+TODO:
 - Aumentare il numero di nodi 32 -> 128/256/512
 - Dropout abbassare il rate 0.5 -> 0.2/0.3
 """
@@ -496,8 +498,8 @@ model.compile(optimizer=cfg.OPTIMIZER,
 """
 Training
 """
-
 model.fit(train_ds, epochs=cfg.EPOCH, validation_data=val_ds, verbose=2)
+
 """
 Vedere per Early stopping -> evita l' over-fitting 
 """
