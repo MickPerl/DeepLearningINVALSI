@@ -340,6 +340,7 @@ all_inputs = [
 """
 Codifica dei layer di input
 """
+"""
 sesso_encoded = encode_categorical_feature(sesso, "sesso", train_ds, False)
 Pon_encoded = encode_categorical_feature(Pon, "Pon", train_ds, False)
 
@@ -406,12 +407,14 @@ Areageo_4_encoded = encode_categorical_feature(Areageo_4, "Areageo_4", train_ds,
 Areageo_5_encoded = encode_categorical_feature(Areageo_5, "Areageo_5", train_ds, False)
 Areageo_5_Istat_encoded = encode_categorical_feature(Areageo_5_Istat, "Areageo_5_Istat", train_ds, False)
 LIVELLI_encoded = encode_categorical_feature(LIVELLI, "LIVELLI", train_ds, False)
+"""
 
 """
 Architettura della rete neurale
 """
 
-all_features = layers.concatenate(
+all_features = layers.concatenate(all_inputs)
+"""layers.concatenate(
     [
         prog_encoded,
         sesso_encoded,
@@ -462,7 +465,7 @@ all_features = layers.concatenate(
         Risolvere_encoded,
         Utilizzare_encoded
     ]
-)
+)"""
 
 """
 TODO:
@@ -509,7 +512,8 @@ else:  # 2
 
 model.compile(optimizer=OPTIMIZER,
               loss=losses.BinaryCrossentropy(),
-              metrics=[metrics.BinaryAccuracy(),
+              metrics=[metrics.Accuracy(),
+                       metrics.BinaryAccuracy(),
                        metrics.Precision(),
                        metrics.Recall(),  # metrica più interessante
                        metrics.FalseNegatives(),
@@ -538,10 +542,10 @@ print('Test accuracy:', score[1])
 - prima undersampling e poi split -> train e validation devo essere entrambi bilanciati FATTO
 - Controllare recall, precision e accuracy a mano -> non ci si dovrebbe aspettare discrepanza, se c'e' vuol dire che c'e' un problema con il dataset di riferimento, controllare con il punto 2 -> utilizzare le confusion matrix
 - BinaryAccuracy FATTO -> capire differenza da Accuracy() 
-- check sulla divisione del dataset
+- check sulla divisione del dataset FATTO
 - controllo manuale sul modello
 - split -> 90/10 e 75/25 (dovrebbe essere poco rilevante)
-- Per quanto riguarda il sampling => nella relazione dire queli abbiamo provato e pro/contro di ognuno (2 categorie: agiscono sul dataset a priori e quelle che agiscono sul classificatore)
+- Per quanto riguarda il sampling => nella relazione dire quali abbiamo provato e pro/contro di ognuno (2 categorie: agiscono sul dataset a priori e quelle che agiscono sul classificatore)
     - altre tecniche di sampling che agiscono su come viene addestrato il classificatore -> sampling pesato (weighted sampling) -> codificare nel classificatore le proprieta' del dataset -> metodo preferito dal Prof. Pio Zingaro
     - undersampling -> molto facile da applicare e poco interessante -> random undersampling -> servirebbe un test di validazione per capire se la randomicita' e' stata efficace
     - oversampling -> SMOTE deve essere fatto con variabili categoriche -> mantiene la varianza uguale

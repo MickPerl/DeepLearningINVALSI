@@ -9,5 +9,5 @@ DROPOUT_LAYER = False # --dropout
 DROPOUT_LAYER_RATE = 0.5 # --dropoutrate floatnum
 EPOCH = 50 # --epoch intnum
 SMALL_DATASET = False # --small
-MODEL = 1
+MODEL = 2
 NEURONS = 32
