@@ -101,25 +101,24 @@ print("GPU disponibili: ", len(tf.config.list_physical_devices('GPU')))
 """
 Lettura del dataset
 """
-dataset = pd.read_csv(cfg.AP_DATASET_PATH, sep=',')
+dataset = pd.read_csv(AP_DATASET_PATH, sep=',')
 
 dataset['DROPOUT'] = dataset['DROPOUT'].astype('int64')  # Memorizzati come boolean e qui convertiti
 dataset['Pon'] = dataset['Pon'].astype('int64')  # Memorizzati come boolean e qui convertiti
 dataset['sesso'] = dataset['sesso'].astype('int64')  # Memorizzati come boolean e qui convertiti
 
 """
-Split
+Split train/test
 """
 train_dataset, test_dataset = train_test_split(dataset, test_size=0.2)
-train_dataset, validation_dataset = train_test_split(train_dataset, test_size=0.2)
 
 """
 Undersampling
 """
 # class_nodrop contiene i record della classe sovrarappresentata, ovvero SENZA DROPOUT (== False funziona per casting implicito)
-class_nodrop = train_dataset[train_dataset['DROPOUT'] == False] 
-# class_drop contiene i record della classe sottorappresentata, ovvero CON DROPOUT (== True funziona per casting implicito) 
-class_drop = train_dataset[train_dataset['DROPOUT'] == True]  
+class_nodrop = train_dataset[train_dataset['DROPOUT'] == False]
+# class_drop contiene i record della classe sottorappresentata, ovvero CON DROPOUT (== True funziona per casting implicito)
+class_drop = train_dataset[train_dataset['DROPOUT'] == True]
 
 # Sotto campionamento di class_drop in modo che abbia stessa cardinalità di class_nodrop
 class_nodrop = class_nodrop.sample(len(class_drop))
@@ -127,6 +126,29 @@ class_nodrop = class_nodrop.sample(len(class_drop))
 # Ricreazione dataset di test
 train_dataset = class_drop.append(class_nodrop)
 train_dataset = train_dataset.sample(frac=1)
+
+"""
+Split train/validation
+"""
+
+train_dataset, validation_dataset = train_test_split(train_dataset, test_size=0.2)
+
+print("SPLIT DEI DATI:")
+
+print("Train dataset:")
+train_nr_nodrop, train_nr_drop = np.bincount(train_dataset['DROPOUT'])
+print(f"\tNO DROP:{train_nr_nodrop}")
+print(f"\tDROP:{train_nr_drop}")
+
+print("Validation dataset:")
+val_nr_nodrop, val_nr_drop = np.bincount(validation_dataset['DROPOUT'])
+print(f"\tNO DROP:{val_nr_nodrop}")
+print(f"\tDROP:{val_nr_drop}")
+
+print("Test dataset:")
+test_nr_nodrop, test_nr_drop = np.bincount(test_dataset['DROPOUT'])
+print(f"\tNO DROP:{test_nr_nodrop}")
+print(f"\tDROP:{test_nr_drop}")
 
 
 """
@@ -141,7 +163,7 @@ def dataframe_to_dataset(dataframe):
     return ds
 
 
-if cfg.SMALL_DATASET:
+if SMALL_DATASET:
     if input("WARNING: test dataset of size 100. Do you want to proceed? [y/n]") == "y":
         train_dataset = train_dataset.sample(100)  # reduce train_ds size
     else:
@@ -155,9 +177,9 @@ test_ds = dataframe_to_dataset(test_dataset)
 Suddivisione in batch dei dataset di training, validazione, testing.
 """
 # drop_remainder=True rimuove i record che non rientrano nei batch della dimensione fissata
-train_ds = train_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)  #
-val_ds = val_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
-test_ds = test_ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
+train_ds = train_ds.batch(BATCH_SIZE, drop_remainder=True)  #
+val_ds = val_ds.batch(BATCH_SIZE, drop_remainder=True)
+test_ds = test_ds.batch(BATCH_SIZE, drop_remainder=True)
 
 
 """
@@ -459,17 +481,17 @@ initializer = keras.initializers.glorot_uniform(seed=19)
 
 def model1(input_layer, input_data) -> keras.Model:
     x = layers.Dense(NEURONS, activation="relu", kernel_initializer=initializer)(input_layer)
-    if cfg.DROPOUT_LAYER:
-        x = layers.Dropout(cfg.DROPOUT_LAYER_RATE, kernel_initializer=initializer)(x)
-    output = layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=initializer)(x)
+    if DROPOUT_LAYER:
+        x = layers.Dropout(DROPOUT_LAYER_RATE, kernel_initializer=initializer)(x)
+    output = layers.Dense(1, activation=OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=initializer)(x)
     return keras.Model(input_data, output)
 
 
 def model2(input_layer, input_data) -> keras.Model:
     x = layers.Dense(NEURONS, activation="tanh", kernel_initializer=initializer)(input_layer)
     x = layers.Dense(NEURONS, activation="tanh", kernel_initializer=initializer)(x)
-    if cfg.DROPOUT_LAYER:
-        x = layers.Dropout(cfg.DROPOUT_LAYER_RATE, kernel_initializer=initializer)(x)
+    if DROPOUT_LAYER:
+        x = layers.Dropout(DROPOUT_LAYER_RATE, kernel_initializer=initializer)(x)
     output = layers.Dense(1, activation="sigmoid", kernel_initializer=initializer)(x)
     return keras.Model(input_data, output)
 
@@ -485,9 +507,9 @@ if MODEL == 1:
 else:  # 2
     model = model2(all_features, all_inputs)
 
-model.compile(optimizer=cfg.OPTIMIZER,
+model.compile(optimizer=OPTIMIZER,
               loss=losses.BinaryCrossentropy(),
-              metrics=[metrics.Accuracy(),
+              metrics=[metrics.BinaryAccuracy(),
                        metrics.Precision(),
                        metrics.Recall(),  # metrica più interessante
                        metrics.FalseNegatives(),
@@ -498,7 +520,7 @@ model.compile(optimizer=cfg.OPTIMIZER,
 """
 Training
 """
-model.fit(train_ds, epochs=cfg.EPOCH, validation_data=val_ds, verbose=2)
+model.fit(train_ds, epochs=EPOCH, validation_data=val_ds, verbose=2)
 
 """
 Vedere per Early stopping -> evita l' over-fitting 
@@ -510,3 +532,23 @@ Evaluation
 score = model.evaluate(test_ds)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
+
+
+"""
+- prima undersampling e poi split -> train e validation devo essere entrambi bilanciati FATTO
+- Controllare recall, precision e accuracy a mano -> non ci si dovrebbe aspettare discrepanza, se c'e' vuol dire che c'e' un problema con il dataset di riferimento, controllare con il punto 2 -> utilizzare le confusion matrix
+- BinaryAccuracy FATTO -> capire differenza da Accuracy() 
+- check sulla divisione del dataset
+- controllo manuale sul modello
+- split -> 90/10 e 75/25 (dovrebbe essere poco rilevante)
+- Per quanto riguarda il sampling => nella relazione dire queli abbiamo provato e pro/contro di ognuno (2 categorie: agiscono sul dataset a priori e quelle che agiscono sul classificatore)
+    - altre tecniche di sampling che agiscono su come viene addestrato il classificatore -> sampling pesato (weighted sampling) -> codificare nel classificatore le proprieta' del dataset -> metodo preferito dal Prof. Pio Zingaro
+    - undersampling -> molto facile da applicare e poco interessante -> random undersampling -> servirebbe un test di validazione per capire se la randomicita' e' stata efficace
+    - oversampling -> SMOTE deve essere fatto con variabili categoriche -> mantiene la varianza uguale
+- utilizzare/sperimentare i multilayer-perceptron (dense layer); ne esistono altri ma sono solo modi per velocizzare l'apprendimento su macchine poco performanti -> aggiungere layer densi e utilizzare il dropout
+- batch normalization, dropout, residual connections (mantenere delle info dal vettore di attributi base e non avere numeri troppo piccoli) -> cerca di risolvere problemi come il decadimento dei pesi nella rete causato dalla produzione di numeri molto piccoli nella moltiplicazioni tra matrici -> MLP (MultiLayerPerceptron) mixer (nuovo stato dell'arte)
+- provare ad aggiungere dense layer al modello -> aumenta la complessità ma la computazione diventa molto più difficoltosa
+- provare riki-relu come funzione di attivazione (che è meno aggressiva)
+- meglio utilizzare learning rate bassi e incrementare il numero di epoche
+
+"""

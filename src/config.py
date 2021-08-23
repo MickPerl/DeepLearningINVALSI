@@ -1,6 +1,6 @@
 from tensorflow.keras import optimizers
 
-AP_DATASET_PATH = "/home/students/michele.perlino/Downloads/dataset_with_AP.csv" # --dataset nomefile
+AP_DATASET_PATH = "/Users/marco/Documents/Università/Intelligenza artificiale/project.nosync/MachineLearningProject/dataset_with_AP.csv" # --dataset nomefile
 OUTPUT_ACTIVATION_FUNCTION = "sigmoid" # --activation nomefunzione
 BATCH_SIZE = 32 # --batchsize intnum
 LEARNING_RATE = 0.001  # --learningrate floatnum

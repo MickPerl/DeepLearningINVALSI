@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=default
+#SBATCH --job-name=sgd001
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=tommaso.azzalin@studio.unibo.it
 #SBATCH --time=02:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --output=default
+#SBATCH --output=sgd001
 #SBATCH --gres=gpu:1
 
 cd  ../
