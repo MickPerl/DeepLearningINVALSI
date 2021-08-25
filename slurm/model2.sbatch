@@ -12,6 +12,6 @@ cd  ../
 
 . venv/bin/activate # per attivare il virtual environment python
 
-pip3 install -r requirements.txt
+pip3 install --no-cache-dir -r requirements.txt
 
 python3 src/base.py --model 2
