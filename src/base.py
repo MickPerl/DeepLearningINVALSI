@@ -157,8 +157,14 @@ Conversione da Pandas DataFrame a Tensorflow Dataset
 def dataframe_to_dataset(dataframe):
     dataframe = dataframe.copy()
     dataframe = dataframe.drop("Unnamed: 0", axis=1)
-    labels = dataframe.pop("DROPOUT")
-    ds = tf.data.Dataset.from_tensor_slices((dict(dataframe), labels.values))
+    target = dataframe.pop("DROPOUT")
+    """
+    Dato che il dataframe ha dati eterogenei lo convertiamo a dizionario, in cui le chiavi sono i nomi delle colonne
+    e i valori sono i valori della colonna.
+    Infine bisogna indicare la colonna target.
+    """
+    # ds = tf.data.Dataset.from_tensor_slices((dict(dataframe), target.values))
+    ds = tf.data.Dataset.from_tensor_slices((dict(dataframe), target))
     ds = ds.shuffle(buffer_size=len(dataframe))
     return ds
 
