@@ -193,7 +193,7 @@ COLUMN_CONVERTERS = {
     "regolarità": str,
     "cittadinanza": str,
     "cod_provincia_ISTAT": str,
-    "sigla_provincia_istat": str,
+    "sigla_provincia_istat": lambda prov: str(prov) if prov != np.nan else "Non disponibile",
     "Nome_reg": str,
     "Cod_reg": str,
     "Areageo_3": str,
