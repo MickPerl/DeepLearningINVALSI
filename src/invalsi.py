@@ -10,18 +10,18 @@ import config as cfg
 from mapping_domande_ambiti_processi import MAPPING_DOMANDE_AMBITI_PROCESSI
 from column_converters import COLUMN_CONVERTERS
 
-SKIP = True
+PRE_ML = False
 
 """
 Import del dataset originale
 """
-if SKIP:
+if PRE_ML:
     original_dataset = pd.read_csv(cfg.ORIGINAL_DATASET, sep=';', converters=COLUMN_CONVERTERS)
 
 """
 Cerchiamo colonne che abbiamo percentuali di valori nulli.
 """
-if SKIP:
+if PRE_ML:
     print("Columns with high null values percentages:")
     for col in original_dataset.columns:
         null_values_mean = original_dataset[col].isnull().mean()
@@ -41,7 +41,7 @@ columns_with_lower_null_values = [
 Cerchiamo colonne con valori univoci o quasi (ad esempio identificativi).
 Se ce ne sono, meglio toglierle perché sono inutili.
 """
-if SKIP:
+if PRE_ML:
     dataset_len = len(original_dataset)
     print("Columns with unique values:")
     for col in original_dataset.columns:
@@ -54,7 +54,7 @@ columns_with_unique_values = ["Unnamed: 0", "CODICE_STUDENTE"]
 Cerchiamo colonne con sempre lo stesso valore perché non danno informazioni.
 Se ce ne sono, meglio toglierle perché sono inutili.
 """
-if SKIP:
+if PRE_ML:
     print("Columns with just one value:")
     for col in original_dataset.columns:
         unique_vals = original_dataset[col].nunique()
@@ -70,7 +70,7 @@ Rimozione delle colonne indicate in:
 - columns_with_unique_values
 - columns_with_just_one_value
 """
-if SKIP:
+if PRE_ML:
     cleaned_original_dataset: pd.DataFrame = original_dataset.drop(
         columns_with_high_null_values + columns_with_unique_values + columns_with_just_one_value, axis=1)
 
@@ -83,7 +83,7 @@ if SKIP:
 """
 Creazione lista con domande
 """
-if SKIP:
+if PRE_ML:
     questions_columns = [col for col in list(cleaned_original_dataset) if re.search("^D\d", col)]
 
 """
@@ -95,7 +95,7 @@ list_ambiti_processi = [AP for val in MAPPING_DOMANDE_AMBITI_PROCESSI.values() f
 ambiti_processi = set(list_ambiti_processi)
 conteggio_ambiti_processi = {AP: list_ambiti_processi.count(AP) for AP in ambiti_processi}
 
-if SKIP:
+if PRE_ML:
     dataset_with_ambiti_processi = cleaned_original_dataset.copy()
     for AP in ambiti_processi:
         # Aggiunge una colonna al dataset chiamata AP e inizializza tutti i record a 0.0
@@ -108,7 +108,7 @@ all'ambito o al processo. L'incremento è di 1/(#domande con quell'ambito o proc
 - se ha risposto erroneamente, non incremento il valore.
 Di conseguenza uno studente che ha risposto sempre correttamente a domande di un certo ambito/processo avrà il valore di quella cella a 1.
 """
-if SKIP:
+if PRE_ML:
     convert_domande_to_ambiti_processi = False
 
     if convert_domande_to_ambiti_processi:
@@ -127,7 +127,7 @@ if SKIP:
 """
 Scopriamo se ci sono colonne con valori molto correlati.
 """
-if SKIP:
+if PRE_ML:
     corr_matrix = dataset_ap.corr(method='pearson').round(2)
     upper_corr_matrix = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(np.bool))
 
@@ -144,7 +144,7 @@ interisting_to_check_if_correlated_columns = [
                                                  "pu_ma_no"
                                              ] + list(ambiti_processi)
 
-if SKIP:
+if PRE_ML:
     check_corr_dataset = dataset_ap[interisting_to_check_if_correlated_columns].corr(method='pearson').round(2)
 
     check_corr_dataset.style.background_gradient(cmap='YlOrRd')
@@ -157,7 +157,7 @@ Rimozione colonne con alta correlazione.
 """
 Verifica sbilanciamento classi DROPOUT e NO DROPOUT nel dataset.
 """
-if SKIP:
+if PRE_ML:
     nr_nodrop, nr_drop = np.bincount(dataset_ap['DROPOUT'])
     total_records = nr_drop + nr_nodrop
     print(
@@ -398,3 +398,7 @@ model.compile(optimizer=cfg.OPTIMIZER,
                   tf.metrics.TruePositives()])
 
 model.fit(ds_training_set, epochs=cfg.EPOCH, batch_size=cfg.BATCH_SIZE, validation_data=ds_validation_set, verbose=2)
+
+score = model.evaluate(ds_test_set)
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])
