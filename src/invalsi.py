@@ -10,7 +10,6 @@ import config as cfg
 from mapping_domande_ambiti_processi import MAPPING_DOMANDE_AMBITI_PROCESSI
 from column_converters import COLUMN_CONVERTERS
 
-
 SKIP = True
 
 """
@@ -18,7 +17,6 @@ Import del dataset originale
 """
 if SKIP:
     original_dataset = pd.read_csv(cfg.ORIGINAL_DATASET, sep=';', converters=COLUMN_CONVERTERS)
-
 
 """
 Cerchiamo colonne che abbiamo percentuali di valori nulli.
@@ -28,14 +26,15 @@ if SKIP:
     for col in original_dataset.columns:
         null_values_mean = original_dataset[col].isnull().mean()
         if null_values_mean > 0:
-            print(col, '\t\tType: ', original_dataset[col].dtypes, '\tMissing values:', original_dataset[col].isnull().mean().round(3))
+            print(col, '\t\tType: ', original_dataset[col].dtypes, '\tMissing values:',
+                  original_dataset[col].isnull().mean().round(3))
 
 columns_with_high_null_values = ["codice_orario", "PesoClasse", "PesoScuola", "PesoTotale_Matematica"]
 columns_with_lower_null_values = [
-    "voto_scritto_ita", # 0.683
-    "voto_scritto_mat",# 0.113
-    "voto_orale_ita", # 0.683
-    "voto_orale_mat" # 0.114
+    "voto_scritto_ita",  # 0.683
+    "voto_scritto_mat",  # 0.113
+    "voto_orale_ita",  # 0.683
+    "voto_orale_mat"  # 0.114
 ]
 
 """
@@ -72,7 +71,8 @@ Rimozione delle colonne indicate in:
 - columns_with_just_one_value
 """
 if SKIP:
-    cleaned_original_dataset: pd.DataFrame = original_dataset.drop(columns_with_high_null_values + columns_with_unique_values + columns_with_just_one_value, axis=1)
+    cleaned_original_dataset: pd.DataFrame = original_dataset.drop(
+        columns_with_high_null_values + columns_with_unique_values + columns_with_just_one_value, axis=1)
 
     save_cleaned_dataset = False
     if save_cleaned_dataset:
@@ -85,7 +85,6 @@ Creazione lista con domande
 """
 if SKIP:
     questions_columns = [col for col in list(cleaned_original_dataset) if re.search("^D\d", col)]
-
 
 """
 Mapping domande -> (ambiti, processi)
@@ -117,7 +116,7 @@ if SKIP:
             for question, APs in MAPPING_DOMANDE_AMBITI_PROCESSI.items():
                 if row[question] == True:
                     for AP in APs:
-                        dataset_with_ambiti_processi.at[i, AP] += 1/conteggio_ambiti_processi[AP]
+                        dataset_with_ambiti_processi.at[i, AP] += 1 / conteggio_ambiti_processi[AP]
 
         dataset_ap = dataset_with_ambiti_processi.drop(questions_columns, axis=1)
 
@@ -135,15 +134,15 @@ if SKIP:
     upper_corr_matrix.style.background_gradient(cmap='YlOrRd')
 
 interisting_to_check_if_correlated_columns = [
-    # Alta correlazione fra voti della stessa materia, abbastanza correlate fra materie diverse
-    "voto_scritto_ita", 
-    "voto_orale_ita",
-    "voto_scritto_mat",
-    "voto_orale_mat",
-    # Correlazione totale, abbastanza correlate con voti
-    "pu_ma_gr",
-    "pu_ma_no"
-] + list(ambiti_processi)
+                                                 # Alta correlazione fra voti della stessa materia, abbastanza correlate fra materie diverse
+                                                 "voto_scritto_ita",
+                                                 "voto_orale_ita",
+                                                 "voto_scritto_mat",
+                                                 "voto_orale_mat",
+                                                 # Correlazione totale, abbastanza correlate con voti
+                                                 "pu_ma_gr",
+                                                 "pu_ma_no"
+                                             ] + list(ambiti_processi)
 
 if SKIP:
     check_corr_dataset = dataset_ap[interisting_to_check_if_correlated_columns].corr(method='pearson').round(2)
@@ -162,7 +161,7 @@ if SKIP:
     nr_nodrop, nr_drop = np.bincount(dataset_ap['DROPOUT'])
     total_records = nr_drop + nr_nodrop
     print(
-    f"Total number of records: {total_records} - \
+        f"Total number of records: {total_records} - \
     Total num. DROPOUT: {nr_drop} - \
     Total num. NO DROPOUT: {nr_nodrop} - \
     Ratio DROPOUT/TOTAL: {round(nr_drop / total_records, 2)} - \
@@ -177,9 +176,9 @@ perform_random_undersampling = False
 load_random_undersampled_dataset = True
 if perform_random_undersampling:
     # class_nodrop contiene i record della classe sovrarappresentata, ovvero SENZA DROPOUT.
-    class_nodrop = dataset_ap[dataset_ap['DROPOUT'] == False] 
+    class_nodrop = dataset_ap[dataset_ap['DROPOUT'] == False]
     # class_drop contiene i record della classe sottorappresentata, ovvero CON DROPOUT.
-    class_drop = dataset_ap[dataset_ap['DROPOUT'] == True]  
+    class_drop = dataset_ap[dataset_ap['DROPOUT'] == True]
 
     # Sotto campionamento di class_drop in modo che abbia stessa cardinalità di class_nodrop
     class_nodrop = class_nodrop.sample(len(class_drop))
@@ -196,7 +195,6 @@ elif load_random_undersampled_dataset:
 else:
     sampled_dataset = dataset_ap.copy()
 
-
 """
 TODO: move out from here
 """
@@ -207,7 +205,6 @@ sampled_dataset["voto_orale_ita"].fillna(value=sampled_dataset["voto_orale_ita"]
 sampled_dataset["voto_scritto_mat"].fillna(value=sampled_dataset["voto_scritto_mat"].mean(), inplace=True)
 sampled_dataset["voto_orale_mat"].fillna(value=sampled_dataset["voto_orale_mat"].mean(), inplace=True)
 print(sampled_dataset.isna().any())
-
 
 """
 Comprensione tipi colonne per trovare:
@@ -221,42 +218,43 @@ print("Lista colonne e tipi:")
 print(sampled_dataset.info())
 
 continuous_features = columns_with_lower_null_values + \
-    ["pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200", "WLE_MAT_200_CORR", "pu_ma_no_corr"] + \
-    list(ambiti_processi)
+                      ["pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200", "WLE_MAT_200_CORR",
+                       "pu_ma_no_corr"] + \
+                      list(ambiti_processi)
 ordinal_features = [
     "n_stud_prev", "n_classi_prev", "LIVELLI", "pu_ma_gr"
 ]
 int_categorical_features = [
-    "CODICE_SCUOLA", "CODICE_PLESSO", "CODICE_CLASSE", "campione", "prog", 
+    "CODICE_SCUOLA", "CODICE_PLESSO", "CODICE_CLASSE", "campione", "prog",
 ]
 str_categorical_features = [
-    "sesso", "mese", "anno", "luogo", "eta", "freq_asilo_nido", "freq_scuola_materna", 
+    "sesso", "mese", "anno", "luogo", "eta", "freq_asilo_nido", "freq_scuola_materna",
     "luogo_padre", "titolo_padre", "prof_padre", "luogo_madre", "titolo_madre", "prof_madre",
-    "regolarità", "cittadinanza", "cod_provincia_ISTAT",  "Nome_reg",
+    "regolarità", "cittadinanza", "cod_provincia_ISTAT", "Nome_reg",
     "Cod_reg", "Areageo_3", "Areageo_4", "Areageo_5", "Areageo_5_Istat"
 ]
 bool_features = ["Pon"]
 
-
 """
 Oversampling con SMOTE
 """
-#verrà fatto?
+# verrà fatto?
 
 
 """
 Suddivisione dataset in training, validation, test.
 """
-df_training_set, df_test_set = train_test_split(sampled_dataset, test_size = cfg.TEST_SET_PERCENT)
-df_training_set, df_validation_set = train_test_split(df_training_set, test_size = cfg.VALIDATION_SET_PERCENT)
-
+df_training_set, df_test_set = train_test_split(sampled_dataset, test_size=cfg.TEST_SET_PERCENT)
+df_training_set, df_validation_set = train_test_split(df_training_set, test_size=cfg.VALIDATION_SET_PERCENT)
 
 """
 Conversione da Pandas DataFrame a Tensorflow Dataset.
 """
+
+
 def dataframe_to_dataset(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
-    #copied_df["sigla_provincia_istat"] = copied_df["sigla_provincia_istat"].fillna("Non disponibile")
+    # copied_df["sigla_provincia_istat"] = copied_df["sigla_provincia_istat"].fillna("Non disponibile")
     copied_df["DROPOUT"] = copied_df["DROPOUT"].astype("int64")
     dropout_col = copied_df.pop("DROPOUT")
     """
@@ -268,10 +266,10 @@ def dataframe_to_dataset(dataframe: pd.DataFrame):
     tf_dataset = tf_dataset.shuffle(buffer_size=len(copied_df))
     return tf_dataset
 
+
 ds_training_set = dataframe_to_dataset(df_training_set)
 ds_validation_set = dataframe_to_dataset(df_validation_set)
 ds_test_set = dataframe_to_dataset(df_test_set)
-
 
 """
 Suddivisione dei Dataset in batch per sfruttare meglio le capacità hardware
@@ -281,7 +279,6 @@ Suddivisione dei Dataset in batch per sfruttare meglio le capacità hardware
 ds_training_set = ds_training_set.batch(cfg.BATCH_SIZE, drop_remainder=True)  #
 ds_validation_set = ds_validation_set.batch(cfg.BATCH_SIZE, drop_remainder=True)
 ds_test_set = ds_test_set.batch(cfg.BATCH_SIZE, drop_remainder=True)
-
 
 """
 Creazione layer di input per ogni feature a partire dalle liste precedentemente definite:
@@ -298,23 +295,24 @@ for name, column in df_training_set.items():
             dtype = tf.float32
         elif name in ordinal_features or name in int_categorical_features or name in bool_features:
             dtype = tf.int64
-        else: # str_categorical_features
+        else:  # str_categorical_features
             dtype = tf.string
 
         input_layers[name] = tf.keras.Input(shape=(), name=name, dtype=dtype)
-
 
 """
 Encoding delle feature in base al loro tipo.
 """
 preprocessed_features = []
 
+
 def stack_dict(inputs, fun=tf.stack):
     values = []
     for key in sorted(inputs.keys()):
-      values.append(tf.cast(inputs[key], tf.float32))
+        values.append(tf.cast(inputs[key], tf.float32))
 
     return fun(values, axis=-1)
+
 
 # Preprocessing colonne con dati booleani
 for name in bool_features:
@@ -367,22 +365,19 @@ for name in int_categorical_features:
 
     preprocessed_features.append(x)
 
-
 """
 Assemblaggio dei vari layer preprocessati.
 """
-#initializer = tf.keras.initializers.glorot_uniform(seed=19)
+# initializer = tf.keras.initializers.glorot_uniform(seed=19)
 
 preprocessed = tf.concat(preprocessed_features, axis=-1)
 
 preprocessor = tf.keras.Model(input_layers, preprocessed)
 
-
-body = tf.keras.Sequential([
-    tf.keras.layers.Dense(32, activation="relu"),
-    tf.keras.layers.Dropout(0.5),
-    tf.keras.layers.Dense(1, activation="sigmoid")
-])
+body = tf.keras.Sequential(
+    [tf.keras.layers.Dense(cfg.NEURONS, activation="relu") for _ in range(cfg.NUMBERO_OF_LAYERS)] +
+    [tf.keras.layers.Dense(1, activation="sigmoid")]
+)
 
 x = preprocessor(input_layers)
 
@@ -393,13 +388,13 @@ model = tf.keras.Model(input_layers, result)
 model.compile(optimizer=cfg.OPTIMIZER,
               loss=tf.losses.BinaryCrossentropy(),
               metrics=[
-                tf.metrics.Accuracy(),
-                tf.metrics.BinaryAccuracy(),
-                tf.metrics.Precision(),
-                tf.metrics.Recall(),
-                tf.metrics.FalseNegatives(),
-                tf.metrics.FalsePositives(),
-                tf.metrics.TrueNegatives(),
-                tf.metrics.TruePositives()])
+                  tf.metrics.Accuracy(),
+                  tf.metrics.BinaryAccuracy(),
+                  tf.metrics.Precision(),
+                  tf.metrics.Recall(),
+                  tf.metrics.FalseNegatives(),
+                  tf.metrics.FalsePositives(),
+                  tf.metrics.TrueNegatives(),
+                  tf.metrics.TruePositives()])
 
 model.fit(ds_training_set, epochs=cfg.EPOCH, batch_size=cfg.BATCH_SIZE, validation_data=ds_validation_set, verbose=2)
