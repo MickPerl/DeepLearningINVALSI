@@ -7,12 +7,17 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
+from tensorflow.keras.layers.experimental.preprocessing import IntegerLookup
+from tensorflow.keras.layers.experimental.preprocessing import Normalization
+from tensorflow.keras.layers.experimental.preprocessing import StringLookup
+from tensorflow.python.keras.layers.core import Dropout
+from base import DROPOUT_LAYER
 
 import config as cfg
 from mapping_domande_ambiti_processi import MAPPING_DOMANDE_AMBITI_PROCESSI
 from column_converters import COLUMN_CONVERTERS
 
-PRE_ML = False
+PRE_ML = True
 
 """
 Import del dataset originale
@@ -76,17 +81,11 @@ if PRE_ML:
     cleaned_original_dataset: pd.DataFrame = original_dataset.drop(
         columns_with_high_null_values + columns_with_unique_values + columns_with_just_one_value, axis=1)
 
-    save_cleaned_dataset = False
+    save_cleaned_dataset = True
     if save_cleaned_dataset:
         cleaned_original_dataset.to_csv(cfg.CLEANED_DATASET)
     else:
         cleaned_original_dataset = pd.read_csv(cfg.CLEANED_DATASET)
-
-"""
-Creazione lista con domande
-"""
-if PRE_ML:
-    questions_columns = [col for col in list(cleaned_original_dataset) if re.search("^D\d", col)]
 
 """
 Mapping domande -> (ambiti, processi)
@@ -111,7 +110,8 @@ all'ambito o al processo. L'incremento è di 1/(#domande con quell'ambito o proc
 Di conseguenza uno studente che ha risposto sempre correttamente a domande di un certo ambito/processo avrà il valore di quella cella a 1.
 """
 if PRE_ML:
-    convert_domande_to_ambiti_processi = False
+    questions_columns = [col for col in list(cleaned_original_dataset) if re.search("^D\d", col)]
+    convert_domande_to_ambiti_processi = True
 
     if convert_domande_to_ambiti_processi:
         for i, row in dataset_with_ambiti_processi.iterrows():
@@ -131,20 +131,18 @@ Scopriamo se ci sono colonne con valori molto correlati.
 """
 if PRE_ML:
     corr_matrix = dataset_ap.corr(method='pearson').round(2)
-    upper_corr_matrix = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(np.bool))
+    corr_matrix.style.background_gradient(cmap='YlOrRd')
 
-    upper_corr_matrix.style.background_gradient(cmap='YlOrRd')
-
-interisting_to_check_if_correlated_columns = [
-                                                 # Alta correlazione fra voti della stessa materia, abbastanza correlate fra materie diverse
-                                                 "voto_scritto_ita",
-                                                 "voto_orale_ita",
-                                                 "voto_scritto_mat",
-                                                 "voto_orale_mat",
-                                                 # Correlazione totale, abbastanza correlate con voti
-                                                 "pu_ma_gr",
-                                                 "pu_ma_no"
-                                             ] + list(ambiti_processi)
+    interisting_to_check_if_correlated_columns = [
+        # Alta correlazione fra voti della stessa materia, abbastanza correlate fra materie diverse
+        "voto_scritto_ita",
+        "voto_orale_ita",
+        "voto_scritto_mat",
+        "voto_orale_mat",
+        # Correlazione totale, abbastanza correlate con voti
+        "pu_ma_gr",
+        "pu_ma_no"
+    ] + list(ambiti_processi)
 
 if PRE_ML:
     check_corr_dataset = dataset_ap[interisting_to_check_if_correlated_columns].corr(method='pearson').round(2)
@@ -155,6 +153,18 @@ if PRE_ML:
 Rimozione colonne con alta correlazione.
 """
 # Sarà fatto?
+
+"""
+Aggiustamento colonne con valori nulli.
+"""
+if PRE_ML:
+    dataset_ap["sigla_provincia_istat"].fillna(value="ND", inplace=True)
+    # TODO Trovare un modo migliore per effettuare il rimpiazzo dei non disponibili.
+    dataset_ap["voto_scritto_ita"].fillna(value=dataset_ap["voto_scritto_ita"].mean(), inplace=True)
+    dataset_ap["voto_orale_ita"].fillna(value=dataset_ap["voto_orale_ita"].mean(), inplace=True)
+    dataset_ap["voto_scritto_mat"].fillna(value=dataset_ap["voto_scritto_mat"].mean(), inplace=True)
+    dataset_ap["voto_orale_mat"].fillna(value=dataset_ap["voto_orale_mat"].mean(), inplace=True)
+
 
 """
 Verifica sbilanciamento classi DROPOUT e NO DROPOUT nel dataset.
@@ -174,8 +184,8 @@ if PRE_ML:
 """
 Random undersampling
 """
-perform_random_undersampling = False
-load_random_undersampled_dataset = True
+perform_random_undersampling = True
+load_random_undersampled_dataset = False
 if perform_random_undersampling:
     # class_nodrop contiene i record della classe sovrarappresentata, ovvero SENZA DROPOUT.
     class_nodrop = dataset_ap[dataset_ap['DROPOUT'] == False]
@@ -198,17 +208,6 @@ else:
     sampled_dataset = dataset_ap.copy()
 
 """
-TODO: move out from here
-"""
-sampled_dataset["sigla_provincia_istat"].fillna(value="ND", inplace=True)
-
-sampled_dataset["voto_scritto_ita"].fillna(value=sampled_dataset["voto_scritto_ita"].mean(), inplace=True)
-sampled_dataset["voto_orale_ita"].fillna(value=sampled_dataset["voto_orale_ita"].mean(), inplace=True)
-sampled_dataset["voto_scritto_mat"].fillna(value=sampled_dataset["voto_scritto_mat"].mean(), inplace=True)
-sampled_dataset["voto_orale_mat"].fillna(value=sampled_dataset["voto_orale_mat"].mean(), inplace=True)
-print(sampled_dataset.isna().any())
-
-"""
 Comprensione tipi colonne per trovare:
 - lista feature continue (float)
 - lista feature ordinali (int)
@@ -220,11 +219,11 @@ print("Lista colonne e tipi:")
 print(sampled_dataset.info())
 
 continuous_features = columns_with_lower_null_values + \
-                      ["pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200", "WLE_MAT_200_CORR",
+                      ["pu_ma_gr", "pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200", "WLE_MAT_200_CORR",
                        "pu_ma_no_corr"] + \
                       list(ambiti_processi)
 ordinal_features = [
-    "n_stud_prev", "n_classi_prev", "LIVELLI", "pu_ma_gr"
+    "n_stud_prev", "n_classi_prev", "LIVELLI"
 ]
 int_categorical_features = [
     "CODICE_SCUOLA", "CODICE_PLESSO", "CODICE_CLASSE", "campione", "prog",
@@ -256,8 +255,6 @@ Conversione da Pandas DataFrame a Tensorflow Dataset.
 
 def dataframe_to_dataset(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
-    # copied_df["sigla_provincia_istat"] = copied_df["sigla_provincia_istat"].fillna("Non disponibile")
-    copied_df["DROPOUT"] = copied_df["DROPOUT"].astype("int64")
     dropout_col = copied_df.pop("DROPOUT")
     """
     Dato che il dataframe ha dati eterogenei lo convertiamo a dizionario,
@@ -278,7 +275,7 @@ Suddivisione dei Dataset in batch per sfruttare meglio le capacità hardware
 (invece di elaborare un record per volta).
 """
 # drop_remainder=True rimuove i record che non rientrano nei batch della dimensione fissata.
-ds_training_set = ds_training_set.batch(cfg.BATCH_SIZE, drop_remainder=True)  #
+ds_training_set = ds_training_set.batch(cfg.BATCH_SIZE, drop_remainder=True)
 ds_validation_set = ds_validation_set.batch(cfg.BATCH_SIZE, drop_remainder=True)
 ds_test_set = ds_test_set.batch(cfg.BATCH_SIZE, drop_remainder=True)
 
@@ -292,15 +289,17 @@ Creazione layer di input per ogni feature a partire dalle liste precedentemente 
 """
 input_layers = {}
 for name, column in df_training_set.items():
-    if name != "DROPOUT":
-        if name in continuous_features:
-            dtype = tf.float32
-        elif name in ordinal_features or name in int_categorical_features or name in bool_features:
-            dtype = tf.int64
-        else:  # str_categorical_features
-            dtype = tf.string
+    if name == "DROPOUT":
+        continue
 
-        input_layers[name] = tf.keras.Input(shape=(), name=name, dtype=dtype)
+    if name in continuous_features:
+        dtype = tf.float32
+    elif name in ordinal_features or name in int_categorical_features or name in bool_features:
+        dtype = tf.int64
+    else:  # str_categorical_features
+        dtype = tf.string
+
+    input_layers[name] = tf.keras.Input(shape=(), name=name, dtype=dtype)
 
 """
 Encoding delle feature in base al loro tipo.
@@ -328,7 +327,7 @@ ordinal_inputs = {}
 for name in ordinal_features:
     ordinal_inputs[name] = input_layers[name]
 
-normalizer = tf.keras.layers.Normalization(axis=-1)
+normalizer = Normalization(axis=-1)
 normalizer.adapt(stack_dict(dict(df_training_set[ordinal_features])))
 ordinal_inputs = stack_dict(ordinal_inputs)
 ordinal_normalized = normalizer(ordinal_inputs)
@@ -339,7 +338,7 @@ continuous_inputs = {}
 for name in continuous_features:
     continuous_inputs[name] = input_layers[name]
 
-normalizer = tf.keras.layers.Normalization(axis=-1)
+normalizer = Normalization(axis=-1)
 normalizer.adapt(stack_dict(dict(df_training_set[continuous_features])))
 continuous_inputs = stack_dict(continuous_inputs)
 continuous_normalized = normalizer(continuous_inputs)
@@ -349,7 +348,7 @@ preprocessed_features.append(continuous_normalized)
 for name in str_categorical_features:
     vocab = sorted(set(df_training_set[name]))
 
-    lookup = tf.keras.layers.StringLookup(vocabulary=vocab, output_mode='one_hot')
+    lookup = StringLookup(vocabulary=vocab, output_mode='one_hot')
 
     x = input_layers[name][:, tf.newaxis]
     x = lookup(x)
@@ -360,7 +359,7 @@ for name in str_categorical_features:
 for name in int_categorical_features:
     vocab = sorted(set(df_training_set[name]))
 
-    lookup = tf.keras.layers.IntegerLookup(vocabulary=vocab, output_mode='one_hot')
+    lookup = IntegerLookup(vocabulary=vocab, output_mode='one_hot')
 
     x = input_layers[name][:, tf.newaxis]
     x = lookup(x)
@@ -378,7 +377,8 @@ preprocessor = tf.keras.Model(input_layers, preprocessed)
 
 body = tf.keras.Sequential(
     [tf.keras.layers.Dense(cfg.NEURONS, activation="relu") for _ in range(cfg.NUMBER_OF_LAYERS)] +
-    [tf.keras.layers.Dense(1, activation="sigmoid")]
+    [tf.keras.layers.Dropout(cfg.DROPOUT_LAYER_RATE)] if cfg.DROPOUT_LAYER else [] +
+    [tf.keras.layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION)]
 )
 
 x = preprocessor(input_layers)
