@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 import re
 from typing import List
 
@@ -375,7 +377,7 @@ preprocessed = tf.concat(preprocessed_features, axis=-1)
 preprocessor = tf.keras.Model(input_layers, preprocessed)
 
 body = tf.keras.Sequential(
-    [tf.keras.layers.Dense(cfg.NEURONS, activation="relu") for _ in range(cfg.NUMBERO_OF_LAYERS)] +
+    [tf.keras.layers.Dense(cfg.NEURONS, activation="relu") for _ in range(cfg.NUMBER_OF_LAYERS)] +
     [tf.keras.layers.Dense(1, activation="sigmoid")]
 )
 
