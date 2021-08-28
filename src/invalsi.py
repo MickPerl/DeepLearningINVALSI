@@ -91,9 +91,12 @@ if PRE_ML:
         columns_with_high_null_values + columns_with_unique_values + columns_with_just_one_value, axis=1)
 
     if SAVE_CLEANED_DATASET:
-        cleaned_original_dataset.to_csv(cfg.CLEANED_DATASET)
+        cleaned_original_dataset.to_csv(cfg.CLEANED_DATASET, index=False)
     else:
         cleaned_original_dataset = pd.read_csv(cfg.CLEANED_DATASET)
+        
+    if "Unnamed: 0" in cleaned_original_dataset.columns:
+        cleaned_original_dataset.drop("cleaned_original_dataset", axis=1, inplace=True)
 
 """
 Mapping domande -> (ambiti, processi)
@@ -129,9 +132,12 @@ if PRE_ML:
 
         dataset_ap = dataset_with_ambiti_processi.drop(questions_columns, axis=1)
 
-        dataset_ap.to_csv(cfg.CLEANED_DATASET_WITH_AP)
+        dataset_ap.to_csv(cfg.CLEANED_DATASET_WITH_AP, index=False)
     else:
         dataset_ap = pd.read_csv(cfg.CLEANED_DATASET_WITH_AP)
+    
+    if "Unnamed: 0" in dataset_ap.columns:
+        dataset_ap.drop("Unnamed: 0", axis=1, inplace=True)
 
 """
 Scopriamo se ci sono colonne con valori molto correlati.
@@ -207,11 +213,14 @@ if PRE_ML:
         sampled_dataset = class_drop.append(class_nodrop)
         sampled_dataset = sampled_dataset.sample(frac=1)
 
-        sampled_dataset.to_csv(cfg.UNDERSAMPLED_DATASET)
+        sampled_dataset.to_csv(cfg.UNDERSAMPLED_DATASET, index=False)
     elif LOAD_RANDOM_UNDERSAMPLED_DATASET:
         sampled_dataset = pd.read_csv(cfg.UNDERSAMPLED_DATASET)
     else:
         sampled_dataset = dataset_ap.copy()
+
+    if "Unnamed: 0" in sampled_dataset.columns:
+        sampled_dataset.drop("Unnamed: 0", axis=1, inplace=True)
 
 """
 Comprensione tipi colonne per trovare:
@@ -252,6 +261,9 @@ if PRE_ML:
     ml_dataset = sampled_dataset.copy()
 else:
     ml_dataset = pd.read_csv(cfg.ML_DATASET)
+
+if "Unnamed: 0" in ml_dataset.columns:
+    ml_dataset.drop("Unnamed: 0", axis=1, inplace=True)
 
 """
 Suddivisione dataset in training, validation, test.
@@ -419,6 +431,8 @@ print('Test accuracy:', score[1])
 """
 Matrici di confusione per training e test.
 """
+
+"""
 training_x, training_y = df_training_set[[col for col in df_training_set.columns if col != "DROPOUT"]], df_training_set["DROPOUT"]
 test_x, test_y = df_test_set[[col for col in df_test_set.columns if col != "DROPOUT"]], df_test_set["DROPOUT"]
 
@@ -437,3 +451,4 @@ print("SKLEARN Accuracy in test: ", metrics.accuracy_score(test_y, predicted_tes
 # true_negatives = confusion_matrix.sum() - (true_positives + false_positives + false_negatives)
 # false_positive_rate = false_positives / (false_positives + true_negatives)
 # false_negatives_rate = false_negatives / (true_positives + false_negatives)
+"""
