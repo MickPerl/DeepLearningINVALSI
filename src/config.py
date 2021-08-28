@@ -1,23 +1,42 @@
 from tensorflow.keras import optimizers
+from os import getenv
 
-# base.py
-AP_DATASET_PATH = "/Users/marco/Documents/Università/Intelligenza artificiale/project.nosync/MachineLearningProject/dataset_with_AP.csv" # --dataset nomefile
-SMALL_DATASET = False # --small
-MODEL = 2
 # both
-LEARNING_RATE = 0.001  # --learningrate floatnum
+LEARNING_RATE = float(getenv(key="LEARNING_RATE", default="0.001"))  # --learningrate floatnum
+DROPOUT_LAYER = eval(getenv(key="DROPOUT_LAYER", default="False")) # --dropout
+DROPOUT_LAYER_RATE = float(getenv(key="DROPOUT_LAYER_RATE", default="0.5")) # --dropoutrate floatnum
+EPOCH = int(getenv(key="EPOCH", default="50")) # --epoch intnum
+NEURONS = int(getenv(key="NEURONS", default="128")) # --neurons intnum
+OUTPUT_ACTIVATION_FUNCTION = getenv(key="OUTPUT_ACTIVATION_FUNCTION", default="sigmoid") # --activation nomefunzione
+BATCH_SIZE = int(getenv(key="BATCH_SIZE", default="32")) # --batchsize intnum
+# base.py
+AP_DATASET_PATH = getenv(key="AP_DATASET_PATH", default="/Users/marco/Documents/Università/Intelligenza artificiale/project.nosync/MachineLearningProject/dataset_with_AP.csv") # --dataset nomefile
+SMALL_DATASET = eval(getenv(key="SMALL_DATASET", default="False")) # --small
+MODEL = int(getenv(key="MODEL", default="1")) # --model intnum
 OPTIMIZER = optimizers.Adam(learning_rate=LEARNING_RATE) # --optimizer nomeottimizzatore
-DROPOUT_LAYER = False # --dropout
-DROPOUT_LAYER_RATE = 0.5 # --dropoutrate floatnum
-EPOCH = 50 # --epoch intnum
-NEURONS = 128
-OUTPUT_ACTIVATION_FUNCTION = "sigmoid" # --activation nomefunzione
-BATCH_SIZE = 32 # --batchsize intnum
 # invalsi.py
-ORIGINAL_DATASET = "../nuovi_dataset/original_dataset.csv"
-CLEANED_DATASET = "../nuovi_dataset/cleaned_dataset.csv"
-CLEANED_DATASET_WITH_AP = "../nuovi_dataset/dataset_ap.csv"
-UNDERSAMPLED_DATASET = "../nuovi_dataset/undersampled_dataset.csv"
-TEST_SET_PERCENT = 0.2
-VALIDATION_SET_PERCENT = 0.2
-NUMBER_OF_LAYERS = 10
+ORIGINAL_DATASET = getenv(key="ORIGINAL_DATASET", default="../nuovi_dataset/original_dataset.csv")
+CLEANED_DATASET = getenv(key="CLEANED_DATASET", default="../nuovi_dataset/cleaned_dataset.csv")
+CLEANED_DATASET_WITH_AP = getenv(key="CLEANED_DATASET_WITH_AP", default="../nuovi_dataset/dataset_ap.csv")
+UNDERSAMPLED_DATASET = getenv(key="UNDERSAMPLED_DATASET", default="../nuovi_dataset/undersampled_dataset.csv")
+ML_DATASET = getenv(key="ML_DATASET", default="../nuovi_dataset/undersampled_dataset.csv")
+TEST_SET_PERCENT = float(getenv(key="TEST_SET_PERCENT", default="0.2"))
+VALIDATION_SET_PERCENT = float(getenv(key="VALIDATION_SET_PERCENT", default="0.2"))
+NUMBER_OF_LAYERS = int(getenv(key="NUMBER_OF_LAYERS", default="10"))
+
+def print_config():
+    print("LEARNING_RATE: ", LEARNING_RATE)
+    print("DROPOUT_LAYER: ", DROPOUT_LAYER)
+    print("DROPOUT_LAYER_RATE: ", DROPOUT_LAYER_RATE)
+    print("EPOCH: ", EPOCH)
+    print("NEURONS: ", NEURONS)
+    print("OUTPUT_ACTIVATION_FUNCTION: ", OUTPUT_ACTIVATION_FUNCTION)
+    print("BATCH_SIZE: ", BATCH_SIZE)
+    print("ORIGINAL_DATASET: ", ORIGINAL_DATASET)
+    print("CLEANED_DATASET: ", CLEANED_DATASET)
+    print("CLEANED_DATASET_WITH_AP: ", CLEANED_DATASET_WITH_AP)
+    print("UNDERSAMPLED_DATASET: ", UNDERSAMPLED_DATASET)
+    print("ML_DATASET: ", ML_DATASET)
+    print("TEST_SET_PERCENT: ", TEST_SET_PERCENT)
+    print("VALIDATION_SET_PERCENT: ", VALIDATION_SET_PERCENT)
+    print("NUMBER_OF_LAYERS: ", NUMBER_OF_LAYERS)

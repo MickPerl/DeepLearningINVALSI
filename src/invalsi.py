@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import re
-from typing import List
 
 import pandas as pd
 import numpy as np
@@ -10,14 +9,24 @@ import tensorflow as tf
 from tensorflow.keras.layers.experimental.preprocessing import IntegerLookup
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
 from tensorflow.keras.layers.experimental.preprocessing import StringLookup
-from tensorflow.python.keras.layers.core import Dropout
-from base import DROPOUT_LAYER
 
 import config as cfg
 from mapping_domande_ambiti_processi import MAPPING_DOMANDE_AMBITI_PROCESSI
 from column_converters import COLUMN_CONVERTERS
 
-PRE_ML = True
+print("Deep learning model for predicting school dropout (with data from INVALSI)\n")
+
+print("Configuration")
+cfg.print_config()
+
+"""
+Impostazioni di esecuzione dello script
+"""
+PRE_ML = False # Esegue la parte di analisi ed elaborazione del dataset precedente quella di ML.
+SAVE_CLEANED_DATASET = False # Salva il dataset ripulito dalle colonne non utili.
+CONVERT_DOMANDE_TO_AMBITI_PROCESSI = False # Esegue la rimozione delle colonne con domande e le sostituisce con quelle di ambito e processo.
+PERFORM_RANDOM_UNDERSAMPLING = False # Esegue il random undersampling e salva il dataset sotto-campionato su file.
+LOAD_RANDOM_UNDERSAMPLED_DATASET = False # Carica il dataset che ha subito undersampling.
 
 """
 Import del dataset originale
@@ -81,8 +90,7 @@ if PRE_ML:
     cleaned_original_dataset: pd.DataFrame = original_dataset.drop(
         columns_with_high_null_values + columns_with_unique_values + columns_with_just_one_value, axis=1)
 
-    save_cleaned_dataset = True
-    if save_cleaned_dataset:
+    if SAVE_CLEANED_DATASET:
         cleaned_original_dataset.to_csv(cfg.CLEANED_DATASET)
     else:
         cleaned_original_dataset = pd.read_csv(cfg.CLEANED_DATASET)
@@ -111,9 +119,8 @@ Di conseguenza uno studente che ha risposto sempre correttamente a domande di un
 """
 if PRE_ML:
     questions_columns = [col for col in list(cleaned_original_dataset) if re.search("^D\d", col)]
-    convert_domande_to_ambiti_processi = True
 
-    if convert_domande_to_ambiti_processi:
+    if CONVERT_DOMANDE_TO_AMBITI_PROCESSI:
         for i, row in dataset_with_ambiti_processi.iterrows():
             for question, APs in MAPPING_DOMANDE_AMBITI_PROCESSI.items():
                 if row[question] == True:
@@ -184,28 +191,27 @@ if PRE_ML:
 """
 Random undersampling
 """
-perform_random_undersampling = True
-load_random_undersampled_dataset = False
-if perform_random_undersampling:
-    # class_nodrop contiene i record della classe sovrarappresentata, ovvero SENZA DROPOUT.
-    class_nodrop = dataset_ap[dataset_ap['DROPOUT'] == False]
-    # class_drop contiene i record della classe sottorappresentata, ovvero CON DROPOUT.
-    class_drop = dataset_ap[dataset_ap['DROPOUT'] == True]
+if PRE_ML:
+    if PERFORM_RANDOM_UNDERSAMPLING:
+        # class_nodrop contiene i record della classe sovrarappresentata, ovvero SENZA DROPOUT.
+        class_nodrop = dataset_ap[dataset_ap['DROPOUT'] == False]
+        # class_drop contiene i record della classe sottorappresentata, ovvero CON DROPOUT.
+        class_drop = dataset_ap[dataset_ap['DROPOUT'] == True]
 
-    # Sotto campionamento di class_drop in modo che abbia stessa cardinalità di class_nodrop
-    class_nodrop = class_nodrop.sample(len(class_drop))
+        # Sotto campionamento di class_drop in modo che abbia stessa cardinalità di class_nodrop
+        class_nodrop = class_nodrop.sample(len(class_drop))
 
-    print(f'Class NO DROPOUT: {len(class_nodrop):,}')
-    print(f'Classe DROPOUT: {len(class_drop):,}')
+        print(f'Class NO DROPOUT: {len(class_nodrop):,}')
+        print(f'Classe DROPOUT: {len(class_drop):,}')
 
-    sampled_dataset = class_drop.append(class_nodrop)
-    sampled_dataset = sampled_dataset.sample(frac=1)
+        sampled_dataset = class_drop.append(class_nodrop)
+        sampled_dataset = sampled_dataset.sample(frac=1)
 
-    sampled_dataset.to_csv(cfg.UNDERSAMPLED_DATASET)
-elif load_random_undersampled_dataset:
-    sampled_dataset = pd.read_csv(cfg.UNDERSAMPLED_DATASET)
-else:
-    sampled_dataset = dataset_ap.copy()
+        sampled_dataset.to_csv(cfg.UNDERSAMPLED_DATASET)
+    elif LOAD_RANDOM_UNDERSAMPLED_DATASET:
+        sampled_dataset = pd.read_csv(cfg.UNDERSAMPLED_DATASET)
+    else:
+        sampled_dataset = dataset_ap.copy()
 
 """
 Comprensione tipi colonne per trovare:
@@ -215,8 +221,9 @@ Comprensione tipi colonne per trovare:
 - lista feature categoriche stringhe (str)
 - lista feature binarie
 """
-print("Lista colonne e tipi:")
-print(sampled_dataset.info())
+if PRE_ML:
+    print("Lista colonne e tipi:")
+    print(sampled_dataset.info())
 
 continuous_features = columns_with_lower_null_values + \
                       ["pu_ma_gr", "pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200", "WLE_MAT_200_CORR",
@@ -241,11 +248,15 @@ Oversampling con SMOTE
 """
 # verrà fatto?
 
+if PRE_ML:
+    ml_dataset = sampled_dataset.copy()
+else:
+    ml_dataset = pd.read_csv(cfg.ML_DATASET)
 
 """
 Suddivisione dataset in training, validation, test.
 """
-df_training_set, df_test_set = train_test_split(sampled_dataset, test_size=cfg.TEST_SET_PERCENT)
+df_training_set, df_test_set = train_test_split(ml_dataset, test_size=cfg.TEST_SET_PERCENT)
 df_training_set, df_validation_set = train_test_split(df_training_set, test_size=cfg.VALIDATION_SET_PERCENT)
 
 """
@@ -387,7 +398,7 @@ result = body(x)
 
 model = tf.keras.Model(input_layers, result)
 
-model.compile(optimizer=cfg.OPTIMIZER,
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE),
               loss=tf.losses.BinaryCrossentropy(),
               metrics=[
                   tf.metrics.Accuracy(),
@@ -404,3 +415,25 @@ model.fit(ds_training_set, epochs=cfg.EPOCH, batch_size=cfg.BATCH_SIZE, validati
 score = model.evaluate(ds_test_set)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
+
+"""
+Matrici di confusione per training e test.
+"""
+training_x, training_y = df_training_set[[col for col in df_training_set.columns if col != "DROPOUT"]], df_training_set["DROPOUT"]
+test_x, test_y = df_test_set[[col for col in df_test_set.columns if col != "DROPOUT"]], df_test_set["DROPOUT"]
+
+predicted_training_y = model.predict(training_x)
+predicted_test_y = model.predict(test_x)
+
+training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y)
+test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y)
+
+from sklearn import metrics
+print("SKLEARN Accuracy in training: ", metrics.accuracy_score(training_y, predicted_training_y))
+print("SKLEARN Accuracy in test: ", metrics.accuracy_score(test_y, predicted_test_y))
+# true_positives = np.diag(confusion_matrix)
+# false_positives = confusion_matrix.sum(axis=0) - true_positives
+# false_negatives = confusion_matrix.sum(axis=1) - true_positives
+# true_negatives = confusion_matrix.sum() - (true_positives + false_positives + false_negatives)
+# false_positive_rate = false_positives / (false_positives + true_negatives)
+# false_negatives_rate = false_negatives / (true_positives + false_negatives)
