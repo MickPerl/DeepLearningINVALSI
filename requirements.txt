@@ -3,3 +3,6 @@ pandas
 scikit-learn
 imbalanced-learn
 Jinja2
+ipykernel
+pydot
+graphviz

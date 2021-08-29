@@ -146,26 +146,55 @@ if PRE_ML:
     corr_matrix = dataset_ap.corr(method='pearson').round(2)
     corr_matrix.style.background_gradient(cmap='YlOrRd')
 
-    interisting_to_check_if_correlated_columns = [
-        # Alta correlazione fra voti della stessa materia, abbastanza correlate fra materie diverse
-        "voto_scritto_ita",
-        "voto_orale_ita",
-        "voto_scritto_mat",
-        "voto_orale_mat",
-        # Correlazione totale, abbastanza correlate con voti
-        "pu_ma_gr",
-        "pu_ma_no"
-    ] + list(ambiti_processi)
+interisting_to_check_if_correlated_columns = [
+    # Alta correlazione fra voti della stessa materia, abbastanza correlate fra materie diverse
+    "voto_scritto_ita",
+    "voto_orale_ita",
+    "voto_scritto_mat",
+    "voto_orale_mat",
+    # Correlazione totale, abbastanza correlate con voti
+    "pu_ma_gr",
+    "pu_ma_no"
+] + list(ambiti_processi)
 
 if PRE_ML:
     check_corr_dataset = dataset_ap[interisting_to_check_if_correlated_columns].corr(method='pearson').round(2)
-
     check_corr_dataset.style.background_gradient(cmap='YlOrRd')
 
 """
 Rimozione colonne con alta correlazione.
 """
 # Sarà fatto?
+
+"""
+Comprensione tipi colonne per trovare:
+- lista feature continue (float)
+- lista feature ordinali (int)
+- lista feature categoriche intere (int)
+- lista feature categoriche stringhe (str)
+- lista feature binarie
+"""
+if PRE_ML:
+    print("Lista colonne e tipi:")
+    print(dataset_ap.info())
+
+continuous_features = columns_with_lower_null_values + \
+                      ["pu_ma_gr", "pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200", "WLE_MAT_200_CORR",
+                       "pu_ma_no_corr"] + \
+                      list(ambiti_processi) # Feature sui voti, feature elencate, ambiti e processi
+ordinal_features = [
+    "n_stud_prev", "n_classi_prev", "LIVELLI"
+]
+int_categorical_features = [
+    "CODICE_SCUOLA", "CODICE_PLESSO", "CODICE_CLASSE", "campione", "prog",
+]
+str_categorical_features = [
+    "sesso", "mese", "anno", "luogo", "eta", "freq_asilo_nido", "freq_scuola_materna",
+    "luogo_padre", "titolo_padre", "prof_padre", "luogo_madre", "titolo_madre", "prof_madre",
+    "regolarità", "cittadinanza", "cod_provincia_ISTAT", "Nome_reg",
+    "Cod_reg", "Areageo_3", "Areageo_4", "Areageo_5", "Areageo_5_Istat"
+]
+bool_features = ["Pon"]
 
 """
 Aggiustamento colonne con valori nulli.
@@ -221,36 +250,6 @@ if PRE_ML:
 
     if "Unnamed: 0" in sampled_dataset.columns:
         sampled_dataset.drop("Unnamed: 0", axis=1, inplace=True)
-
-"""
-Comprensione tipi colonne per trovare:
-- lista feature continue (float)
-- lista feature ordinali (int)
-- lista feature categoriche intere (int)
-- lista feature categoriche stringhe (str)
-- lista feature binarie
-"""
-if PRE_ML:
-    print("Lista colonne e tipi:")
-    print(sampled_dataset.info())
-
-continuous_features = columns_with_lower_null_values + \
-                      ["pu_ma_gr", "pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200", "WLE_MAT_200_CORR",
-                       "pu_ma_no_corr"] + \
-                      list(ambiti_processi)
-ordinal_features = [
-    "n_stud_prev", "n_classi_prev", "LIVELLI"
-]
-int_categorical_features = [
-    "CODICE_SCUOLA", "CODICE_PLESSO", "CODICE_CLASSE", "campione", "prog",
-]
-str_categorical_features = [
-    "sesso", "mese", "anno", "luogo", "eta", "freq_asilo_nido", "freq_scuola_materna",
-    "luogo_padre", "titolo_padre", "prof_padre", "luogo_madre", "titolo_madre", "prof_madre",
-    "regolarità", "cittadinanza", "cod_provincia_ISTAT", "Nome_reg",
-    "Cod_reg", "Areageo_3", "Areageo_4", "Areageo_5", "Areageo_5_Istat"
-]
-bool_features = ["Pon"]
 
 """
 Oversampling con SMOTE
