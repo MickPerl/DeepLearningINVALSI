@@ -23,6 +23,7 @@ ML_DATASET = getenv(key="ML_DATASET", default="../nuovi_dataset/undersampled_dat
 TEST_SET_PERCENT = float(getenv(key="TEST_SET_PERCENT", default="0.2"))
 VALIDATION_SET_PERCENT = float(getenv(key="VALIDATION_SET_PERCENT", default="0.2"))
 NUMBER_OF_LAYERS = int(getenv(key="NUMBER_OF_LAYERS", default="10"))
+DENSE_LAYER_ACTIVATION = getenv(key="DENSE_LAYER_ACTIVATION", default="relu")
 
 def print_config():
     print("LEARNING_RATE: ", LEARNING_RATE)
