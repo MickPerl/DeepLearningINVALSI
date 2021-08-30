@@ -26,7 +26,6 @@ PRE_ML = False # Esegue la parte di analisi ed elaborazione del dataset preceden
 SAVE_CLEANED_DATASET = False # Salva il dataset ripulito dalle colonne non utili.
 CONVERT_DOMANDE_TO_AMBITI_PROCESSI = False # Esegue la rimozione delle colonne con domande e le sostituisce con quelle di ambito e processo.
 SAMPLING_TO_PERFORM = "random_undersampling" # Alternativa: SMOTE
-LOAD_RANDOM_UNDERSAMPLED_DATASET = False # Carica il dataset che ha subito undersampling.
 
 """
 Import del dataset originale
