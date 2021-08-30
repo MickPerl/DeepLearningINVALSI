@@ -119,24 +119,23 @@ all'ambito o al processo. L'incremento è di 1/(#domande con quell'ambito o proc
 - se ha risposto erroneamente, non incremento il valore.
 Di conseguenza uno studente che ha risposto sempre correttamente a domande di un certo ambito/processo avrà il valore di quella cella a 1.
 """
-if PRE_ML:
+if PRE_ML and CONVERT_DOMANDE_TO_AMBITI_PROCESSI:
     questions_columns = [col for col in list(cleaned_original_dataset) if re.search("^D\d", col)]
 
-    if CONVERT_DOMANDE_TO_AMBITI_PROCESSI:
-        for i, row in dataset_with_ambiti_processi.iterrows():
-            for question, APs in MAPPING_DOMANDE_AMBITI_PROCESSI.items():
-                if row[question] == True:
-                    for AP in APs:
-                        dataset_with_ambiti_processi.at[i, AP] += 1 / conteggio_ambiti_processi[AP]
+    for i, row in dataset_with_ambiti_processi.iterrows():
+        for question, APs in MAPPING_DOMANDE_AMBITI_PROCESSI.items():
+            if row[question] == True:
+                for AP in APs:
+                    dataset_with_ambiti_processi.at[i, AP] += 1 / conteggio_ambiti_processi[AP]
 
-        dataset_ap = dataset_with_ambiti_processi.drop(questions_columns, axis=1)
+    dataset_ap = dataset_with_ambiti_processi.drop(questions_columns, axis=1)
 
-        dataset_ap.to_csv(cfg.CLEANED_DATASET_WITH_AP, index=False)
-    else:
-        dataset_ap = pd.read_csv(cfg.CLEANED_DATASET_WITH_AP)
-    
-    if "Unnamed: 0" in dataset_ap.columns:
-        dataset_ap.drop("Unnamed: 0", axis=1, inplace=True)
+    dataset_ap.to_csv(cfg.CLEANED_DATASET_WITH_AP, index=False)
+else:
+    dataset_ap = pd.read_csv(cfg.CLEANED_DATASET_WITH_AP)
+
+if "Unnamed: 0" in dataset_ap.columns:
+    dataset_ap.drop("Unnamed: 0", axis=1, inplace=True)
 
 """
 Scopriamo se ci sono colonne con valori molto correlati.
@@ -198,13 +197,12 @@ bool_features = ["Pon"]
 """
 Aggiustamento colonne con valori nulli.
 """
-if PRE_ML:
-    dataset_ap["sigla_provincia_istat"].fillna(value="ND", inplace=True)
-    # TODO Trovare un modo migliore per effettuare il rimpiazzo dei non disponibili.
-    dataset_ap["voto_scritto_ita"].fillna(value=dataset_ap["voto_scritto_ita"].mean(), inplace=True)
-    dataset_ap["voto_orale_ita"].fillna(value=dataset_ap["voto_orale_ita"].mean(), inplace=True)
-    dataset_ap["voto_scritto_mat"].fillna(value=dataset_ap["voto_scritto_mat"].mean(), inplace=True)
-    dataset_ap["voto_orale_mat"].fillna(value=dataset_ap["voto_orale_mat"].mean(), inplace=True)
+dataset_ap["sigla_provincia_istat"].fillna(value="ND", inplace=True)
+# TODO Trovare un modo migliore per effettuare il rimpiazzo dei non disponibili.
+dataset_ap["voto_scritto_ita"].fillna(value=dataset_ap["voto_scritto_ita"].mean(), inplace=True)
+dataset_ap["voto_orale_ita"].fillna(value=dataset_ap["voto_orale_ita"].mean(), inplace=True)
+dataset_ap["voto_scritto_mat"].fillna(value=dataset_ap["voto_scritto_mat"].mean(), inplace=True)
+dataset_ap["voto_orale_mat"].fillna(value=dataset_ap["voto_orale_mat"].mean(), inplace=True)
 
 ## Parte di creazione del modello ##
 
@@ -261,8 +259,6 @@ df_training_set, df_validation_set = train_test_split(df_training_set, test_size
 """
 Conversione da Pandas DataFrame a Tensorflow Dataset.
 """
-
-
 def dataframe_to_dataset(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
     dropout_col = copied_df.pop("DROPOUT")
