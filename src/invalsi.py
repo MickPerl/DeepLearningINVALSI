@@ -25,7 +25,7 @@ Impostazioni di esecuzione dello script
 PRE_ML = False # Esegue la parte di analisi ed elaborazione del dataset precedente quella di ML.
 SAVE_CLEANED_DATASET = False # Salva il dataset ripulito dalle colonne non utili.
 CONVERT_DOMANDE_TO_AMBITI_PROCESSI = False # Esegue la rimozione delle colonne con domande e le sostituisce con quelle di ambito e processo.
-PERFORM_RANDOM_UNDERSAMPLING = False # Esegue il random undersampling e salva il dataset sotto-campionato su file.
+SAMPLING_TO_PERFORM = "random_undersampling" # Alternativa: SMOTE
 LOAD_RANDOM_UNDERSAMPLED_DATASET = False # Carica il dataset che ha subito undersampling.
 
 """
@@ -207,6 +207,12 @@ if PRE_ML:
     dataset_ap["voto_scritto_mat"].fillna(value=dataset_ap["voto_scritto_mat"].mean(), inplace=True)
     dataset_ap["voto_orale_mat"].fillna(value=dataset_ap["voto_orale_mat"].mean(), inplace=True)
 
+## Parte di creazione del modello ##
+
+"""
+Suddivisione dataset in training, test.
+"""
+df_training_set, df_test_set = train_test_split(dataset_ap, test_size=cfg.TEST_SET_PERCENT)
 
 """
 Verifica sbilanciamento classi DROPOUT e NO DROPOUT nel dataset.
@@ -224,50 +230,33 @@ if PRE_ML:
     )
 
 """
-Random undersampling
+Sampling (random undersampling o SMOTE) su training set
 """
-if PRE_ML:
-    if PERFORM_RANDOM_UNDERSAMPLING:
-        # class_nodrop contiene i record della classe sovrarappresentata, ovvero SENZA DROPOUT.
-        class_nodrop = dataset_ap[dataset_ap['DROPOUT'] == False]
-        # class_drop contiene i record della classe sottorappresentata, ovvero CON DROPOUT.
-        class_drop = dataset_ap[dataset_ap['DROPOUT'] == True]
+if SAMPLING_TO_PERFORM == "random_undersampling":
+    # class_nodrop contiene i record della classe sovrarappresentata, ovvero SENZA DROPOUT.
+    class_nodrop = df_training_set[df_training_set['DROPOUT'] == False]
+    # class_drop contiene i record della classe sottorappresentata, ovvero CON DROPOUT.
+    class_drop = df_training_set[df_training_set['DROPOUT'] == True]
 
-        # Sotto campionamento di class_drop in modo che abbia stessa cardinalità di class_nodrop
-        class_nodrop = class_nodrop.sample(len(class_drop))
+    # Sotto campionamento di class_drop in modo che abbia stessa cardinalità di class_nodrop
+    class_nodrop = class_nodrop.sample(len(class_drop))
 
-        print(f'Class NO DROPOUT: {len(class_nodrop):,}')
-        print(f'Classe DROPOUT: {len(class_drop):,}')
+    print(f'Class NO DROPOUT: {len(class_nodrop):,}')
+    print(f'Classe DROPOUT: {len(class_drop):,}')
 
-        sampled_dataset = class_drop.append(class_nodrop)
-        sampled_dataset = sampled_dataset.sample(frac=1)
-
-        sampled_dataset.to_csv(cfg.UNDERSAMPLED_DATASET, index=False)
-    elif LOAD_RANDOM_UNDERSAMPLED_DATASET:
-        sampled_dataset = pd.read_csv(cfg.UNDERSAMPLED_DATASET)
-    else:
-        sampled_dataset = dataset_ap.copy()
-
-    if "Unnamed: 0" in sampled_dataset.columns:
-        sampled_dataset.drop("Unnamed: 0", axis=1, inplace=True)
-
-"""
-Oversampling con SMOTE
-"""
-# verrà fatto?
-
-if PRE_ML:
-    ml_dataset = sampled_dataset.copy()
+    df_training_set = class_drop.append(class_nodrop)
+    df_training_set = df_training_set.sample(frac=1)
+elif SAMPLING_TO_PERFORM == "SMOTE":
+    print("SMOTE not yet implemented")
 else:
-    ml_dataset = pd.read_csv(cfg.ML_DATASET)
+    print(f"SAMPLING_TO_PERFORM = {SAMPLING_TO_PERFORM} not recognized.")
 
-if "Unnamed: 0" in ml_dataset.columns:
-    ml_dataset.drop("Unnamed: 0", axis=1, inplace=True)
+if "Unnamed: 0" in df_training_set.columns:
+    df_training_set.drop("Unnamed: 0", axis=1, inplace=True)
 
 """
-Suddivisione dataset in training, validation, test.
+Suddivisione dataset in training, validation.
 """
-df_training_set, df_test_set = train_test_split(ml_dataset, test_size=cfg.TEST_SET_PERCENT)
 df_training_set, df_validation_set = train_test_split(df_training_set, test_size=cfg.VALIDATION_SET_PERCENT)
 
 """
