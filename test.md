@@ -1,1 +1,0 @@
-Aggiunto di prova
