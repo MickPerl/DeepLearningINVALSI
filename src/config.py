@@ -1,8 +1,6 @@
 from tensorflow.keras import optimizers
 from os import getenv
 
-from invalsi import SAMPLING_TO_PERFORM
-
 # both
 LEARNING_RATE = float(getenv(key="LEARNING_RATE", default="0.001"))  # --learningrate floatnum
 DROPOUT_LAYER = eval(getenv(key="DROPOUT_LAYER", default="False")) # --dropout
@@ -39,6 +37,7 @@ def print_config():
     print("ORIGINAL_DATASET: ", ORIGINAL_DATASET)
     print("CLEANED_DATASET: ", CLEANED_DATASET)
     print("CLEANED_DATASET_WITH_AP: ", CLEANED_DATASET_WITH_AP)
+    print("SAMPLING_TO_PERFORM: ", SAMPLING_TO_PERFORM)
     print("TEST_SET_PERCENT: ", TEST_SET_PERCENT)
     print("VALIDATION_SET_PERCENT: ", VALIDATION_SET_PERCENT)
     print("NUMBER_OF_LAYERS: ", NUMBER_OF_LAYERS)
