@@ -1,6 +1,8 @@
 from tensorflow.keras import optimizers
 from os import getenv
 
+from invalsi import SAMPLING_TO_PERFORM
+
 # both
 LEARNING_RATE = float(getenv(key="LEARNING_RATE", default="0.001"))  # --learningrate floatnum
 DROPOUT_LAYER = eval(getenv(key="DROPOUT_LAYER", default="False")) # --dropout
@@ -18,6 +20,7 @@ OPTIMIZER = optimizers.Adam(learning_rate=LEARNING_RATE) # --optimizer nomeottim
 ORIGINAL_DATASET = getenv(key="ORIGINAL_DATASET", default="../nuovi_dataset/original_dataset.csv")
 CLEANED_DATASET = getenv(key="CLEANED_DATASET", default="../nuovi_dataset/cleaned_dataset.csv")
 CLEANED_DATASET_WITH_AP = getenv(key="CLEANED_DATASET_WITH_AP", default="../nuovi_dataset/dataset_ap.csv")
+SAMPLING_TO_PERFORM = getenv(key="SAMPLING_TO_PERFORM", default="random_undersampling")
 TEST_SET_PERCENT = float(getenv(key="TEST_SET_PERCENT", default="0.2"))
 VALIDATION_SET_PERCENT = float(getenv(key="VALIDATION_SET_PERCENT", default="0.2"))
 NUMBER_OF_LAYERS = int(getenv(key="NUMBER_OF_LAYERS", default="10"))

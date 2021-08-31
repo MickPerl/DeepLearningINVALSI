@@ -26,7 +26,6 @@ Impostazioni di esecuzione dello script
 PRE_ML = False # Esegue la parte di analisi ed elaborazione del dataset precedente quella di ML.
 SAVE_CLEANED_DATASET = False # Salva il dataset ripulito dalle colonne non utili.
 CONVERT_DOMANDE_TO_AMBITI_PROCESSI = False # Esegue la rimozione delle colonne con domande e le sostituisce con quelle di ambito e processo.
-SAMPLING_TO_PERFORM = "random_undersampling" # Alternativa: SMOTE
 
 """
 Import del dataset originale
@@ -216,7 +215,7 @@ elif cfg.FILL_NAN == "mode":
     dataset_ap["voto_orale_mat"].fillna(value=dataset_ap["voto_orale_mat"].mode(), inplace=True)
 elif cfg.FILL_NAN == "remove":
     # Rimuovere colonne voti ita
-    # Rimuovere record voti mat
+    # Rimuovere record con dati nulli in voti mat
     dataset_ap.drop(["voto_scritto_ita", "voto_orale_ita"], axis=1, inplace=True)
     dataset_ap.dropna(["voto_scritto_mat", "voto_orale_mat"], inplace=True)
 
@@ -245,7 +244,7 @@ if PRE_ML:
 """
 Sampling (random undersampling o SMOTE) su training set
 """
-if SAMPLING_TO_PERFORM == "random_undersampling":
+if cfg.SAMPLING_TO_PERFORM == "random_undersampling":
     # class_nodrop contiene i record della classe sovrarappresentata, ovvero SENZA DROPOUT.
     class_nodrop = df_training_set[df_training_set['DROPOUT'] == False]
     # class_drop contiene i record della classe sottorappresentata, ovvero CON DROPOUT.
@@ -259,23 +258,23 @@ if SAMPLING_TO_PERFORM == "random_undersampling":
 
     df_training_set = class_drop.append(class_nodrop)
     df_training_set = df_training_set.sample(frac=1)
-elif SAMPLING_TO_PERFORM == "SMOTE":
+elif cfg.SAMPLING_TO_PERFORM == "SMOTE":
     print("SMOTE not yet implemented")
 else:
-    print(f"SAMPLING_TO_PERFORM = {SAMPLING_TO_PERFORM} not recognized.")
+    print(f"SAMPLING_TO_PERFORM = {cfg.SAMPLING_TO_PERFORM} not recognized.")
 
 if "Unnamed: 0" in df_training_set.columns:
     df_training_set.drop("Unnamed: 0", axis=1, inplace=True)
 
 """
-Suddivisione dataset in training, validation.
+Suddivisione dataset di training in training (più piccolo di quello di partenza), validation.
 """
 df_training_set, df_validation_set = train_test_split(df_training_set, test_size=cfg.VALIDATION_SET_PERCENT)
 
 """
 Conversione da Pandas DataFrame a Tensorflow Dataset.
 """
-def dataframe_to_dataset(dataframe: pd.DataFrame):
+def pd_dataframe_to_tf_dataset(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
     dropout_col = copied_df.pop("DROPOUT")
     """
@@ -288,9 +287,9 @@ def dataframe_to_dataset(dataframe: pd.DataFrame):
     return tf_dataset
 
 
-ds_training_set = dataframe_to_dataset(df_training_set)
-ds_validation_set = dataframe_to_dataset(df_validation_set)
-ds_test_set = dataframe_to_dataset(df_test_set)
+ds_training_set = pd_dataframe_to_tf_dataset(df_training_set)
+ds_validation_set = pd_dataframe_to_tf_dataset(df_validation_set)
+ds_test_set = pd_dataframe_to_tf_dataset(df_test_set)
 
 """
 Suddivisione dei Dataset in batch per sfruttare meglio le capacità hardware
@@ -327,7 +326,6 @@ for name, column in df_training_set.items():
 Encoding delle feature in base al loro tipo.
 """
 preprocessed_features = []
-
 
 def stack_dict(inputs, fun=tf.stack):
     values = []
