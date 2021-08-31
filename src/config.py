@@ -22,6 +22,8 @@ TEST_SET_PERCENT = float(getenv(key="TEST_SET_PERCENT", default="0.2"))
 VALIDATION_SET_PERCENT = float(getenv(key="VALIDATION_SET_PERCENT", default="0.2"))
 NUMBER_OF_LAYERS = int(getenv(key="NUMBER_OF_LAYERS", default="10"))
 DENSE_LAYER_ACTIVATION = getenv(key="DENSE_LAYER_ACTIVATION", default="relu")
+FILL_NAN = getenv(key="FILL_NAN", default="median")
+LEAKY_RELU = eval(getenv(key="LEAKY_RELU", default="True"))
 
 def print_config():
     print("LEARNING_RATE: ", LEARNING_RATE)
@@ -37,3 +39,5 @@ def print_config():
     print("TEST_SET_PERCENT: ", TEST_SET_PERCENT)
     print("VALIDATION_SET_PERCENT: ", VALIDATION_SET_PERCENT)
     print("NUMBER_OF_LAYERS: ", NUMBER_OF_LAYERS)
+    print("FILL_NAN: ", FILL_NAN)
+    print("LEAKY_RELU: ", LEAKY_RELU)

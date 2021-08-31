@@ -9,6 +9,7 @@ import tensorflow as tf
 from tensorflow.keras.layers.experimental.preprocessing import IntegerLookup
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
 from tensorflow.keras.layers.experimental.preprocessing import StringLookup
+from tensorflow.keras.callbacks import EarlyStopping
 
 import config as cfg
 from mapping_domande_ambiti_processi import MAPPING_DOMANDE_AMBITI_PROCESSI
@@ -181,8 +182,8 @@ continuous_features = columns_with_lower_null_values + \
                        "pu_ma_no_corr"] + \
                       list(ambiti_processi) # Feature sui voti, feature elencate, ambiti e processi
 ordinal_features = [
-    "n_stud_prev", "n_classi_prev", "LIVELLI"
-]
+    "n_stud_prev", "n_classi_prev", "LIVELLI", "voto_scritto_mat", "voto_orale_mat"
+] + (["voto_scritto_ita", "voto_orale_ita"] if cfg.FILL_NAN != "remove" else []) # se si rimuovono le colonne dei voti di italiano non vanno messe tra le feature
 int_categorical_features = [
     "CODICE_SCUOLA", "CODICE_PLESSO", "CODICE_CLASSE", "campione", "prog",
 ]
@@ -198,11 +199,26 @@ bool_features = ["Pon"]
 Aggiustamento colonne con valori nulli.
 """
 dataset_ap["sigla_provincia_istat"].fillna(value="ND", inplace=True)
-# TODO Trovare un modo migliore per effettuare il rimpiazzo dei non disponibili.
-dataset_ap["voto_scritto_ita"].fillna(value=dataset_ap["voto_scritto_ita"].mean(), inplace=True)
-dataset_ap["voto_orale_ita"].fillna(value=dataset_ap["voto_orale_ita"].mean(), inplace=True)
-dataset_ap["voto_scritto_mat"].fillna(value=dataset_ap["voto_scritto_mat"].mean(), inplace=True)
-dataset_ap["voto_orale_mat"].fillna(value=dataset_ap["voto_orale_mat"].mean(), inplace=True)
+if cfg.FILL_NAN == "median":
+    dataset_ap["voto_scritto_ita"].fillna(value=dataset_ap["voto_scritto_ita"].median(), inplace=True)
+    dataset_ap["voto_orale_ita"].fillna(value=dataset_ap["voto_orale_ita"].median(), inplace=True)
+    dataset_ap["voto_scritto_mat"].fillna(value=dataset_ap["voto_scritto_mat"].median(), inplace=True)
+    dataset_ap["voto_orale_mat"].fillna(value=dataset_ap["voto_orale_mat"].median(), inplace=True)
+elif cfg.FILL_NAN == "mean":
+    dataset_ap["voto_scritto_ita"].fillna(value=dataset_ap["voto_scritto_ita"].mean(), inplace=True)
+    dataset_ap["voto_orale_ita"].fillna(value=dataset_ap["voto_orale_ita"].mean(), inplace=True)
+    dataset_ap["voto_scritto_mat"].fillna(value=dataset_ap["voto_scritto_mat"].mean(), inplace=True)
+    dataset_ap["voto_orale_mat"].fillna(value=dataset_ap["voto_orale_mat"].mean(), inplace=True)
+elif cfg.FILL_NAN == "mode":
+    dataset_ap["voto_scritto_ita"].fillna(value=dataset_ap["voto_scritto_ita"].mode(), inplace=True)
+    dataset_ap["voto_orale_ita"].fillna(value=dataset_ap["voto_orale_ita"].mode(), inplace=True)
+    dataset_ap["voto_scritto_mat"].fillna(value=dataset_ap["voto_scritto_mat"].mode(), inplace=True)
+    dataset_ap["voto_orale_mat"].fillna(value=dataset_ap["voto_orale_mat"].mode(), inplace=True)
+elif cfg.FILL_NAN == "remove":
+    # Rimuovere colonne voti ita
+    # Rimuovere record voti mat
+    dataset_ap.drop(["voto_scritto_ita", "voto_orale_ita"], axis=1, inplace=True)
+    dataset_ap.dropna(["voto_scritto_mat", "voto_orale_mat"], inplace=True)
 
 ## Parte di creazione del modello ##
 
@@ -381,11 +397,23 @@ preprocessed = tf.concat(preprocessed_features, axis=-1)
 
 preprocessor = tf.keras.Model(input_layers, preprocessed)
 
+"""
 body = tf.keras.Sequential(
     [tf.keras.layers.Dense(cfg.NEURONS, activation=cfg.DENSE_LAYER_ACTIVATION) for _ in range(cfg.NUMBER_OF_LAYERS)] +
     [tf.keras.layers.Dropout(cfg.DROPOUT_LAYER_RATE)] if cfg.DROPOUT_LAYER else [] +
     [tf.keras.layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION)]
 )
+"""
+body = tf.keras.Sequential()
+for _ in range(cfg.NUMBER_OF_LAYERS):
+    if cfg.LEAKY_RELU:
+        body.add(tf.keras.layers.Dense(cfg.NEURONS))
+        body.add(tf.keras.layers.LeakyReLU())
+    else:
+        body.add(tf.keras.layers.Dense(cfg.NEURONS, activation=cfg.DENSE_LAYER_ACTIVATION))
+if cfg.DROPOUT_LAYER:
+    body.add(tf.keras.layers.Dropout(cfg.DROPOUT_LAYER_RATE))
+body.add(tf.keras.layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION))
 
 x = preprocessor(input_layers)
 
@@ -405,7 +433,18 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE
                   tf.metrics.TrueNegatives(),
                   tf.metrics.TruePositives()])
 
-model.fit(ds_training_set, epochs=cfg.EPOCH, batch_size=cfg.BATCH_SIZE, validation_data=ds_validation_set, verbose=2)
+"""
+Definizione dello stopper per evitare che la reti continui ad addestrarsi quando non ci sono miglioramenti della loss 
+(val_loss = funzione di costo sul validation set) per piu' di 3 epoche
+"""
+early_stopper = EarlyStopping(monitor="val_loss", patience=2)
+
+model.fit(ds_training_set,
+          epochs=cfg.EPOCH,
+          batch_size=cfg.BATCH_SIZE,
+          validation_data=ds_validation_set,
+          callbacks=[early_stopper],
+          verbose=2)
 
 score = model.evaluate(ds_test_set)
 print('Test loss:', score[0])
@@ -416,11 +455,22 @@ Matrici di confusione per training e test.
 """
 
 """
-training_x, training_y = df_training_set[[col for col in df_training_set.columns if col != "DROPOUT"]], df_training_set["DROPOUT"]
-test_x, test_y = df_test_set[[col for col in df_test_set.columns if col != "DROPOUT"]], df_test_set["DROPOUT"]
+def dataframe_to_dataset2(dataframe: pd.DataFrame):
+    copied_df = dataframe.copy()
+    dropout_col = copied_df["DROPOUT"]
 
-predicted_training_y = model.predict(training_x)
-predicted_test_y = model.predict(test_x)
+    tf_dataset = tf.data.Dataset.from_tensor_slices((dict(copied_df), dropout_col))
+    #tf_dataset = tf_dataset.shuffle(buffer_size=len(copied_df))
+    return tf_dataset
+
+training_x = df_training_set.copy()
+training_y = df_training_set["DROPOUT"]
+
+test_x = df_test_set.copy()
+test_y = df_test_set["DROPOUT"]
+
+predicted_training_y = model.predict(dataframe_to_dataset2(training_x))
+predicted_test_y = model.predict(dataframe_to_dataset2(test_x))
 
 training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y)
 test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y)
