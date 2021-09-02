@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=new_model
+#SBATCH --job-name=base_model
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=tommaso.azzalin@studio.unibo.it
-#SBATCH --time=02:00:00
+#SBATCH --time=05:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --output=new_model
+#SBATCH --output=base_model
 #SBATCH --gres=gpu:1
 
 cd ../
