@@ -10,6 +10,7 @@ from tensorflow.keras.layers.experimental.preprocessing import IntegerLookup
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
 from tensorflow.keras.layers.experimental.preprocessing import StringLookup
 from tensorflow.keras.callbacks import EarlyStopping
+from imblearn.over_sampling import SMOTENC
 
 import config as cfg
 from mapping_domande_ambiti_processi import MAPPING_DOMANDE_AMBITI_PROCESSI
@@ -258,7 +259,14 @@ if cfg.SAMPLING_TO_PERFORM == "random_undersampling":
     df_training_set = class_drop.append(class_nodrop)
     df_training_set = df_training_set.sample(frac=1)
 elif cfg.SAMPLING_TO_PERFORM == "SMOTE":
-    print("SMOTE not yet implemented")
+    categorical_features_indexes = [i for i in range(len(df_training_set.columns)) if df_training_set.columns[i] in str_categorical_features + int_categorical_features]
+    sm = SMOTENC(categorical_features = categorical_features_indexes)
+    X, y = sm.fit_resample(
+        df_training_set[[col for col in df_training_set.columns if col != 'DROPOUT']],
+        df_training_set['DROPOUT']
+    )
+    df_training_set = pd.concat([X, y], axis = 1)
+    # TODO: per farlo funzionare bisogna convertire le stringhe a interi https://stackoverflow.com/questions/65280842/smote-could-not-convert-string-to-float 
 else:
     print(f"SAMPLING_TO_PERFORM = {cfg.SAMPLING_TO_PERFORM} not recognized.")
 
