@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=base_model
+#SBATCH --job-name=relu
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=tommaso.azzalin@studio.unibo.it
 #SBATCH --time=10:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --output=base_model
+#SBATCH --output=relu
 #SBATCH --gres=gpu:1
 
 cd ../
@@ -13,5 +13,7 @@ cd ../
 . venv/bin/activate # per attivare il virtual environment python
 
 pip3 install --no-cache-dir -r requirements.txt
+
+export LEAKY_RELU=False
 
 python3 src/invalsi.py
