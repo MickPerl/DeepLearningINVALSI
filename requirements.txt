@@ -8,3 +8,4 @@ pydot
 graphviz
 matplotlib
 BeautifulTable
+seaborn
