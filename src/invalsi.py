@@ -197,27 +197,26 @@ bool_features = ["Pon"]
 """
 Aggiustamento colonne con valori nulli.
 """
+
 dataset_ap["sigla_provincia_istat"].fillna(value="ND", inplace=True)
-if cfg.FILL_NAN == "median":
-    dataset_ap["voto_scritto_ita"].fillna(value=dataset_ap["voto_scritto_ita"].median(), inplace=True)
-    dataset_ap["voto_orale_ita"].fillna(value=dataset_ap["voto_orale_ita"].median(), inplace=True)
-    dataset_ap["voto_scritto_mat"].fillna(value=dataset_ap["voto_scritto_mat"].median(), inplace=True)
-    dataset_ap["voto_orale_mat"].fillna(value=dataset_ap["voto_orale_mat"].median(), inplace=True)
-elif cfg.FILL_NAN == "mean":
-    dataset_ap["voto_scritto_ita"].fillna(value=dataset_ap["voto_scritto_ita"].mean(), inplace=True)
-    dataset_ap["voto_orale_ita"].fillna(value=dataset_ap["voto_orale_ita"].mean(), inplace=True)
-    dataset_ap["voto_scritto_mat"].fillna(value=dataset_ap["voto_scritto_mat"].mean(), inplace=True)
-    dataset_ap["voto_orale_mat"].fillna(value=dataset_ap["voto_orale_mat"].mean(), inplace=True)
-elif cfg.FILL_NAN == "mode":
-    dataset_ap["voto_scritto_ita"].fillna(value=dataset_ap["voto_scritto_ita"].mode(), inplace=True)
-    dataset_ap["voto_orale_ita"].fillna(value=dataset_ap["voto_orale_ita"].mode(), inplace=True)
-    dataset_ap["voto_scritto_mat"].fillna(value=dataset_ap["voto_scritto_mat"].mode(), inplace=True)
-    dataset_ap["voto_orale_mat"].fillna(value=dataset_ap["voto_orale_mat"].mode(), inplace=True)
-elif cfg.FILL_NAN == "remove":
+# TODO Trovare un modo migliore per effettuare il rimpiazzo dei non disponibili.
+dataset_ap["sigla_provincia_istat"].fillna(value="ND", inplace=True)
+
+if cfg.FILL_NAN == "remove":
     # Rimuovere colonne voti ita
     # Rimuovere record con dati nulli in voti mat
     dataset_ap.drop(["voto_scritto_ita", "voto_orale_ita"], axis=1, inplace=True)
     dataset_ap.dropna(["voto_scritto_mat", "voto_orale_mat"], inplace=True)
+else :
+    for col in columns_with_lower_null_values : 
+        if cfg.FILL_NAN == "median":
+            replaced_value = dataset_ap[col].median()
+        elif cfg.FILL_NAN == "mean":
+            replaced_value = dataset_ap[col].mean()
+        elif cfg.FILL_NAN == "mode":
+            replaced_value = dataset_ap[col].mode()
+
+        dataset_ap[col].fillna(value=replaced_value, inplace=True)   
 
 ## Parte di creazione del modello ##
 
