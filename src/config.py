@@ -8,6 +8,7 @@ DROPOUT_LAYER_RATE = float(getenv(key="DROPOUT_LAYER_RATE", default="0.5")) # --
 EPOCH = int(getenv(key="EPOCH", default="50")) # --epoch intnum
 NEURONS = int(getenv(key="NEURONS", default="128")) # --neurons intnum
 OUTPUT_ACTIVATION_FUNCTION = getenv(key="OUTPUT_ACTIVATION_FUNCTION", default="sigmoid") # --activation nomefunzione
+DENSE_LAYER_ACTIVATION = getenv(key="DENSE_LAYER_ACTIVATION", default="relu") # hidden layers' activation function 
 BATCH_SIZE = int(getenv(key="BATCH_SIZE", default="32")) # --batchsize intnum
 # base.py
 AP_DATASET_PATH = getenv(key="AP_DATASET_PATH", default="/Users/marco/Documents/Università/Intelligenza artificiale/project.nosync/MachineLearningProject/dataset_with_AP.csv") # --dataset nomefile
@@ -22,7 +23,6 @@ SAMPLING_TO_PERFORM = getenv(key="SAMPLING_TO_PERFORM", default="random_undersam
 TEST_SET_PERCENT = float(getenv(key="TEST_SET_PERCENT", default="0.2"))
 VALIDATION_SET_PERCENT = float(getenv(key="VALIDATION_SET_PERCENT", default="0.2"))
 NUMBER_OF_LAYERS = int(getenv(key="NUMBER_OF_LAYERS", default="10"))
-DENSE_LAYER_ACTIVATION = getenv(key="DENSE_LAYER_ACTIVATION", default="relu")
 FILL_NAN = getenv(key="FILL_NAN", default="median")
 LEAKY_RELU = eval(getenv(key="LEAKY_RELU", default="True"))
 
