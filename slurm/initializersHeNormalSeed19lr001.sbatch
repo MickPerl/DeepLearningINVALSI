@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=base_model
+#SBATCH --job-name=initializersHeNormalSeed19lr001
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=tommaso.azzalin@studio.unibo.it
 #SBATCH --time=10:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --output=base_model
+#SBATCH --output=initializersHeNormalSeed19lr001
 #SBATCH --gres=gpu:1
 
 cd ../
