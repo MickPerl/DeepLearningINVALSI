@@ -396,7 +396,6 @@ for name in int_categorical_features:
 """
 Assemblaggio dei vari layer preprocessati.
 """
-# initializer = tf.keras.initializers.glorot_uniform(seed=19)
 
 preprocessed = tf.concat(preprocessed_features, axis=-1)
 
@@ -409,10 +408,13 @@ body = tf.keras.Sequential(
     [tf.keras.layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION)]
 )
 """
+
+initializer = tf.keras.initializers.HeNormal(seed=19) # inizializzatore che verrà usato per i pesi dei layer con ReLU / LeakyReLU
+
 body = tf.keras.Sequential()
 for _ in range(cfg.NUMBER_OF_LAYERS):
     if cfg.LEAKY_RELU:
-        body.add(tf.keras.layers.Dense(cfg.NEURONS))
+        body.add(tf.keras.layers.Dense(cfg.NEURONS, kernel_initializer=initializer))
         body.add(tf.keras.layers.LeakyReLU())
     else:
         body.add(tf.keras.layers.Dense(cfg.NEURONS, activation=cfg.DENSE_LAYER_ACTIVATION))
