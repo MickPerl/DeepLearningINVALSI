@@ -409,18 +409,19 @@ body = tf.keras.Sequential(
 )
 """
 
-initializer = tf.keras.initializers.HeNormal(seed=19) # inizializzatore che verrà usato per i pesi dei layer con ReLU / LeakyReLU
+initializer_hidden_layer = tf.keras.initializers.HeNormal(seed=19) # inizializzatore che verrà usato per i pesi dei layer con ReLU / LeakyReLU
+initializer_output_layer = tf.keras.initializers.GlorotNormal(seed=19) # inizializzatore che verrà usato per i pesi dei layer con sigmoid
 
 body = tf.keras.Sequential()
 for _ in range(cfg.NUMBER_OF_LAYERS):
     if cfg.LEAKY_RELU:
-        body.add(tf.keras.layers.Dense(cfg.NEURONS, kernel_initializer=initializer))
+        body.add(tf.keras.layers.Dense(cfg.NEURONS, kernel_initializer=initializer_hidden_layer))
         body.add(tf.keras.layers.LeakyReLU())
     else:
         body.add(tf.keras.layers.Dense(cfg.NEURONS, activation=cfg.DENSE_LAYER_ACTIVATION))
 if cfg.DROPOUT_LAYER:
     body.add(tf.keras.layers.Dropout(cfg.DROPOUT_LAYER_RATE))
-body.add(tf.keras.layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION))
+body.add(tf.keras.layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=initializer_output_layer))
 
 x = preprocessor(input_layers)
 
