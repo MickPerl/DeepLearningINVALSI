@@ -200,22 +200,18 @@ Aggiustamento colonne con valori nulli.
 """
 
 dataset_ap["sigla_provincia_istat"].fillna(value="ND", inplace=True)
-# TODO Trovare un modo migliore per effettuare il rimpiazzo dei non disponibili.
-dataset_ap["sigla_provincia_istat"].fillna(value="ND", inplace=True)
 
 if cfg.FILL_NAN == "remove":
     # Rimuovere colonne voti ita
     # Rimuovere record con dati nulli in voti mat
     dataset_ap.drop(["voto_scritto_ita", "voto_orale_ita"], axis=1, inplace=True)
-    dataset_ap.dropna(["voto_scritto_mat", "voto_orale_mat"], inplace=True)
+    dataset_ap.dropna(subset=["voto_scritto_mat", "voto_orale_mat"], inplace=True)
 else :
     for col in columns_with_lower_null_values : 
         if cfg.FILL_NAN == "median":
             replaced_value = dataset_ap[col].median()
         elif cfg.FILL_NAN == "mean":
             replaced_value = dataset_ap[col].mean()
-        elif cfg.FILL_NAN == "mode":
-            replaced_value = dataset_ap[col].mode()
 
         dataset_ap[col].fillna(value=replaced_value, inplace=True)   
 
@@ -451,7 +447,7 @@ model.fit(ds_training_set,
           epochs=cfg.EPOCH,
           batch_size=cfg.BATCH_SIZE,
           validation_data=ds_validation_set,
-          callbacks=[early_stopper],
+          callbacks=[early_stopper] if cfg.EARLY_STOPPING else [],
           verbose=2)
 
 score = model.evaluate(ds_test_set)
