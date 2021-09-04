@@ -25,6 +25,7 @@ VALIDATION_SET_PERCENT = float(getenv(key="VALIDATION_SET_PERCENT", default="0.2
 NUMBER_OF_LAYERS = int(getenv(key="NUMBER_OF_LAYERS", default="10"))
 FILL_NAN = getenv(key="FILL_NAN", default="median")
 LEAKY_RELU = eval(getenv(key="LEAKY_RELU", default="True"))
+EARLY_STOPPING = eval(getenv(key="EARLY_STOPPING", default="True"))
 
 def print_config():
     print("LEARNING_RATE: ", LEARNING_RATE)
@@ -33,6 +34,7 @@ def print_config():
     print("EPOCH: ", EPOCH)
     print("NEURONS: ", NEURONS)
     print("OUTPUT_ACTIVATION_FUNCTION: ", OUTPUT_ACTIVATION_FUNCTION)
+    print("DENSE_LAYER_ACTIVATION: ", DENSE_LAYER_ACTIVATION)
     print("BATCH_SIZE: ", BATCH_SIZE)
     print("ORIGINAL_DATASET: ", ORIGINAL_DATASET)
     print("CLEANED_DATASET: ", CLEANED_DATASET)
@@ -43,3 +45,4 @@ def print_config():
     print("NUMBER_OF_LAYERS: ", NUMBER_OF_LAYERS)
     print("FILL_NAN: ", FILL_NAN)
     print("LEAKY_RELU: ", LEAKY_RELU)
+    print("EARLY_STOPPING: ", EARLY_STOPPING)
