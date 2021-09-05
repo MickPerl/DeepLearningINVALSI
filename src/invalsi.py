@@ -181,9 +181,10 @@ continuous_features = columns_with_lower_null_values + \
                       ["pu_ma_gr", "pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200", "WLE_MAT_200_CORR",
                        "pu_ma_no_corr"] + \
                       list(ambiti_processi) # Feature sui voti, feature elencate, ambiti e processi
-ordinal_features = [
-    "n_stud_prev", "n_classi_prev", "LIVELLI", "voto_scritto_mat", "voto_orale_mat"
-] + (["voto_scritto_ita", "voto_orale_ita"] if cfg.FILL_NAN != "remove" else []) # se si rimuovono le colonne dei voti di italiano non vanno messe tra le feature
+if cfg.FILL_NAN == "remove":
+    continuous_features.remove("voto_scritto_ita")
+    continuous_features.remove("voto_orale_ita")
+ordinal_features = ["n_stud_prev", "n_classi_prev", "LIVELLI"]
 int_categorical_features = [
     "CODICE_SCUOLA", "CODICE_PLESSO", "CODICE_CLASSE", "campione", "prog",
 ]
@@ -220,7 +221,7 @@ else :
 """
 Suddivisione dataset in training, test.
 """
-df_training_set, df_test_set = train_test_split(dataset_ap, test_size=cfg.TEST_SET_PERCENT)
+df_training_set, df_test_set = train_test_split(dataset_ap, test_size=cfg.TEST_SET_PERCENT, random_state=19)
 
 """
 Verifica sbilanciamento classi DROPOUT e NO DROPOUT nel dataset.
@@ -247,16 +248,16 @@ if cfg.SAMPLING_TO_PERFORM == "random_undersampling":
     class_drop = df_training_set[df_training_set['DROPOUT'] == True]
 
     # Sotto campionamento di class_drop in modo che abbia stessa cardinalità di class_nodrop
-    class_nodrop = class_nodrop.sample(len(class_drop))
+    class_nodrop = class_nodrop.sample(len(class_drop), random_state=19)
 
     print(f'Class NO DROPOUT: {len(class_nodrop):,}')
     print(f'Classe DROPOUT: {len(class_drop):,}')
 
     df_training_set = class_drop.append(class_nodrop)
-    df_training_set = df_training_set.sample(frac=1)
+    df_training_set = df_training_set.sample(frac=1, random_state=19)
 elif cfg.SAMPLING_TO_PERFORM == "SMOTE":
     categorical_features_indexes = [i for i in range(len(df_training_set.columns)) if df_training_set.columns[i] in str_categorical_features + int_categorical_features]
-    sm = SMOTENC(categorical_features = categorical_features_indexes)
+    sm = SMOTENC(categorical_features = categorical_features_indexes, random_state=19)
     X, y = sm.fit_resample(
         df_training_set[[col for col in df_training_set.columns if col != 'DROPOUT']],
         df_training_set['DROPOUT']
@@ -272,7 +273,7 @@ if "Unnamed: 0" in df_training_set.columns:
 """
 Suddivisione dataset di training in training (più piccolo di quello di partenza), validation.
 """
-df_training_set, df_validation_set = train_test_split(df_training_set, test_size=cfg.VALIDATION_SET_PERCENT)
+df_training_set, df_validation_set = train_test_split(df_training_set, test_size=cfg.VALIDATION_SET_PERCENT, random_state=19)
 
 """
 Conversione da Pandas DataFrame a Tensorflow Dataset.
@@ -286,7 +287,7 @@ def pd_dataframe_to_tf_dataset(dataframe: pd.DataFrame):
     Infine bisogna indicare la colonna target.
     """
     tf_dataset = tf.data.Dataset.from_tensor_slices((dict(copied_df), dropout_col))
-    tf_dataset = tf_dataset.shuffle(buffer_size=len(copied_df))
+    tf_dataset = tf_dataset.shuffle(buffer_size=len(copied_df), seed=19)
     return tf_dataset
 
 
@@ -314,6 +315,9 @@ Creazione layer di input per ogni feature a partire dalle liste precedentemente 
 input_layers = {}
 for name, column in df_training_set.items():
     if name == "DROPOUT":
+        continue
+
+    if cfg.FILL_NAN == "remove" and name in ["voto_scritto_ita", "voto_orale_ita"]:
         continue
 
     if name in continuous_features:
@@ -359,6 +363,8 @@ preprocessed_features.append(ordinal_normalized)
 # Preprocessing colonne con dati continui
 continuous_inputs = {}
 for name in continuous_features:
+    if cfg.FILL_NAN == "remove" and name in ["voto_scritto_ita", "voto_orale_ita"]:
+        continue
     continuous_inputs[name] = input_layers[name]
 
 normalizer = Normalization(axis=-1)
@@ -414,7 +420,7 @@ for _ in range(cfg.NUMBER_OF_LAYERS):
         body.add(tf.keras.layers.Dense(cfg.NEURONS, kernel_initializer=initializer_hidden_layer))
         body.add(tf.keras.layers.LeakyReLU())
     else:
-        body.add(tf.keras.layers.Dense(cfg.NEURONS, activation=cfg.DENSE_LAYER_ACTIVATION))
+        body.add(tf.keras.layers.Dense(cfg.NEURONS, activation=cfg.DENSE_LAYER_ACTIVATION, kernel_initializer=initializer_hidden_layer))
 if cfg.DROPOUT_LAYER:
     body.add(tf.keras.layers.Dropout(cfg.DROPOUT_LAYER_RATE))
 body.add(tf.keras.layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=initializer_output_layer))
@@ -439,9 +445,9 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE
 
 """
 Definizione dello stopper per evitare che la reti continui ad addestrarsi quando non ci sono miglioramenti della loss 
-(val_loss = funzione di costo sul validation set) per piu' di 3 epoche
+(val_loss = funzione di costo sul validation set) per piu' di 5 epoche
 """
-early_stopper = EarlyStopping(monitor="val_loss", patience=2)
+early_stopper = EarlyStopping(monitor="val_loss", patience=4)
 
 model.fit(ds_training_set,
           epochs=cfg.EPOCH,
