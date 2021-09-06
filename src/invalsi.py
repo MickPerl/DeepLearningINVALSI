@@ -464,34 +464,42 @@ print('Test accuracy:', score[1])
 Matrici di confusione per training e test.
 """
 
-"""
-def dataframe_to_dataset2(dataframe: pd.DataFrame):
+
+def pd_dataframe_to_tf_dataset_2(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
-    dropout_col = copied_df["DROPOUT"]
+    ds = tf.data.Dataset.from_tensor_slices(dict(copied_df))
 
-    tf_dataset = tf.data.Dataset.from_tensor_slices((dict(copied_df), dropout_col))
-    #tf_dataset = tf_dataset.shuffle(buffer_size=len(copied_df))
-    return tf_dataset
+    return ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
 
-training_x = df_training_set.copy()
+training_x = pd_dataframe_to_tf_dataset_2(df_training_set[[col for col in df_training_set.columns if col != "DROPOUT"]])
 training_y = df_training_set["DROPOUT"]
+training_y = training_y.head((len(training_x)*cfg.BATCH_SIZE) - len(training_y))
 
-test_x = df_test_set.copy()
+test_x = pd_dataframe_to_tf_dataset_2(df_test_set[[col for col in df_test_set.columns if col != "DROPOUT"]])
 test_y = df_test_set["DROPOUT"]
+test_y = test_y.head((len(test_x)*cfg.BATCH_SIZE) - len(test_y))
 
-predicted_training_y = model.predict(dataframe_to_dataset2(training_x))
-predicted_test_y = model.predict(dataframe_to_dataset2(test_x))
+predicted_training_y = model.predict(training_x)
+predicted_test_y = model.predict(test_x)
 
-training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y)
-test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y)
+training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y).numpy()
+test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y).numpy()
 
-from sklearn import metrics
-print("SKLEARN Accuracy in training: ", metrics.accuracy_score(training_y, predicted_training_y))
-print("SKLEARN Accuracy in test: ", metrics.accuracy_score(test_y, predicted_test_y))
-# true_positives = np.diag(confusion_matrix)
-# false_positives = confusion_matrix.sum(axis=0) - true_positives
-# false_negatives = confusion_matrix.sum(axis=1) - true_positives
-# true_negatives = confusion_matrix.sum() - (true_positives + false_positives + false_negatives)
-# false_positive_rate = false_positives / (false_positives + true_negatives)
-# false_negatives_rate = false_negatives / (true_positives + false_negatives)
-"""
+def compute_metrics(name, confusion_matrix):
+    true_positives = confusion_matrix[0, 0]
+    false_positives = confusion_matrix[0, 1]
+    false_negatives = confusion_matrix[1, 0]
+    true_negatives = confusion_matrix[1, 1]
+    false_positive_rate = false_positives / (false_positives + true_negatives)
+    false_negatives_rate = false_negatives / (true_positives + false_negatives)
+
+    accuracy = (true_positives + true_negatives)/confusion_matrix.sum()
+    precision = true_positives / (true_positives + false_positives)
+    recall = true_positives / (true_positives + false_negatives)
+    print(f"Confusion Matrix Name: {name}")
+    print(f"Accuracy = {accuracy}")
+    print(f"Precision = {precision}")
+    print(f"Recall = {recall}")
+    
+compute_metrics("Training", training_confusion_matrix)
+compute_metrics("Test", test_confusion_matrix)
