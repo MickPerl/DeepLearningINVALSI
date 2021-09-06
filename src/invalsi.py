@@ -45,8 +45,8 @@ if PRE_ML:
             print(col, '\t\tType: ', original_dataset[col].dtypes, '\tMissing values:',
                   original_dataset[col].isnull().mean().round(3))
 
-columns_with_high_null_values = ["codice_orario", "PesoClasse", "PesoScuola", "PesoTotale_Matematica"]
-columns_with_lower_null_values = [
+columns_high_ratio_null_values = ["codice_orario", "PesoClasse", "PesoScuola", "PesoTotale_Matematica"]
+columns_low_ratio_null_values = [
     "voto_scritto_ita",  # 0.683
     "voto_scritto_mat",  # 0.113
     "voto_orale_ita",  # 0.683
@@ -81,14 +81,14 @@ columns_with_just_one_value = ["macrotipologia", "livello"]
 
 """
 Rimozione delle colonne indicate in:
-- columns_with_high_null_values
-- columns_with_lower_null_values (per ora vengono tenute poiché forse possono essere utili)
+- columns_high_ratio_null_values
+- columns_low_ratio_null_values (per ora vengono tenute poiché forse possono essere utili)
 - columns_with_unique_values
 - columns_with_just_one_value
 """
 if PRE_ML:
     cleaned_original_dataset: pd.DataFrame = original_dataset.drop(
-        columns_with_high_null_values + columns_with_unique_values + columns_with_just_one_value, axis=1)
+        columns_high_ratio_null_values + columns_with_unique_values + columns_with_just_one_value, axis=1)
 
     if SAVE_CLEANED_DATASET:
         cleaned_original_dataset.to_csv(cfg.CLEANED_DATASET, index=False)
@@ -177,7 +177,7 @@ if PRE_ML:
     print("Lista colonne e tipi:")
     print(dataset_ap.info())
 
-continuous_features = columns_with_lower_null_values + \
+continuous_features = columns_low_ratio_null_values + \
                       ["pu_ma_gr", "pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200", "WLE_MAT_200_CORR",
                        "pu_ma_no_corr"] + \
                       list(ambiti_processi) # Feature sui voti, feature elencate, ambiti e processi
@@ -208,7 +208,7 @@ if cfg.FILL_NAN == "remove":
     dataset_ap.drop(["voto_scritto_ita", "voto_orale_ita"], axis=1, inplace=True)
     dataset_ap.dropna(subset=["voto_scritto_mat", "voto_orale_mat"], inplace=True)
 else :
-    for col in columns_with_lower_null_values : 
+    for col in columns_low_ratio_null_values : 
         if cfg.FILL_NAN == "median":
             replaced_value = dataset_ap[col].median()
         elif cfg.FILL_NAN == "mean":
