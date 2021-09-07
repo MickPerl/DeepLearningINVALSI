@@ -416,6 +416,11 @@ initializer_hidden_layer = tf.keras.initializers.HeNormal(seed=19) # inizializza
 initializer_output_layer = tf.keras.initializers.GlorotNormal(seed=19) # inizializzatore che verrà usato per i pesi dei layer con sigmoid
 
 body = tf.keras.Sequential()
+
+if cfg.DROPOUT_LAYER:
+    body.add(tf.keras.layers.Dropout(rate=cfg.DROPOUT_INPUT_LAYER_RATE, seed=19)) # aggiunta dropout a layer di input
+
+# segue l'aggiunta degli hidden layers
 for _ in range(cfg.NUMBER_OF_LAYERS):
     if cfg.ACTIVATION_LAYER == "leaky_relu":
         body.add(tf.keras.layers.Dense(cfg.NEURONS, kernel_initializer=initializer_hidden_layer))
@@ -426,8 +431,11 @@ for _ in range(cfg.NUMBER_OF_LAYERS):
     else:
         print(f"{cfg.ACTIVATION_LAYER} as activation layer not implemented")
         sys.exit(1)
-if cfg.DROPOUT_LAYER:
-    body.add(tf.keras.layers.Dropout(cfg.DROPOUT_LAYER_RATE))
+    
+    if cfg.DROPOUT_LAYER:
+        body.add(tf.keras.layers.Dropout(rate=cfg.DROPOUT_HIDDEN_LAYER_RATE, seed=19))
+
+# segue l'aggiunta dell'output layer
 body.add(tf.keras.layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=initializer_output_layer))
 
 x = preprocessor(input_layers)

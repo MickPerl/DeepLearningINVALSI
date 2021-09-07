@@ -4,7 +4,8 @@ from os import getenv
 # both
 LEARNING_RATE = float(getenv(key="LEARNING_RATE", default="0.001"))  # --learningrate floatnum
 DROPOUT_LAYER = eval(getenv(key="DROPOUT_LAYER", default="False")) # --dropout
-DROPOUT_LAYER_RATE = float(getenv(key="DROPOUT_LAYER_RATE", default="0.5")) # --dropoutrate floatnum
+DROPOUT_HIDDEN_LAYER_RATE = float(getenv(key="DROPOUT_LAYER_RATE", default="0.5")) # --dropoutrate floatnum
+DROPOUT_INPUT_LAYER_RATE = float(getenv(key="DROPOUT_LAYER_RATE", default="0.8")) # --dropoutrate floatnum
 EPOCH = int(getenv(key="EPOCH", default="50")) # --epoch intnum
 NEURONS = int(getenv(key="NEURONS", default="128")) # --neurons intnum
 OUTPUT_ACTIVATION_FUNCTION = getenv(key="OUTPUT_ACTIVATION_FUNCTION", default="sigmoid") # --activation nomefunzione
