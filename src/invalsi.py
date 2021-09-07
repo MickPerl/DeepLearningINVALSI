@@ -435,7 +435,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE
               loss=tf.losses.BinaryCrossentropy(),
               metrics=[
                   tf.metrics.Accuracy(),
-                  tf.metrics.BinaryAccuracy(),
+                  tf.metrics.BinaryAccuracy(threshold=cfg.BINARY_ACCURACY_THRESHOLD),
                   tf.metrics.Precision(),
                   tf.metrics.Recall(),
                   tf.metrics.FalseNegatives(),
@@ -447,7 +447,10 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE
 Definizione dello stopper per evitare che la reti continui ad addestrarsi quando non ci sono miglioramenti della loss 
 (val_loss = funzione di costo sul validation set) per piu' di 5 epoche
 """
-early_stopper = EarlyStopping(monitor="val_loss", patience=4)
+early_stopper = EarlyStopping(monitor="val_loss",
+                              patience=5,
+                              mode="min",
+                              restore_best_weights=True)
 
 model.fit(ds_training_set,
           epochs=cfg.EPOCH,
@@ -465,17 +468,17 @@ Matrici di confusione per training e test.
 """
 
 
-def pd_dataframe_to_tf_dataset_2(dataframe: pd.DataFrame):
+def convert_df_for_prediction(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
     ds = tf.data.Dataset.from_tensor_slices(dict(copied_df))
 
     return ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
 
-training_x = pd_dataframe_to_tf_dataset_2(df_training_set[[col for col in df_training_set.columns if col != "DROPOUT"]])
+training_x = convert_df_for_prediction(df_training_set[[col for col in df_training_set.columns if col != "DROPOUT"]])
 training_y = df_training_set["DROPOUT"]
 training_y = training_y.head((len(training_x)*cfg.BATCH_SIZE) - len(training_y))
 
-test_x = pd_dataframe_to_tf_dataset_2(df_test_set[[col for col in df_test_set.columns if col != "DROPOUT"]])
+test_x = convert_df_for_prediction(df_test_set[[col for col in df_test_set.columns if col != "DROPOUT"]])
 test_y = df_test_set["DROPOUT"]
 test_y = test_y.head((len(test_x)*cfg.BATCH_SIZE) - len(test_y))
 
@@ -486,10 +489,10 @@ training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predicti
 test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y).numpy()
 
 def compute_metrics(name, confusion_matrix):
-    true_positives = confusion_matrix[0, 0]
-    false_positives = confusion_matrix[0, 1]
-    false_negatives = confusion_matrix[1, 0]
-    true_negatives = confusion_matrix[1, 1]
+    true_positives = confusion_matrix[1, 0]
+    false_positives = confusion_matrix[1, 1]
+    false_negatives = confusion_matrix[0, 1]
+    true_negatives = confusion_matrix[0, 0]
     false_positive_rate = false_positives / (false_positives + true_negatives)
     false_negatives_rate = false_negatives / (true_positives + false_negatives)
 
@@ -497,9 +500,10 @@ def compute_metrics(name, confusion_matrix):
     precision = true_positives / (true_positives + false_positives)
     recall = true_positives / (true_positives + false_negatives)
     print(f"Confusion Matrix Name: {name}")
-    print(f"Accuracy = {accuracy}")
+    print(f"Accuracy = {accuracy}") # Attenzione: si tratta della Binary Accuracy
     print(f"Precision = {precision}")
     print(f"Recall = {recall}")
+    print()
     
 compute_metrics("Training", training_confusion_matrix)
 compute_metrics("Test", test_confusion_matrix)

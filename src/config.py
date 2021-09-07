@@ -26,6 +26,7 @@ NUMBER_OF_LAYERS = int(getenv(key="NUMBER_OF_LAYERS", default="10"))
 FILL_NAN = getenv(key="FILL_NAN", default="median")
 LEAKY_RELU = eval(getenv(key="LEAKY_RELU", default="True"))
 EARLY_STOPPING = eval(getenv(key="EARLY_STOPPING", default="True"))
+BINARY_ACCURACY_THRESHOLD = float(getenv(key="BINARY_ACCURACY_THRESHOLD", default="0.5"))
 
 def print_config():
     print("LEARNING_RATE: ", LEARNING_RATE)
