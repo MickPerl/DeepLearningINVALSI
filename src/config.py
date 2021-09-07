@@ -25,6 +25,7 @@ VALIDATION_SET_PERCENT = float(getenv(key="VALIDATION_SET_PERCENT", default="0.2
 NUMBER_OF_LAYERS = int(getenv(key="NUMBER_OF_LAYERS", default="10"))
 FILL_NAN = getenv(key="FILL_NAN", default="median")
 LEAKY_RELU = eval(getenv(key="LEAKY_RELU", default="True"))
+ACTIVATION_LAYER = getenv(key="ACTIVATION_LAYER", default="leaky_relu")
 EARLY_STOPPING = eval(getenv(key="EARLY_STOPPING", default="True"))
 BINARY_ACCURACY_THRESHOLD = float(getenv(key="BINARY_ACCURACY_THRESHOLD", default="0.5"))
 
@@ -45,5 +46,7 @@ def print_config():
     print("VALIDATION_SET_PERCENT: ", VALIDATION_SET_PERCENT)
     print("NUMBER_OF_LAYERS: ", NUMBER_OF_LAYERS)
     print("FILL_NAN: ", FILL_NAN)
-    print("LEAKY_RELU: ", LEAKY_RELU)
+    print("ACTIVATION_LAYER: ", ACTIVATION_LAYER)
+    print("LEAKY_RELU (deprecated in favour of ACTIVATION_LAYER): ", LEAKY_RELU)
     print("EARLY_STOPPING: ", EARLY_STOPPING)
+    print("BINARY_ACCURACY_THRESHOLD: ", BINARY_ACCURACY_THRESHOLD)

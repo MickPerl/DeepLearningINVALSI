@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import re
+import sys
 
 import pandas as pd
 import numpy as np
@@ -416,11 +417,15 @@ initializer_output_layer = tf.keras.initializers.GlorotNormal(seed=19) # inizial
 
 body = tf.keras.Sequential()
 for _ in range(cfg.NUMBER_OF_LAYERS):
-    if cfg.LEAKY_RELU:
+    if cfg.ACTIVATION_LAYER == "leaky_relu":
         body.add(tf.keras.layers.Dense(cfg.NEURONS, kernel_initializer=initializer_hidden_layer))
         body.add(tf.keras.layers.LeakyReLU())
+    elif cfg.ACTIVATION_LAYER == "relu":
+        body.add(tf.keras.layers.Dense(cfg.NEURONS, kernel_initializer=initializer_hidden_layer))
+        body.add(tf.keras.layers.ReLU())
     else:
-        body.add(tf.keras.layers.Dense(cfg.NEURONS, activation=cfg.DENSE_LAYER_ACTIVATION, kernel_initializer=initializer_hidden_layer))
+        print(f"{cfg.ACTIVATION_LAYER} as activation layer not implemented")
+        sys.exit(1)
 if cfg.DROPOUT_LAYER:
     body.add(tf.keras.layers.Dropout(cfg.DROPOUT_LAYER_RATE))
 body.add(tf.keras.layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=initializer_output_layer))
