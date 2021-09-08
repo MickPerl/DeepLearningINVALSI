@@ -4,14 +4,14 @@ from os import getenv
 # both
 LEARNING_RATE = float(getenv(key="LEARNING_RATE", default="0.001"))  # --learningrate floatnum
 DROPOUT_LAYER = eval(getenv(key="DROPOUT_LAYER", default="False")) # --dropout
-DROPOUT_HIDDEN_LAYER_RATE = float(getenv(key="DROPOUT_LAYER_RATE", default="0.5")) # --dropoutrate floatnum
-DROPOUT_INPUT_LAYER_RATE = float(getenv(key="DROPOUT_LAYER_RATE", default="0.8")) # --dropoutrate floatnum
+DROPOUT_HIDDEN_LAYER_RATE = float(getenv(key="DROPOUT_HIDDEN_LAYER_RATE", default="0.5")) # --dropoutrate floatnum
+DROPOUT_INPUT_LAYER_RATE = float(getenv(key="DROPOUT_INPUT_LAYER_RATE", default="0.8")) # --dropoutrate floatnum
 EPOCH = int(getenv(key="EPOCH", default="50")) # --epoch intnum
 NEURONS = int(getenv(key="NEURONS", default="128")) # --neurons intnum
 OUTPUT_ACTIVATION_FUNCTION = getenv(key="OUTPUT_ACTIVATION_FUNCTION", default="sigmoid") # --activation nomefunzione
-DENSE_LAYER_ACTIVATION = getenv(key="DENSE_LAYER_ACTIVATION", default="relu") # hidden layers' activation function 
 BATCH_SIZE = int(getenv(key="BATCH_SIZE", default="32")) # --batchsize intnum
 # base.py
+DENSE_LAYER_ACTIVATION = getenv(key="DENSE_LAYER_ACTIVATION", default="relu") # hidden layers' activation function 
 AP_DATASET_PATH = getenv(key="AP_DATASET_PATH", default="/Users/marco/Documents/Università/Intelligenza artificiale/project.nosync/MachineLearningProject/dataset_with_AP.csv") # --dataset nomefile
 SMALL_DATASET = eval(getenv(key="SMALL_DATASET", default="False")) # --small
 MODEL = int(getenv(key="MODEL", default="1")) # --model intnum
@@ -25,7 +25,6 @@ TEST_SET_PERCENT = float(getenv(key="TEST_SET_PERCENT", default="0.2"))
 VALIDATION_SET_PERCENT = float(getenv(key="VALIDATION_SET_PERCENT", default="0.2"))
 NUMBER_OF_LAYERS = int(getenv(key="NUMBER_OF_LAYERS", default="10"))
 FILL_NAN = getenv(key="FILL_NAN", default="median")
-LEAKY_RELU = eval(getenv(key="LEAKY_RELU", default="True"))
 ACTIVATION_LAYER = getenv(key="ACTIVATION_LAYER", default="leaky_relu")
 EARLY_STOPPING = eval(getenv(key="EARLY_STOPPING", default="True"))
 BINARY_ACCURACY_THRESHOLD = float(getenv(key="BINARY_ACCURACY_THRESHOLD", default="0.5"))

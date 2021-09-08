@@ -404,14 +404,6 @@ preprocessed = tf.concat(preprocessed_features, axis=-1)
 
 preprocessor = tf.keras.Model(input_layers, preprocessed)
 
-"""
-body = tf.keras.Sequential(
-    [tf.keras.layers.Dense(cfg.NEURONS, activation=cfg.DENSE_LAYER_ACTIVATION) for _ in range(cfg.NUMBER_OF_LAYERS)] +
-    [tf.keras.layers.Dropout(cfg.DROPOUT_LAYER_RATE)] if cfg.DROPOUT_LAYER else [] +
-    [tf.keras.layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION)]
-)
-"""
-
 initializer_hidden_layer = tf.keras.initializers.HeNormal(seed=19) # inizializzatore che verrà usato per i pesi dei layer con ReLU / LeakyReLU
 initializer_output_layer = tf.keras.initializers.GlorotNormal(seed=19) # inizializzatore che verrà usato per i pesi dei layer con sigmoid
 
@@ -422,11 +414,10 @@ if cfg.DROPOUT_LAYER:
 
 # segue l'aggiunta degli hidden layers
 for _ in range(cfg.NUMBER_OF_LAYERS):
+    body.add(tf.keras.layers.Dense(cfg.NEURONS, kernel_initializer=initializer_hidden_layer))
     if cfg.ACTIVATION_LAYER == "leaky_relu":
-        body.add(tf.keras.layers.Dense(cfg.NEURONS, kernel_initializer=initializer_hidden_layer))
         body.add(tf.keras.layers.LeakyReLU())
     elif cfg.ACTIVATION_LAYER == "relu":
-        body.add(tf.keras.layers.Dense(cfg.NEURONS, kernel_initializer=initializer_hidden_layer))
         body.add(tf.keras.layers.ReLU())
     else:
         print(f"{cfg.ACTIVATION_LAYER} as activation layer not implemented")
