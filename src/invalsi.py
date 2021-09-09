@@ -279,9 +279,24 @@ df_training_set, df_validation_set = train_test_split(df_training_set, test_size
 """
 Conversione da Pandas DataFrame a Tensorflow Dataset.
 """
+def convert_dropout_to_one_hot(dropout_col):
+    dropout_col_one_hot = []
+    for dc in dropout_col:
+        if dc == 1:
+            dropout_col_one_hot.append([1, 0])
+        else:
+            dropout_col_one_hot.append([0, 1])
+    return dropout_col_one_hot
+
+
 def pd_dataframe_to_tf_dataset(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
     dropout_col = copied_df.pop("DROPOUT")
+
+    # Dropout on-hot encoded (needed if two output neurons are presents in the architecture)
+    if cfg.PROBLEM_TYPE == "classification":
+        dropout_col = convert_dropout_to_one_hot(dropout_col)
+
     """
     Dato che il dataframe ha dati eterogenei lo convertiamo a dizionario,
     in cui le chiavi sono i nomi delle colonne e i valori sono i valori della colonna.
@@ -427,7 +442,10 @@ for _ in range(cfg.NUMBER_OF_LAYERS):
         body.add(tf.keras.layers.Dropout(rate=cfg.DROPOUT_HIDDEN_LAYER_RATE, seed=19))
 
 # segue l'aggiunta dell'output layer
-body.add(tf.keras.layers.Dense(1, activation=cfg.OUTPUT_ACTIVATION_FUNCTION, kernel_initializer=initializer_output_layer))
+if cfg.PROBLEM_TYPE == "classification":
+    body.add(tf.keras.layers.Dense(2, activation="softmax", kernel_initializer=initializer_output_layer))
+elif cfg.PROBLEM_TYPE == "regression":
+    body.add(tf.keras.layers.Dense(1, activation="sigmoid", kernel_initializer=initializer_output_layer))
 
 x = preprocessor(input_layers)
 
@@ -435,17 +453,25 @@ result = body(x)
 
 model = tf.keras.Model(input_layers, result)
 
+if cfg.PROBLEM_TYPE == "classification":
+    loss_function = tf.keras.losses.CategoricalCrossentropy()
+elif cfg.PROBLEM_TYPE == "regression":
+    loss_function = tf.keras.losses.BinaryCrossEntropy()
+else:
+    print(f"{cfg.PROBLEM_TYPE} not implemented")
+    sys.exit(1)
+
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE),
-              loss=tf.losses.BinaryCrossentropy(),
+              loss=loss_function,
               metrics=[
-                  tf.metrics.Accuracy(),
+                  tf.keras.metrics.Accuracy(),
+                  #tf.keras.metrics.CategoricalAccuracy(),
                   tf.metrics.BinaryAccuracy(threshold=cfg.BINARY_ACCURACY_THRESHOLD),
-                  tf.metrics.Precision(),
-                  tf.metrics.Recall(),
-                  tf.metrics.FalseNegatives(),
-                  tf.metrics.FalsePositives(),
-                  tf.metrics.TrueNegatives(),
-                  tf.metrics.TruePositives()])
+                  tf.keras.metrics.FalsePositives(),
+                  tf.keras.metrics.FalseNegatives(),
+                  tf.keras.metrics.TruePositives(),
+                  tf.keras.metrics.TrueNegatives(),
+              ])
 
 """
 Definizione dello stopper per evitare che la reti continui ad addestrarsi quando non ci sono miglioramenti della loss 
@@ -463,9 +489,9 @@ model.fit(ds_training_set,
           callbacks=[early_stopper] if cfg.EARLY_STOPPING else [],
           verbose=2)
 
-score = model.evaluate(ds_test_set)
-print('Test loss:', score[0])
-print('Test accuracy:', score[1])
+#score = model.evaluate(ds_test_set)
+#print('Test loss:', score[0])
+#print('Test accuracy:', score[1])
 
 """
 Matrici di confusione per training e test.
@@ -481,10 +507,14 @@ def convert_df_for_prediction(dataframe: pd.DataFrame):
 training_x = convert_df_for_prediction(df_training_set[[col for col in df_training_set.columns if col != "DROPOUT"]])
 training_y = df_training_set["DROPOUT"]
 training_y = training_y.head((len(training_x)*cfg.BATCH_SIZE) - len(training_y))
+if cfg.PROBLEM_TYPE == "classification":
+    training_y = convert_dropout_to_one_hot(training_y)
 
 test_x = convert_df_for_prediction(df_test_set[[col for col in df_test_set.columns if col != "DROPOUT"]])
 test_y = df_test_set["DROPOUT"]
 test_y = test_y.head((len(test_x)*cfg.BATCH_SIZE) - len(test_y))
+if cfg.PROBLEM_TYPE == "classification":
+    test_y = convert_dropout_to_one_hot(test_y)
 
 predicted_training_y = model.predict(training_x)
 predicted_test_y = model.predict(test_x)
@@ -504,6 +534,10 @@ def compute_metrics(name, confusion_matrix):
     precision = true_positives / (true_positives + false_positives)
     recall = true_positives / (true_positives + false_negatives)
     print(f"Confusion Matrix Name: {name}")
+    print(f"\tTP:{true_positives}")
+    print(f"\tTN:{true_negatives}")
+    print(f"\tFP:{false_positives}")
+    print(f"\tFN:{false_negatives}")
     print(f"Accuracy = {accuracy}") # Attenzione: si tratta della Binary Accuracy
     print(f"Precision = {precision}")
     print(f"Recall = {recall}")

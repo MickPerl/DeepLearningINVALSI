@@ -28,8 +28,10 @@ FILL_NAN = getenv(key="FILL_NAN", default="median")
 ACTIVATION_LAYER = getenv(key="ACTIVATION_LAYER", default="leaky_relu")
 EARLY_STOPPING = eval(getenv(key="EARLY_STOPPING", default="True"))
 BINARY_ACCURACY_THRESHOLD = float(getenv(key="BINARY_ACCURACY_THRESHOLD", default="0.5"))
+PROBLEM_TYPE = getenv(key="PROBLEM_TYPE", default="classification")
 
 def print_config():
+    print("PROBLEM_TYPE: ", PROBLEM_TYPE)
     print("LEARNING_RATE: ", LEARNING_RATE)
     print("DROPOUT_LAYER: ", DROPOUT_LAYER)
     print("DROPOUT_INPUT_LAYER_RATE: ", DROPOUT_INPUT_LAYER_RATE)
