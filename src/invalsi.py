@@ -293,7 +293,7 @@ def pd_dataframe_to_tf_dataset(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
     dropout_col = copied_df.pop("DROPOUT")
 
-    # Dropout on-hot encoded (needed if two output neurons are presents in the architecture)
+    # Dropout one-hot encoded (needed if two output neurons are presents in the architecture)
     if cfg.PROBLEM_TYPE == "classification":
         dropout_col = convert_dropout_to_one_hot(dropout_col)
 
