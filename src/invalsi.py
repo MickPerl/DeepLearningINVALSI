@@ -456,7 +456,7 @@ model = tf.keras.Model(input_layers, result)
 if cfg.PROBLEM_TYPE == "classification":
     loss_function = tf.keras.losses.CategoricalCrossentropy()
 elif cfg.PROBLEM_TYPE == "regression":
-    loss_function = tf.keras.losses.BinaryCrossEntropy()
+    loss_function = tf.keras.losses.BinaryCrossentropy()
 else:
     print(f"{cfg.PROBLEM_TYPE} not implemented")
     sys.exit(1)
@@ -464,13 +464,13 @@ else:
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE),
               loss=loss_function,
               metrics=[
-                  tf.keras.metrics.Accuracy(),
-                  #tf.keras.metrics.CategoricalAccuracy(),
-                  tf.metrics.BinaryAccuracy(threshold=cfg.BINARY_ACCURACY_THRESHOLD),
-                  tf.keras.metrics.FalsePositives(),
-                  tf.keras.metrics.FalseNegatives(),
-                  tf.keras.metrics.TruePositives(),
-                  tf.keras.metrics.TrueNegatives(),
+                tf.keras.metrics.Accuracy(name="acc"),
+                #tf.keras.metrics.CategoricalAccuracy(name="cat_acc"),
+                tf.metrics.BinaryAccuracy(name="bin_acc", threshold=cfg.BINARY_ACCURACY_THRESHOLD),
+                tf.keras.metrics.FalsePositives(name="fp"),
+                tf.keras.metrics.FalseNegatives(name="fn"),
+                tf.keras.metrics.TruePositives(name="tp"),
+                tf.keras.metrics.TrueNegatives(name="tn")
               ])
 
 """
@@ -482,16 +482,16 @@ early_stopper = EarlyStopping(monitor="val_loss",
                               mode="min",
                               restore_best_weights=True)
 
-model.fit(ds_training_set,
+history = model.fit(ds_training_set,
           epochs=cfg.EPOCH,
           batch_size=cfg.BATCH_SIZE,
           validation_data=ds_validation_set,
           callbacks=[early_stopper] if cfg.EARLY_STOPPING else [],
           verbose=2)
 
-#score = model.evaluate(ds_test_set)
-#print('Test loss:', score[0])
-#print('Test accuracy:', score[1])
+score = model.evaluate(ds_test_set, verbose=2)
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])
 
 """
 Matrici di confusione per training e test.
@@ -510,6 +510,12 @@ training_y = training_y.head((len(training_x)*cfg.BATCH_SIZE) - len(training_y))
 if cfg.PROBLEM_TYPE == "classification":
     training_y = convert_dropout_to_one_hot(training_y)
 
+validation_x = convert_df_for_prediction(df_validation_set[[col for col in df_validation_set.columns if col != "DROPOUT"]])
+validation_y = df_validation_set["DROPOUT"]
+validation_y = validation_y.head((len(validation_x)*cfg.BATCH_SIZE) - len(validation_y))
+if cfg.PROBLEM_TYPE == "classification":
+    validation_y = convert_dropout_to_one_hot(validation_y)
+
 test_x = convert_df_for_prediction(df_test_set[[col for col in df_test_set.columns if col != "DROPOUT"]])
 test_y = df_test_set["DROPOUT"]
 test_y = test_y.head((len(test_x)*cfg.BATCH_SIZE) - len(test_y))
@@ -517,31 +523,33 @@ if cfg.PROBLEM_TYPE == "classification":
     test_y = convert_dropout_to_one_hot(test_y)
 
 predicted_training_y = model.predict(training_x)
+predicted_validation_y = model.predict(validation_x)
 predicted_test_y = model.predict(test_x)
 
 training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y).numpy()
 test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y).numpy()
+validation_confusion_matrix = tf.math.confusion_matrix(labels=validation_y, predictions=predicted_validation_y).numpy()
 
 def compute_metrics(name, confusion_matrix):
     true_positives = confusion_matrix[1, 0]
     false_positives = confusion_matrix[1, 1]
     false_negatives = confusion_matrix[0, 1]
     true_negatives = confusion_matrix[0, 0]
-    false_positive_rate = false_positives / (false_positives + true_negatives)
-    false_negatives_rate = false_negatives / (true_positives + false_negatives)
 
     accuracy = (true_positives + true_negatives)/confusion_matrix.sum()
     precision = true_positives / (true_positives + false_positives)
     recall = true_positives / (true_positives + false_negatives)
+
     print(f"Confusion Matrix Name: {name}")
-    print(f"\tTP:{true_positives}")
-    print(f"\tTN:{true_negatives}")
-    print(f"\tFP:{false_positives}")
-    print(f"\tFN:{false_negatives}")
-    print(f"Accuracy = {accuracy}") # Attenzione: si tratta della Binary Accuracy
-    print(f"Precision = {precision}")
-    print(f"Recall = {recall}")
+    print(f"- TP: {true_positives}")
+    print(f"- TN: {true_negatives}")
+    print(f"- FP: {false_positives}")
+    print(f"- FN: {false_negatives}")
+    print(f"- Accuracy: {accuracy}") # Attenzione: si tratta della Binary Accuracy
+    print(f"- Precision: {precision}")
+    print(f"- Recall: {recall}")
     print()
     
 compute_metrics("Training", training_confusion_matrix)
+compute_metrics("Validation", validation_confusion_matrix)
 compute_metrics("Test", test_confusion_matrix)
