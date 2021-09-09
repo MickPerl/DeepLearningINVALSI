@@ -8,7 +8,7 @@ DROPOUT_HIDDEN_LAYER_RATE = float(getenv(key="DROPOUT_HIDDEN_LAYER_RATE", defaul
 DROPOUT_INPUT_LAYER_RATE = float(getenv(key="DROPOUT_INPUT_LAYER_RATE", default="0.8")) # --dropoutrate floatnum
 EPOCH = int(getenv(key="EPOCH", default="50")) # --epoch intnum
 NEURONS = int(getenv(key="NEURONS", default="128")) # --neurons intnum
-OUTPUT_ACTIVATION_FUNCTION = getenv(key="OUTPUT_ACTIVATION_FUNCTION", default="sigmoid") # --activation nomefunzione
+OUTPUT_ACTIVATION_FUNCTION = getenv(key="OUTPUT_ACTIVATION_FUNCTION", default="softmax") # --activation nomefunzione
 BATCH_SIZE = int(getenv(key="BATCH_SIZE", default="32")) # --batchsize intnum
 # base.py
 DENSE_LAYER_ACTIVATION = getenv(key="DENSE_LAYER_ACTIVATION", default="relu") # hidden layers' activation function 
@@ -37,7 +37,6 @@ def print_config():
     print("EPOCH: ", EPOCH)
     print("NEURONS: ", NEURONS)
     print("OUTPUT_ACTIVATION_FUNCTION: ", OUTPUT_ACTIVATION_FUNCTION)
-    print("DENSE_LAYER_ACTIVATION: ", DENSE_LAYER_ACTIVATION)
     print("BATCH_SIZE: ", BATCH_SIZE)
     print("ORIGINAL_DATASET: ", ORIGINAL_DATASET)
     print("CLEANED_DATASET: ", CLEANED_DATASET)
@@ -48,6 +47,5 @@ def print_config():
     print("NUMBER_OF_LAYERS: ", NUMBER_OF_LAYERS)
     print("FILL_NAN: ", FILL_NAN)
     print("ACTIVATION_LAYER: ", ACTIVATION_LAYER)
-    print("LEAKY_RELU (deprecated in favour of ACTIVATION_LAYER): ", LEAKY_RELU)
     print("EARLY_STOPPING: ", EARLY_STOPPING)
     print("BINARY_ACCURACY_THRESHOLD: ", BINARY_ACCURACY_THRESHOLD)
