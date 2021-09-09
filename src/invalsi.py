@@ -454,8 +454,10 @@ result = body(x)
 model = tf.keras.Model(input_layers, result)
 
 if cfg.PROBLEM_TYPE == "classification":
+    accuracy = tf.keras.metrics.Accuracy(name="acc")
     loss_function = tf.keras.losses.CategoricalCrossentropy()
 elif cfg.PROBLEM_TYPE == "regression":
+    accuracy = tf.metrics.BinaryAccuracy(name="bin_acc", threshold=cfg.BINARY_ACCURACY_THRESHOLD)
     loss_function = tf.keras.losses.BinaryCrossentropy()
 else:
     print(f"{cfg.PROBLEM_TYPE} not implemented")
@@ -464,9 +466,8 @@ else:
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE),
               loss=loss_function,
               metrics=[
-                tf.keras.metrics.Accuracy(name="acc"),
+                accuracy,
                 #tf.keras.metrics.CategoricalAccuracy(name="cat_acc"),
-                tf.metrics.BinaryAccuracy(name="bin_acc", threshold=cfg.BINARY_ACCURACY_THRESHOLD),
                 tf.keras.metrics.FalsePositives(name="fp"),
                 tf.keras.metrics.FalseNegatives(name="fn"),
                 tf.keras.metrics.TruePositives(name="tp"),

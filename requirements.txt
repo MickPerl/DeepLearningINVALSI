@@ -9,3 +9,4 @@ graphviz
 matplotlib
 BeautifulTable
 seaborn
+livelossplot
