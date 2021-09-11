@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=dropout_settato_bene
+#SBATCH --job-name=dropout
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=tommaso.azzalin@studio.unibo.it
 #SBATCH --time=10:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --output=dropout_settato_bene
+#SBATCH --output=dropout
 #SBATCH --gres=gpu:1
 
 cd ../
@@ -14,6 +14,8 @@ cd ../
 
 pip3 install --no-cache-dir -r requirements.txt
 
+export JOB_NAME=dropout
 export DROPOUT_LAYER=True
+export NEURONS=256
 
 python3 src/invalsi.py

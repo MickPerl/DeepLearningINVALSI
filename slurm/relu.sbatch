@@ -14,6 +14,7 @@ cd ../
 
 pip3 install --no-cache-dir -r requirements.txt
 
-export LEAKY_RELU=False
+export JOB_NAME=relu
+export ACTIVATION_LAYER=relu
 
 python3 src/invalsi.py

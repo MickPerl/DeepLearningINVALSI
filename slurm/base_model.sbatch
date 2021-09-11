@@ -14,4 +14,6 @@ cd ../
 
 pip3 install --no-cache-dir -r requirements.txt
 
+export JOB_NAME=base_model
+
 python3 src/invalsi.py

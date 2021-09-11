@@ -14,6 +14,7 @@ cd ../
 
 pip3 install --no-cache-dir -r requirements.txt
 
+export JOB_NAME=fillremove
 export FILL_NAN=remove
 
 python3 src/invalsi.py

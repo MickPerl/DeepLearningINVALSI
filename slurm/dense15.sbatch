@@ -14,6 +14,7 @@ cd ../
 
 pip3 install --no-cache-dir -r requirements.txt
 
+export JOB_NAME=dense15
 export NUMBER_OF_LAYERS=15
 
 python3 src/invalsi.py

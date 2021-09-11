@@ -14,6 +14,7 @@ cd ../
 
 pip3 install --no-cache-dir -r requirements.txt
 
+export JOB_NAME=lr001
 export LEARNING_RATE=0.01
 
 python3 src/invalsi.py

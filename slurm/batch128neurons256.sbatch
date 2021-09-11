@@ -14,6 +14,7 @@ cd ../
 
 pip3 install --no-cache-dir -r requirements.txt
 
+export JOB_NAME=batch128neurons256
 export NEURONS=256
 export BATCH_SIZE=128
 

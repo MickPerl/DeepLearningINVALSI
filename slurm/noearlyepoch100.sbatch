@@ -14,6 +14,7 @@ cd ../
 
 pip3 install --no-cache-dir -r requirements.txt
 
+export JOB_NAME=noearlyepoch100
 export EPOCH=100
 export EARLY_STOPPING=False
 
