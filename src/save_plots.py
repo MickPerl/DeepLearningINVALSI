@@ -4,9 +4,10 @@ import matplotlib.pyplot as plt
 
 import config as cfg
 
-IMAGE_FOLDER = path.join("src", "img")
+IMAGE_FOLDER = path.join("src", "img", cfg.JOB_NAME, cfg.PROBLEM_TYPE)
 
-makedirs(path.join(IMAGE_FOLDER, cfg.JOB_NAME, cfg.PROBLEM_TYPE), exist_ok=True)
+makedirs(IMAGE_FOLDER, exist_ok=True)
+
 
 def plot_accuracy(history: dict):
     f = plt.figure()
@@ -17,7 +18,7 @@ def plot_accuracy(history: dict):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'accuracy.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, 'accuracy.png'))
 
     plt.clf()
 
@@ -30,7 +31,7 @@ def plot_loss(history: dict):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'loss.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, 'loss.png'))
 
     plt.clf()
 
@@ -43,7 +44,7 @@ def plot_tp(history: dict):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'tp.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, 'tp.png'))
 
     plt.clf()
 
@@ -56,7 +57,7 @@ def plot_fp(history: dict):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'fp.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, 'fp.png'))
 
     plt.clf()
 
@@ -69,7 +70,7 @@ def plot_tn(history: dict):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'tn.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, 'tn.png'))
 
     plt.clf()
 
@@ -82,7 +83,7 @@ def plot_fn(history: dict):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'fn.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, 'fn.png'))
 
     plt.clf()
 
@@ -95,19 +96,19 @@ def plot_precision(history: dict):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'precision.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, 'precision.png'))
 
     plt.clf()
 
 def plot_recall(history: dict):
     f = plt.figure()
-    plt.plot(history['recall'])
-    plt.plot(history['val_recall'])
+    plt.plot(history['rec'])
+    plt.plot(history['val_rec'])
     plt.title("Recall during training")
     plt.ylabel('Recall')
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'recall.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, 'recall.png'))
 
     plt.clf()
