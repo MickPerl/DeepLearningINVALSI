@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 
 import config as cfg
 
-makedirs(path.join("src", "img", cfg.JOB_NAME, cfg.PROBLEM_TYPE), exist_ok=True)
+IMAGE_FOLDER = path.join("src", "img")
+
+makedirs(path.join(IMAGE_FOLDER, cfg.JOB_NAME, cfg.PROBLEM_TYPE), exist_ok=True)
 
 def plot_accuracy(history):
     plt.plot(history.history['acc' if cfg.PROBLEM_TYPE == "classification" else 'bin_acc'])
@@ -14,7 +16,7 @@ def plot_accuracy(history):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(cfg.JOB_NAME, 'accuracy.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'accuracy.png'))
 
 def plot_loss(history):
     plt.plot(history.history['loss'])
@@ -24,7 +26,7 @@ def plot_loss(history):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(cfg.JOB_NAME, 'loss.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'loss.png'))
 
 def plot_tp(history):
     plt.plot(history.history['tp'])
@@ -34,7 +36,7 @@ def plot_tp(history):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(cfg.JOB_NAME, 'tp.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'tp.png'))
 
 def plot_fp(history):
     plt.plot(history.history['fp'])
@@ -44,7 +46,7 @@ def plot_fp(history):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(cfg.JOB_NAME, 'fp.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'fp.png'))
 
 def plot_tn(history):
     plt.plot(history.history['tn'])
@@ -54,7 +56,7 @@ def plot_tn(history):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(cfg.JOB_NAME, 'tn.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'tn.png'))
 
 def plot_fn(history):
     plt.plot(history.history['fn'])
@@ -64,4 +66,4 @@ def plot_fn(history):
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(cfg.JOB_NAME, 'fn.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, cfg.JOB_NAME, 'fn.png'))
