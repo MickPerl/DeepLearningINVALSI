@@ -53,7 +53,10 @@ def print_config():
     print("EARLY_STOPPING: ", EARLY_STOPPING)
 
 
-def check_config():
+def check_config() -> int:
+    """
+    Checks the configuration, prints to console the errors and return how many there are.
+    """
     errors = 0
     if PROBLEM_TYPE not in ["classification", "regression"]:
         print("PROBLEM_TYPE should be either \"classification\" or \"regression\".")
@@ -106,3 +109,5 @@ def check_config():
     if ACTIVATION_LAYER not in ["relu", "leaky_relu"]:
         print("ACTIVATION_LAYER should either be \"relu\" or \"leaky_relu\".")
         errors += 1
+    
+    return errors
