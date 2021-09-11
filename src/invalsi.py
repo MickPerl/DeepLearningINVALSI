@@ -21,6 +21,9 @@ from column_converters import COLUMN_CONVERTERS
 print("Deep learning model for predicting school dropout (with data from INVALSI)\n")
 
 print("Configuration")
+if cfg.check_config() > 0:
+    sys.exit(1)
+
 cfg.print_config()
 
 """
@@ -260,7 +263,7 @@ if cfg.SAMPLING_TO_PERFORM == "random_undersampling":
 
     df_training_set = class_drop.append(class_nodrop)
     df_training_set = df_training_set.sample(frac=1, random_state=19)
-elif cfg.SAMPLING_TO_PERFORM == "SMOTE":
+else:
     categorical_features_indexes = [i for i in range(len(df_training_set.columns)) if df_training_set.columns[i] in str_categorical_features + int_categorical_features]
     sm = SMOTENC(categorical_features = categorical_features_indexes, random_state=19)
     X, y = sm.fit_resample(
@@ -269,8 +272,6 @@ elif cfg.SAMPLING_TO_PERFORM == "SMOTE":
     )
     df_training_set = pd.concat([X, y], axis = 1)
     # TODO: per farlo funzionare bisogna convertire le stringhe a interi https://stackoverflow.com/questions/65280842/smote-could-not-convert-string-to-float 
-else:
-    print(f"SAMPLING_TO_PERFORM = {cfg.SAMPLING_TO_PERFORM} not recognized.")
 
 if "Unnamed: 0" in df_training_set.columns:
     df_training_set.drop("Unnamed: 0", axis=1, inplace=True)
@@ -299,13 +300,11 @@ def pd_dataframe_to_tf_dataset(dataframe: pd.DataFrame):
         dropout_col = copied_df.pop("DROPOUT")
         dropout_col = convert_dropout_to_one_hot(dropout_col)
         copied_df.drop("LIVELLI", axis=1, inplace=True)
-    elif cfg.PROBLEM_TYPE == "regression":
+    else:
         dropout_col = copied_df.pop("LIVELLI")
         dropout_col = dropout_col.divide(other = 5)
         copied_df.drop("DROPOUT", axis=1, inplace=True)
-    else:
-        print("{cfg.PROBLEM_TYPE} is not valid.")
-        sys.exit(1)
+
     """
     Dato che il dataframe ha dati eterogenei lo convertiamo a dizionario,
     in cui le chiavi sono i nomi delle colonne e i valori sono i valori della colonna.
@@ -442,11 +441,8 @@ for _ in range(cfg.NUMBER_OF_LAYERS):
     body.add(tf.keras.layers.Dense(cfg.NEURONS, kernel_initializer=initializer_hidden_layer))
     if cfg.ACTIVATION_LAYER == "leaky_relu":
         body.add(tf.keras.layers.LeakyReLU())
-    elif cfg.ACTIVATION_LAYER == "relu":
-        body.add(tf.keras.layers.ReLU())
     else:
-        print(f"{cfg.ACTIVATION_LAYER} as activation layer not implemented")
-        sys.exit(1)
+        body.add(tf.keras.layers.ReLU())
     
     if cfg.DROPOUT_LAYER:
         body.add(tf.keras.layers.Dropout(rate=cfg.DROPOUT_HIDDEN_LAYER_RATE, seed=19))
@@ -454,7 +450,7 @@ for _ in range(cfg.NUMBER_OF_LAYERS):
 # segue l'aggiunta dell'output layer
 if cfg.PROBLEM_TYPE == "classification":
     body.add(tf.keras.layers.Dense(2, activation="softmax", kernel_initializer=initializer_output_layer))
-elif cfg.PROBLEM_TYPE == "regression":
+else:
     body.add(tf.keras.layers.Dense(1, activation="sigmoid", kernel_initializer=initializer_output_layer))
 
 x = preprocessor(input_layers)
@@ -466,12 +462,9 @@ model = tf.keras.Model(input_layers, result)
 if cfg.PROBLEM_TYPE == "classification":
     accuracy = tf.keras.metrics.Accuracy(name="acc")
     loss_function = tf.keras.losses.CategoricalCrossentropy()
-elif cfg.PROBLEM_TYPE == "regression":
-    accuracy = tf.metrics.BinaryAccuracy(name="bin_acc", threshold=0.5) # 0.5 perché LIVELLI in [0,1,2] è DROPOUT = True, LIVELLI in [3,4,5] è DROPOUT = False
-    loss_function = tf.keras.losses.BinaryCrossentropy()
 else:
-    print(f"{cfg.PROBLEM_TYPE} not implemented")
-    sys.exit(1)
+    accuracy = tf.metrics.BinaryAccuracy(name="bin_acc", threshold=0.4) # 0.4 perché LIVELLI in [0,1,2] è DROPOUT = True, LIVELLI in [3,4,5] è DROPOUT = False
+    loss_function = tf.keras.losses.BinaryCrossentropy()
 
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE),
               loss=loss_function,
@@ -514,20 +507,22 @@ save_plots.plot_precision(metrics)
 score = model.evaluate(ds_test_set, verbose=2)
 
 print()
-print('Results after training')
-print('Test loss:', score[0])
-print('Test accuracy:', score[1])
-print('Test true positives:', score[2])
-print('Test false positives:', score[3])
-print('Test true negatives:', score[4])
-print('Test false negatives:', score[5])
-print('Test precision: ', score[6])
-print('Test recall: ', score[7])
+print('Results with test dataset')
+print('Loss:', round(score[0], 4))
+print('Accuracy:', round(score[1], 4))
+print('False positives:', int(score[2]))
+print('False negatives:', int(score[3]))
+print('True positives:', int(score[4]))
+print('True negatives:', int(score[5]))
+print('Precision: ', round(score[6], 4))
+print('Recall: ', round(score[7], 4))
 
 """
 Matrici di confusione per training e test.
 """
-
+if cfg.PROBLEM_TYPE == "regression":
+    print("Confusion matrix for regression currently not supported.")
+    sys.exit(0)
 
 def convert_df_for_prediction(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
@@ -543,6 +538,8 @@ if len(training_x)*cfg.BATCH_SIZE - len(training_y) != 0:
     training_y = training_y.head(len(training_x)*cfg.BATCH_SIZE - len(training_y))
 if cfg.PROBLEM_TYPE == "classification":
     training_y = convert_dropout_to_one_hot(training_y)
+else:
+    training_y = training_y.divide(other = 5)
 
 validation_x = convert_df_for_prediction(df_validation_set[[col for col in df_validation_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
 validation_y = df_validation_set[target_col]
@@ -550,6 +547,8 @@ if len(validation_x)*cfg.BATCH_SIZE - len(validation_y) != 0:
     validation_y = validation_y.head((len(validation_x)*cfg.BATCH_SIZE) - len(validation_y))
 if cfg.PROBLEM_TYPE == "classification":
     validation_y = convert_dropout_to_one_hot(validation_y)
+else:
+    validation_y = validation_y.divide(other = 5)
 
 test_x = convert_df_for_prediction(df_test_set[[col for col in df_test_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
 test_y = df_test_set[target_col]
@@ -557,34 +556,36 @@ if (len(test_x)*cfg.BATCH_SIZE) - len(test_y) != 0:
     test_y = test_y.head(len(test_x)*cfg.BATCH_SIZE - len(test_y))
 if cfg.PROBLEM_TYPE == "classification":
     test_y = convert_dropout_to_one_hot(test_y)
+else:
+    test_y = test_y.divide(other = 5)
 
 predicted_training_y = model.predict(training_x)
 predicted_validation_y = model.predict(validation_x)
 predicted_test_y = model.predict(test_x)
 
-training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y).numpy()
-validation_confusion_matrix = tf.math.confusion_matrix(labels=validation_y, predictions=predicted_validation_y).numpy()
-test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y).numpy()
+training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y, dtype=tf.float32).numpy()
+validation_confusion_matrix = tf.math.confusion_matrix(labels=validation_y, predictions=predicted_validation_y, dtype=tf.float32).numpy()
+test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y, dtype=tf.float32).numpy()
 
 def compute_metrics(name, confusion_matrix):
-    true_positives = confusion_matrix[1, 0]
-    false_positives = confusion_matrix[1, 1]
-    false_negatives = confusion_matrix[0, 1]
-    true_negatives = confusion_matrix[0, 0]
+    true_positives = np.diag(confusion_matrix) # vettore in cui ogni cella è il numero di TP per la classe
+    false_positives = confusion_matrix.sum(axis=0) - true_positives
+    false_negatives = confusion_matrix.sum(axis=1) - true_positives
+    true_negatives = confusion_matrix.sum() - (true_positives + false_positives + false_negatives)
 
-    accuracy = (true_positives + true_negatives)/confusion_matrix.sum()
-    precision = true_positives / (true_positives + false_positives)
-    recall = true_positives / (true_positives + false_negatives)
+    accuracy = (true_positives.sum() + true_negatives.sum()) / confusion_matrix.sum()
+    precision = true_positives.sum() / (true_positives.sum() + false_positives.sum())
+    recall = true_positives.sum() / (true_positives.sum() + false_negatives.sum())
 
     print(f"Confusion Matrix Name: {name}")
     print(confusion_matrix)
-    print(f"- TP: {true_positives}")
-    print(f"- TN: {true_negatives}")
-    print(f"- FP: {false_positives}")
-    print(f"- FN: {false_negatives}")
-    print(f"- Accuracy: {accuracy}") # Attenzione: si tratta della Binary Accuracy
-    print(f"- Precision: {precision}")
-    print(f"- Recall: {recall}")
+    print(f"- TP: {int(true_positives.sum())}")
+    print(f"- TN: {int(true_negatives.sum())}")
+    print(f"- FP: {int(false_positives.sum())}")
+    print(f"- FN: {int(false_negatives.sum())}")
+    print(f"- Accuracy: {round(accuracy, 4)}") # Attenzione: si tratta della Binary Accuracy
+    print(f"- Precision: {round(precision, 4)}")
+    print(f"- Recall: {round(recall, 4)}")
     print()
     
 compute_metrics("Training", training_confusion_matrix)
