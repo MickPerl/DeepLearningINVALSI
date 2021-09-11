@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 import config as cfg
 
-makedirs(cfg.JOB_NAME, exist_ok=True)
+makedirs(path.join("src", "img", cfg.JOB_NAME, cfg.PROBLEM_TYPE), exist_ok=True)
 
 def plot_accuracy(history):
     plt.plot(history.history['acc' if cfg.PROBLEM_TYPE == "classification" else 'bin_acc'])

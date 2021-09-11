@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 import re
 import sys
-from os import path, makedirs
-from matplotlib.pyplot import hist
 
 import pandas as pd
 import numpy as np
@@ -522,22 +520,24 @@ def convert_df_for_prediction(dataframe: pd.DataFrame):
 
     return ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
 
-training_x = convert_df_for_prediction(df_training_set[[col for col in df_training_set.columns if col != "DROPOUT"]])
-training_y = df_training_set["DROPOUT"]
+target_col = "DROPOUT" if cfg.PROBLEM_TYPE == "classification" else "LIVELLI"
+
+training_x = convert_df_for_prediction(df_training_set[[col for col in df_training_set.columns if col != target_col]])
+training_y = df_training_set[target_col]
 if len(training_x)*cfg.BATCH_SIZE - len(training_y) != 0:
     training_y = training_y.head(len(training_x)*cfg.BATCH_SIZE - len(training_y))
 if cfg.PROBLEM_TYPE == "classification":
     training_y = convert_dropout_to_one_hot(training_y)
 
-validation_x = convert_df_for_prediction(df_validation_set[[col for col in df_validation_set.columns if col != "DROPOUT"]])
-validation_y = df_validation_set["DROPOUT"]
+validation_x = convert_df_for_prediction(df_validation_set[[col for col in df_validation_set.columns if col != target_col]])
+validation_y = df_validation_set[target_col]
 if len(validation_x)*cfg.BATCH_SIZE - len(validation_y) != 0:
     validation_y = validation_y.head((len(validation_x)*cfg.BATCH_SIZE) - len(validation_y))
 if cfg.PROBLEM_TYPE == "classification":
     validation_y = convert_dropout_to_one_hot(validation_y)
 
-test_x = convert_df_for_prediction(df_test_set[[col for col in df_test_set.columns if col != "DROPOUT"]])
-test_y = df_test_set["DROPOUT"]
+test_x = convert_df_for_prediction(df_test_set[[col for col in df_test_set.columns if col != target_col]])
+test_y = df_test_set[target_col]
 if (len(test_x)*cfg.BATCH_SIZE) - len(test_y) != 0:
     test_y = test_y.head(len(test_x)*cfg.BATCH_SIZE - len(test_y))
 if cfg.PROBLEM_TYPE == "classification":
