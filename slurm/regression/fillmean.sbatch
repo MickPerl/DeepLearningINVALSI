@@ -8,7 +8,7 @@
 #SBATCH --output=fillmean_reg
 #SBATCH --gres=gpu:1
 
-cd ../
+cd ../../
 
 . venv/bin/activate # per attivare il virtual environment python
 

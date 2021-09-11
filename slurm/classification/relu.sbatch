@@ -8,7 +8,7 @@
 #SBATCH --output=relu_cla
 #SBATCH --gres=gpu:1
 
-cd ../
+cd ../../
 
 . venv/bin/activate # per attivare il virtual environment python
 
