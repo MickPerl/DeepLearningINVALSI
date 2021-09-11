@@ -32,7 +32,7 @@ DROPOUT_HIDDEN_LAYER_RATE = float(getenv(key="DROPOUT_HIDDEN_LAYER_RATE", defaul
 DROPOUT_INPUT_LAYER_RATE = float(getenv(key="DROPOUT_INPUT_LAYER_RATE", default="0.8"))
 
 def print_config():
-    print("JOB_NAME", JOB_NAME)
+    print("JOB_NAME:", JOB_NAME)
     print("PROBLEM_TYPE: ", PROBLEM_TYPE)
     print("LEARNING_RATE: ", LEARNING_RATE)
     print("DROPOUT_LAYER: ", DROPOUT_LAYER)
