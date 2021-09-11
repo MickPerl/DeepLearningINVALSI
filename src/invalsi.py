@@ -490,6 +490,8 @@ history = model.fit(ds_training_set,
           callbacks=[early_stopper] if cfg.EARLY_STOPPING else [],
           verbose=2)
 
+print(history.params)
+
 score = model.evaluate(ds_test_set, verbose=2)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
@@ -511,11 +513,13 @@ training_y = training_y.head((len(training_x)*cfg.BATCH_SIZE) - len(training_y))
 if cfg.PROBLEM_TYPE == "classification":
     training_y = convert_dropout_to_one_hot(training_y)
 
+""" ATTENZIONE: il calcolo della matrice di confusione sul dataset di validation ha un problema che non ne permette la corretta esecuzione. Tenere commentate le linee riguardanti la matrice di confusione sul dataset di validation per eseguire lo script
 validation_x = convert_df_for_prediction(df_validation_set[[col for col in df_validation_set.columns if col != "DROPOUT"]])
 validation_y = df_validation_set["DROPOUT"]
 validation_y = validation_y.head((len(validation_x)*cfg.BATCH_SIZE) - len(validation_y))
 if cfg.PROBLEM_TYPE == "classification":
     validation_y = convert_dropout_to_one_hot(validation_y)
+"""
 
 test_x = convert_df_for_prediction(df_test_set[[col for col in df_test_set.columns if col != "DROPOUT"]])
 test_y = df_test_set["DROPOUT"]
@@ -524,12 +528,12 @@ if cfg.PROBLEM_TYPE == "classification":
     test_y = convert_dropout_to_one_hot(test_y)
 
 predicted_training_y = model.predict(training_x)
-predicted_validation_y = model.predict(validation_x)
+# predicted_validation_y = model.predict(validation_x)
 predicted_test_y = model.predict(test_x)
 
 training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y).numpy()
 test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y).numpy()
-validation_confusion_matrix = tf.math.confusion_matrix(labels=validation_y, predictions=predicted_validation_y).numpy()
+#validation_confusion_matrix = tf.math.confusion_matrix(labels=validation_y, predictions=predicted_validation_y).numpy()
 
 def compute_metrics(name, confusion_matrix):
     true_positives = confusion_matrix[1, 0]
@@ -552,5 +556,5 @@ def compute_metrics(name, confusion_matrix):
     print()
     
 compute_metrics("Training", training_confusion_matrix)
-compute_metrics("Validation", validation_confusion_matrix)
+#compute_metrics("Validation", validation_confusion_matrix)
 compute_metrics("Test", test_confusion_matrix)
