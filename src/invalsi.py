@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 import re
 import sys
+from os import path, makedirs
+from matplotlib.pyplot import hist
 
 import pandas as pd
 import numpy as np
@@ -13,6 +15,7 @@ from tensorflow.keras.layers.experimental.preprocessing import StringLookup
 from tensorflow.keras.callbacks import EarlyStopping
 from imblearn.over_sampling import SMOTENC
 
+import save_plots
 import config as cfg
 from mapping_domande_ambiti_processi import MAPPING_DOMANDE_AMBITI_PROCESSI
 from column_converters import COLUMN_CONVERTERS
@@ -146,19 +149,21 @@ if PRE_ML:
     corr_matrix = dataset_ap.corr(method='pearson').round(2)
     corr_matrix.style.background_gradient(cmap='YlOrRd')
 
-interisting_to_check_if_correlated_columns = [
+interesting_to_check_if_correlated_columns = [
     # Alta correlazione fra voti della stessa materia, abbastanza correlate fra materie diverse
     "voto_scritto_ita",
     "voto_orale_ita",
     "voto_scritto_mat",
     "voto_orale_mat",
     # Correlazione totale, abbastanza correlate con voti
-    "pu_ma_gr",
-    "pu_ma_no"
+    "pu_ma_no",
+    # Target columns
+    "LIVELLI",
+    "DROPOUT"
 ] + list(ambiti_processi)
 
 if PRE_ML:
-    check_corr_dataset = dataset_ap[interisting_to_check_if_correlated_columns].corr(method='pearson').round(2)
+    check_corr_dataset = dataset_ap[interesting_to_check_if_correlated_columns].corr(method='pearson').round(2)
     check_corr_dataset.style.background_gradient(cmap='YlOrRd')
 
 """
@@ -178,6 +183,7 @@ if PRE_ML:
     print("Lista colonne e tipi:")
     print(dataset_ap.info())
 
+# Le colonne DROPOUT e LIVELLI non sono considerate in quanto colonne target (in particolare, DROPOUT è una regressione di LIVELLI)
 continuous_features = columns_low_ratio_null_values + \
                       ["pu_ma_gr", "pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200", "WLE_MAT_200_CORR",
                        "pu_ma_no_corr"] + \
@@ -185,7 +191,7 @@ continuous_features = columns_low_ratio_null_values + \
 if cfg.FILL_NAN == "remove":
     continuous_features.remove("voto_scritto_ita")
     continuous_features.remove("voto_orale_ita")
-ordinal_features = ["n_stud_prev", "n_classi_prev", "LIVELLI"]
+ordinal_features = ["n_stud_prev", "n_classi_prev"]
 int_categorical_features = [
     "CODICE_SCUOLA", "CODICE_PLESSO", "CODICE_CLASSE", "campione", "prog",
 ]
@@ -291,17 +297,22 @@ def convert_dropout_to_one_hot(dropout_col):
 
 def pd_dataframe_to_tf_dataset(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
-    dropout_col = copied_df.pop("DROPOUT")
-
-    # Dropout one-hot encoded (needed if two output neurons are presents in the architecture)
     if cfg.PROBLEM_TYPE == "classification":
+        dropout_col = copied_df.pop("DROPOUT")
         dropout_col = convert_dropout_to_one_hot(dropout_col)
-
+        copied_df.drop("LIVELLI", axis=1, inplace=True)
+    elif cfg.PROBLEM_TYPE == "regression":
+        dropout_col = copied_df.pop("LIVELLI")
+        copied_df.drop("DROPOUT", axis=1, inplace=True)
+    else:
+        print("{cfg.PROBLEM_TYPE} is not valid.")
+        sys.exit(1)
     """
     Dato che il dataframe ha dati eterogenei lo convertiamo a dizionario,
     in cui le chiavi sono i nomi delle colonne e i valori sono i valori della colonna.
     Infine bisogna indicare la colonna target.
     """
+
     tf_dataset = tf.data.Dataset.from_tensor_slices((dict(copied_df), dropout_col))
     tf_dataset = tf_dataset.shuffle(buffer_size=len(copied_df), seed=19)
     return tf_dataset
@@ -330,7 +341,7 @@ Creazione layer di input per ogni feature a partire dalle liste precedentemente 
 """
 input_layers = {}
 for name, column in df_training_set.items():
-    if name == "DROPOUT":
+    if name in ["DROPOUT", "LIVELLI"]:
         continue
 
     if cfg.FILL_NAN == "remove" and name in ["voto_scritto_ita", "voto_orale_ita"]:
@@ -457,7 +468,7 @@ if cfg.PROBLEM_TYPE == "classification":
     accuracy = tf.keras.metrics.Accuracy(name="acc")
     loss_function = tf.keras.losses.CategoricalCrossentropy()
 elif cfg.PROBLEM_TYPE == "regression":
-    accuracy = tf.metrics.BinaryAccuracy(name="bin_acc", threshold=cfg.BINARY_ACCURACY_THRESHOLD)
+    accuracy = tf.metrics.BinaryAccuracy(name="bin_acc", threshold=0.5) # 0.5 perché LIVELLI in [0,1,2] è DROPOUT = True, LIVELLI in [3,4,5] è DROPOUT = False
     loss_function = tf.keras.losses.BinaryCrossentropy()
 else:
     print(f"{cfg.PROBLEM_TYPE} not implemented")
@@ -467,7 +478,6 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE
               loss=loss_function,
               metrics=[
                 accuracy,
-                #tf.keras.metrics.CategoricalAccuracy(name="cat_acc"),
                 tf.keras.metrics.FalsePositives(name="fp"),
                 tf.keras.metrics.FalseNegatives(name="fn"),
                 tf.keras.metrics.TruePositives(name="tp"),
@@ -490,7 +500,12 @@ history = model.fit(ds_training_set,
           callbacks=[early_stopper] if cfg.EARLY_STOPPING else [],
           verbose=2)
 
-print(history.params)
+save_plots.plot_accuracy(history)
+save_plots.plot_loss(history)
+save_plots.plot_tp(history)
+save_plots.plot_tn(history)
+save_plots.plot_fp(history)
+save_plots.plot_fn(history)
 
 score = model.evaluate(ds_test_set, verbose=2)
 print('Test loss:', score[0])
@@ -509,31 +524,32 @@ def convert_df_for_prediction(dataframe: pd.DataFrame):
 
 training_x = convert_df_for_prediction(df_training_set[[col for col in df_training_set.columns if col != "DROPOUT"]])
 training_y = df_training_set["DROPOUT"]
-training_y = training_y.head((len(training_x)*cfg.BATCH_SIZE) - len(training_y))
+if len(training_x)*cfg.BATCH_SIZE - len(training_y) != 0:
+    training_y = training_y.head(len(training_x)*cfg.BATCH_SIZE - len(training_y))
 if cfg.PROBLEM_TYPE == "classification":
     training_y = convert_dropout_to_one_hot(training_y)
 
-""" ATTENZIONE: il calcolo della matrice di confusione sul dataset di validation ha un problema che non ne permette la corretta esecuzione. Tenere commentate le linee riguardanti la matrice di confusione sul dataset di validation per eseguire lo script
 validation_x = convert_df_for_prediction(df_validation_set[[col for col in df_validation_set.columns if col != "DROPOUT"]])
 validation_y = df_validation_set["DROPOUT"]
-validation_y = validation_y.head((len(validation_x)*cfg.BATCH_SIZE) - len(validation_y))
+if len(validation_x)*cfg.BATCH_SIZE - len(validation_y) != 0:
+    validation_y = validation_y.head((len(validation_x)*cfg.BATCH_SIZE) - len(validation_y))
 if cfg.PROBLEM_TYPE == "classification":
     validation_y = convert_dropout_to_one_hot(validation_y)
-"""
 
 test_x = convert_df_for_prediction(df_test_set[[col for col in df_test_set.columns if col != "DROPOUT"]])
 test_y = df_test_set["DROPOUT"]
-test_y = test_y.head((len(test_x)*cfg.BATCH_SIZE) - len(test_y))
+if (len(test_x)*cfg.BATCH_SIZE) - len(test_y) != 0:
+    test_y = test_y.head(len(test_x)*cfg.BATCH_SIZE - len(test_y))
 if cfg.PROBLEM_TYPE == "classification":
     test_y = convert_dropout_to_one_hot(test_y)
 
 predicted_training_y = model.predict(training_x)
-# predicted_validation_y = model.predict(validation_x)
+predicted_validation_y = model.predict(validation_x)
 predicted_test_y = model.predict(test_x)
 
 training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y).numpy()
+validation_confusion_matrix = tf.math.confusion_matrix(labels=validation_y, predictions=predicted_validation_y).numpy()
 test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y).numpy()
-#validation_confusion_matrix = tf.math.confusion_matrix(labels=validation_y, predictions=predicted_validation_y).numpy()
 
 def compute_metrics(name, confusion_matrix):
     true_positives = confusion_matrix[1, 0]
@@ -556,5 +572,5 @@ def compute_metrics(name, confusion_matrix):
     print()
     
 compute_metrics("Training", training_confusion_matrix)
-#compute_metrics("Validation", validation_confusion_matrix)
+compute_metrics("Validation", validation_confusion_matrix)
 compute_metrics("Test", test_confusion_matrix)

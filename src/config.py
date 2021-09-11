@@ -29,8 +29,10 @@ ACTIVATION_LAYER = getenv(key="ACTIVATION_LAYER", default="leaky_relu")
 EARLY_STOPPING = eval(getenv(key="EARLY_STOPPING", default="True"))
 BINARY_ACCURACY_THRESHOLD = float(getenv(key="BINARY_ACCURACY_THRESHOLD", default="0.5"))
 PROBLEM_TYPE = getenv(key="PROBLEM_TYPE", default="classification")
+JOB_NAME = getenv(key="JOB_NAME", default="default")
 
 def print_config():
+    print("JOB_NAME", JOB_NAME)
     print("PROBLEM_TYPE: ", PROBLEM_TYPE)
     print("LEARNING_RATE: ", LEARNING_RATE)
     print("DROPOUT_LAYER: ", DROPOUT_LAYER)
