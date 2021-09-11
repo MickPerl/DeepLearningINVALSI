@@ -4,6 +4,8 @@ from os import getenv
 # both
 LEARNING_RATE = float(getenv(key="LEARNING_RATE", default="0.001"))  # --learningrate floatnum
 DROPOUT_LAYER = eval(getenv(key="DROPOUT_LAYER", default="False")) # --dropout
+DROPOUT_HIDDEN_LAYER_RATE = float(getenv(key="DROPOUT_HIDDEN_LAYER_RATE", default="0.5"))
+DROPOUT_INPUT_LAYER_RATE = float(getenv(key="DROPOUT_INPUT_LAYER_RATE", default="0.8"))
 EPOCH = int(getenv(key="EPOCH", default="50")) # --epoch intnum
 NEURONS = int(getenv(key="NEURONS", default="128")) # --neurons intnum
 BATCH_SIZE = int(getenv(key="BATCH_SIZE", default="32")) # --batchsize intnum
@@ -15,8 +17,6 @@ SMALL_DATASET = eval(getenv(key="SMALL_DATASET", default="False")) # --small
 MODEL = int(getenv(key="MODEL", default="1")) # --model intnum
 OPTIMIZER = optimizers.Adam(learning_rate=LEARNING_RATE) # --optimizer nomeottimizzatore
 # invalsi.py
-DROPOUT_HIDDEN_LAYER_RATE = float(getenv(key="DROPOUT_HIDDEN_LAYER_RATE", default="0.5"))
-DROPOUT_INPUT_LAYER_RATE = float(getenv(key="DROPOUT_INPUT_LAYER_RATE", default="0.8"))
 ORIGINAL_DATASET = getenv(key="ORIGINAL_DATASET", default="../nuovi_dataset/original_dataset.csv")
 CLEANED_DATASET = getenv(key="CLEANED_DATASET", default="../nuovi_dataset/cleaned_dataset.csv")
 CLEANED_DATASET_WITH_AP = getenv(key="CLEANED_DATASET_WITH_AP", default="../nuovi_dataset/dataset_ap.csv")
