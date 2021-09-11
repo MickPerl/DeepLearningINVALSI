@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=batch128neurons256
+#SBATCH --job-name=noearlyepoch100_reg
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=tommaso.azzalin@studio.unibo.it
 #SBATCH --time=10:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --output=batch128neurons256
+#SBATCH --output=noearlyepoch100_reg
 #SBATCH --gres=gpu:1
 
 cd ../
@@ -14,8 +14,9 @@ cd ../
 
 pip3 install --no-cache-dir -r requirements.txt
 
-export JOB_NAME=batch128neurons256
-export NEURONS=256
-export BATCH_SIZE=128
+export JOB_NAME=noearlyepoch100
+export PROBLEM_TYPE=regression
+export EPOCH=100
+export EARLY_STOPPING=False
 
 python3 src/invalsi.py

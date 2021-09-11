@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=batch128
+#SBATCH --job-name=batch128_cla
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=tommaso.azzalin@studio.unibo.it
 #SBATCH --time=10:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --output=batch128
+#SBATCH --output=batch128_cla
 #SBATCH --gres=gpu:1
 
 cd ../

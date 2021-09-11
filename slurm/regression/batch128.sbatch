@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=relu
+#SBATCH --job-name=batch128_reg
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=tommaso.azzalin@studio.unibo.it
 #SBATCH --time=10:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --output=relu
+#SBATCH --output=batch128_reg
 #SBATCH --gres=gpu:1
 
 cd ../
@@ -14,7 +14,8 @@ cd ../
 
 pip3 install --no-cache-dir -r requirements.txt
 
-export JOB_NAME=relu
-export ACTIVATION_LAYER=relu
+export JOB_NAME=batch128
+export PROBLEM_TYPE=regression
+export BATCH_SIZE=128
 
 python3 src/invalsi.py
