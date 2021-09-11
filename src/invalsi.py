@@ -301,6 +301,7 @@ def pd_dataframe_to_tf_dataset(dataframe: pd.DataFrame):
         copied_df.drop("LIVELLI", axis=1, inplace=True)
     elif cfg.PROBLEM_TYPE == "regression":
         dropout_col = copied_df.pop("LIVELLI")
+        dropout_col = dropout_col.divide(other = 5)
         copied_df.drop("DROPOUT", axis=1, inplace=True)
     else:
         print("{cfg.PROBLEM_TYPE} is not valid.")
@@ -479,7 +480,9 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE
                 tf.keras.metrics.FalsePositives(name="fp"),
                 tf.keras.metrics.FalseNegatives(name="fn"),
                 tf.keras.metrics.TruePositives(name="tp"),
-                tf.keras.metrics.TrueNegatives(name="tn")
+                tf.keras.metrics.TrueNegatives(name="tn"),
+                tf.keras.metrics.Precision(name="prec"),
+                tf.keras.metrics.Recall(name="rec")
               ])
 
 """
@@ -498,16 +501,28 @@ history = model.fit(ds_training_set,
           callbacks=[early_stopper] if cfg.EARLY_STOPPING else [],
           verbose=2)
 
-save_plots.plot_accuracy(history)
-save_plots.plot_loss(history)
-save_plots.plot_tp(history)
-save_plots.plot_tn(history)
-save_plots.plot_fp(history)
-save_plots.plot_fn(history)
+metrics = history.history
+save_plots.plot_accuracy(metrics)
+save_plots.plot_loss(metrics)
+save_plots.plot_tp(metrics)
+save_plots.plot_tn(metrics)
+save_plots.plot_fp(metrics)
+save_plots.plot_fn(metrics)
+save_plots.plot_recall(metrics)
+save_plots.plot_precision(metrics)
 
 score = model.evaluate(ds_test_set, verbose=2)
+
+print()
+print('Results after training')
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
+print('Test true positives:', score[2])
+print('Test false positives:', score[3])
+print('Test true negatives:', score[4])
+print('Test false negatives:', score[5])
+print('Test precision: ', score[6])
+print('Test recall: ', score[7])
 
 """
 Matrici di confusione per training e test.
@@ -522,21 +537,21 @@ def convert_df_for_prediction(dataframe: pd.DataFrame):
 
 target_col = "DROPOUT" if cfg.PROBLEM_TYPE == "classification" else "LIVELLI"
 
-training_x = convert_df_for_prediction(df_training_set[[col for col in df_training_set.columns if col != target_col]])
+training_x = convert_df_for_prediction(df_training_set[[col for col in df_training_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
 training_y = df_training_set[target_col]
 if len(training_x)*cfg.BATCH_SIZE - len(training_y) != 0:
     training_y = training_y.head(len(training_x)*cfg.BATCH_SIZE - len(training_y))
 if cfg.PROBLEM_TYPE == "classification":
     training_y = convert_dropout_to_one_hot(training_y)
 
-validation_x = convert_df_for_prediction(df_validation_set[[col for col in df_validation_set.columns if col != target_col]])
+validation_x = convert_df_for_prediction(df_validation_set[[col for col in df_validation_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
 validation_y = df_validation_set[target_col]
 if len(validation_x)*cfg.BATCH_SIZE - len(validation_y) != 0:
     validation_y = validation_y.head((len(validation_x)*cfg.BATCH_SIZE) - len(validation_y))
 if cfg.PROBLEM_TYPE == "classification":
     validation_y = convert_dropout_to_one_hot(validation_y)
 
-test_x = convert_df_for_prediction(df_test_set[[col for col in df_test_set.columns if col != target_col]])
+test_x = convert_df_for_prediction(df_test_set[[col for col in df_test_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
 test_y = df_test_set[target_col]
 if (len(test_x)*cfg.BATCH_SIZE) - len(test_y) != 0:
     test_y = test_y.head(len(test_x)*cfg.BATCH_SIZE - len(test_y))
@@ -562,6 +577,7 @@ def compute_metrics(name, confusion_matrix):
     recall = true_positives / (true_positives + false_negatives)
 
     print(f"Confusion Matrix Name: {name}")
+    print(confusion_matrix)
     print(f"- TP: {true_positives}")
     print(f"- TN: {true_negatives}")
     print(f"- FP: {false_positives}")
