@@ -16,6 +16,5 @@ pip3 install --no-cache-dir -r requirements.txt
 
 export JOB_NAME=base_model
 export PROBLEM_TYPE=regression
-export EARLY_STOPPING=True
 
 python3 src/invalsi.py
