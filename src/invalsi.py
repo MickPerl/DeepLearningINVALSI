@@ -529,9 +529,6 @@ print('Recall: ', round(score[7], 4))
 """
 Matrici di confusione per training e test.
 """
-if cfg.PROBLEM_TYPE == "regression":
-    print("Confusion matrix for regression currently not supported.")
-    sys.exit(0)
 
 
 def convert_df_for_prediction(dataframe: pd.DataFrame):
@@ -550,8 +547,6 @@ if len(training_x) * cfg.BATCH_SIZE - len(training_y) != 0:
     training_y = training_y.head(len(training_x) * cfg.BATCH_SIZE - len(training_y))
 if cfg.PROBLEM_TYPE == "classification":
     training_y = convert_dropout_to_one_hot(training_y)
-else:
-    training_y = training_y.divide(other=5)
 
 validation_x = convert_df_for_prediction(
     df_validation_set[[col for col in df_validation_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
@@ -560,8 +555,6 @@ if len(validation_x) * cfg.BATCH_SIZE - len(validation_y) != 0:
     validation_y = validation_y.head((len(validation_x) * cfg.BATCH_SIZE) - len(validation_y))
 if cfg.PROBLEM_TYPE == "classification":
     validation_y = convert_dropout_to_one_hot(validation_y)
-else:
-    validation_y = validation_y.divide(other=5)
 
 test_x = convert_df_for_prediction(
     df_test_set[[col for col in df_test_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
@@ -570,25 +563,26 @@ if (len(test_x) * cfg.BATCH_SIZE) - len(test_y) != 0:
     test_y = test_y.head(len(test_x) * cfg.BATCH_SIZE - len(test_y))
 if cfg.PROBLEM_TYPE == "classification":
     test_y = convert_dropout_to_one_hot(test_y)
-else:
-    test_y = test_y.divide(other=5)
 
 predicted_training_y = model.predict(training_x)
 predicted_validation_y = model.predict(validation_x)
 predicted_test_y = model.predict(test_x)
 
-training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y,
-                                                     dtype=tf.float32).numpy()
-validation_confusion_matrix = tf.math.confusion_matrix(labels=validation_y, predictions=predicted_validation_y,
-                                                       dtype=tf.float32).numpy()
-test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y, dtype=tf.float32).numpy()
+if cfg.PROBLEM_TYPE == "regression":
+    predicted_training_y = np.round(predicted_training_y * 5)
+    predicted_validation_y = np.round(predicted_validation_y * 5)
+    predicted_test_y = np.round(predicted_test_y * 5)
+
+training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y).numpy()
+validation_confusion_matrix = tf.math.confusion_matrix(labels=validation_y, predictions=predicted_validation_y).numpy()
+test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y).numpy()
 
 
 def compute_metrics(label, confusion_matrix):
     true_positives = np.diag(confusion_matrix)  # vettore in cui ogni cella è il numero di TP per la classe
     false_positives = confusion_matrix.sum(axis=0) - true_positives
     false_negatives = confusion_matrix.sum(axis=1) - true_positives
-    true_negatives = confusion_matrix.sum() - (true_positives + false_positives + false_negatives)
+    true_negatives = confusion_matrix.sum() - (true_positives.sum() + false_positives.sum() + false_negatives.sum())
 
     accuracy = (true_positives.sum() + true_negatives.sum()) / confusion_matrix.sum()
     precision = true_positives.sum() / (true_positives.sum() + false_positives.sum())
