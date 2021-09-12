@@ -1,0 +1,151 @@
+Requirement already satisfied: tensorflow==2.6.0 in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 1)) (2.6.0)
+Requirement already satisfied: pandas in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 2)) (1.3.2)
+Requirement already satisfied: scikit-learn in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 3)) (0.24.2)
+Requirement already satisfied: imbalanced-learn in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 4)) (0.8.0)
+Requirement already satisfied: Jinja2 in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 5)) (3.0.1)
+Requirement already satisfied: ipykernel in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 6)) (6.3.1)
+Requirement already satisfied: pydot in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 7)) (1.4.2)
+Requirement already satisfied: graphviz in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 8)) (0.17)
+Requirement already satisfied: matplotlib in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 9)) (3.4.3)
+Requirement already satisfied: BeautifulTable in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 10)) (1.0.1)
+Requirement already satisfied: seaborn in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 11)) (0.11.2)
+Requirement already satisfied: livelossplot in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 12)) (0.5.4)
+Requirement already satisfied: termcolor~=1.1.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.1.0)
+Requirement already satisfied: six~=1.15.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.15.0)
+Requirement already satisfied: google-pasta~=0.2 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (0.2.0)
+Requirement already satisfied: gast==0.4.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (0.4.0)
+Requirement already satisfied: astunparse~=1.6.3 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.6.3)
+Requirement already satisfied: absl-py~=0.10 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (0.13.0)
+Requirement already satisfied: keras~=2.6 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (2.6.0)
+Requirement already satisfied: opt-einsum~=3.3.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (3.3.0)
+Requirement already satisfied: wrapt~=1.12.1 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.12.1)
+Requirement already satisfied: wheel~=0.35 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (0.37.0)
+Requirement already satisfied: grpcio<2.0,>=1.37.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.39.0)
+Requirement already satisfied: tensorboard~=2.6 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (2.6.0)
+Requirement already satisfied: typing-extensions~=3.7.4 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (3.7.4.3)
+Requirement already satisfied: flatbuffers~=1.12.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.12)
+Requirement already satisfied: numpy~=1.19.2 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.19.5)
+Requirement already satisfied: clang~=5.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (5.0)
+Requirement already satisfied: h5py~=3.1.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (3.1.0)
+Requirement already satisfied: tensorflow-estimator~=2.6 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (2.6.0)
+Requirement already satisfied: keras-preprocessing~=1.1.2 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.1.2)
+Requirement already satisfied: protobuf>=3.9.2 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (3.17.3)
+Requirement already satisfied: pytz>=2017.3 in ./venv/lib/python3.7/site-packages (from pandas->-r requirements.txt (line 2)) (2021.1)
+Requirement already satisfied: python-dateutil>=2.7.3 in ./venv/lib/python3.7/site-packages (from pandas->-r requirements.txt (line 2)) (2.8.2)
+Requirement already satisfied: threadpoolctl>=2.0.0 in ./venv/lib/python3.7/site-packages (from scikit-learn->-r requirements.txt (line 3)) (2.2.0)
+Requirement already satisfied: scipy>=0.19.1 in ./venv/lib/python3.7/site-packages (from scikit-learn->-r requirements.txt (line 3)) (1.7.1)
+Requirement already satisfied: joblib>=0.11 in ./venv/lib/python3.7/site-packages (from scikit-learn->-r requirements.txt (line 3)) (1.0.1)
+Requirement already satisfied: MarkupSafe>=2.0 in ./venv/lib/python3.7/site-packages (from Jinja2->-r requirements.txt (line 5)) (2.0.1)
+Requirement already satisfied: tornado<7.0,>=4.2 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 6)) (6.1)
+Requirement already satisfied: argcomplete>=1.12.3 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 6)) (1.12.3)
+Requirement already satisfied: ipython<8.0,>=7.23.1 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 6)) (7.27.0)
+Requirement already satisfied: traitlets<6.0,>=4.1.0 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 6)) (5.1.0)
+Requirement already satisfied: ipython-genutils in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 6)) (0.2.0)
+Requirement already satisfied: debugpy<2.0,>=1.0.0 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 6)) (1.4.1)
+Requirement already satisfied: matplotlib-inline<0.2.0,>=0.1.0 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 6)) (0.1.2)
+Requirement already satisfied: jupyter-client<8.0 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 6)) (7.0.2)
+Requirement already satisfied: importlib-metadata<5 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 6)) (4.8.1)
+Requirement already satisfied: pyparsing>=2.1.4 in ./venv/lib/python3.7/site-packages (from pydot->-r requirements.txt (line 7)) (2.4.7)
+Requirement already satisfied: cycler>=0.10 in ./venv/lib/python3.7/site-packages (from matplotlib->-r requirements.txt (line 9)) (0.10.0)
+Requirement already satisfied: pillow>=6.2.0 in ./venv/lib/python3.7/site-packages (from matplotlib->-r requirements.txt (line 9)) (8.3.2)
+Requirement already satisfied: kiwisolver>=1.0.1 in ./venv/lib/python3.7/site-packages (from matplotlib->-r requirements.txt (line 9)) (1.3.2)
+Requirement already satisfied: wcwidth in ./venv/lib/python3.7/site-packages (from BeautifulTable->-r requirements.txt (line 10)) (0.2.5)
+Requirement already satisfied: bokeh in ./venv/lib/python3.7/site-packages (from livelossplot->-r requirements.txt (line 12)) (2.3.3)
+Requirement already satisfied: cached-property in ./venv/lib/python3.7/site-packages (from h5py~=3.1.0->tensorflow==2.6.0->-r requirements.txt (line 1)) (1.5.2)
+Requirement already satisfied: zipp>=0.5 in ./venv/lib/python3.7/site-packages (from importlib-metadata<5->ipykernel->-r requirements.txt (line 6)) (3.5.0)
+Requirement already satisfied: prompt-toolkit!=3.0.0,!=3.0.1,<3.1.0,>=2.0.0 in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 6)) (3.0.20)
+Requirement already satisfied: backcall in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 6)) (0.2.0)
+Requirement already satisfied: setuptools>=18.5 in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 6)) (57.5.0)
+Requirement already satisfied: pickleshare in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 6)) (0.7.5)
+Requirement already satisfied: pygments in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 6)) (2.10.0)
+Requirement already satisfied: decorator in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 6)) (5.0.9)
+Requirement already satisfied: jedi>=0.16 in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 6)) (0.18.0)
+Requirement already satisfied: pexpect>4.3 in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 6)) (4.8.0)
+Requirement already satisfied: parso<0.9.0,>=0.8.0 in ./venv/lib/python3.7/site-packages (from jedi>=0.16->ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 6)) (0.8.2)
+Requirement already satisfied: nest-asyncio>=1.5 in ./venv/lib/python3.7/site-packages (from jupyter-client<8.0->ipykernel->-r requirements.txt (line 6)) (1.5.1)
+Requirement already satisfied: entrypoints in ./venv/lib/python3.7/site-packages (from jupyter-client<8.0->ipykernel->-r requirements.txt (line 6)) (0.3)
+Requirement already satisfied: jupyter-core>=4.6.0 in ./venv/lib/python3.7/site-packages (from jupyter-client<8.0->ipykernel->-r requirements.txt (line 6)) (4.7.1)
+Requirement already satisfied: pyzmq>=13 in ./venv/lib/python3.7/site-packages (from jupyter-client<8.0->ipykernel->-r requirements.txt (line 6)) (22.2.1)
+Requirement already satisfied: ptyprocess>=0.5 in ./venv/lib/python3.7/site-packages (from pexpect>4.3->ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 6)) (0.7.0)
+Requirement already satisfied: requests<3,>=2.21.0 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (2.26.0)
+Requirement already satisfied: tensorboard-plugin-wit>=1.6.0 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (1.8.0)
+Requirement already satisfied: werkzeug>=0.11.15 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (2.0.1)
+Requirement already satisfied: markdown>=2.6.8 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (3.3.4)
+Requirement already satisfied: tensorboard-data-server<0.7.0,>=0.6.0 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (0.6.1)
+Requirement already satisfied: google-auth<2,>=1.6.3 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (1.35.0)
+Requirement already satisfied: google-auth-oauthlib<0.5,>=0.4.1 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (0.4.6)
+Requirement already satisfied: pyasn1-modules>=0.2.1 in ./venv/lib/python3.7/site-packages (from google-auth<2,>=1.6.3->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (0.2.8)
+Requirement already satisfied: cachetools<5.0,>=2.0.0 in ./venv/lib/python3.7/site-packages (from google-auth<2,>=1.6.3->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (4.2.2)
+Requirement already satisfied: rsa<5,>=3.1.4 in ./venv/lib/python3.7/site-packages (from google-auth<2,>=1.6.3->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (4.7.2)
+Requirement already satisfied: requests-oauthlib>=0.7.0 in ./venv/lib/python3.7/site-packages (from google-auth-oauthlib<0.5,>=0.4.1->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (1.3.0)
+Requirement already satisfied: pyasn1<0.5.0,>=0.4.6 in ./venv/lib/python3.7/site-packages (from pyasn1-modules>=0.2.1->google-auth<2,>=1.6.3->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (0.4.8)
+Requirement already satisfied: idna<4,>=2.5 in ./venv/lib/python3.7/site-packages (from requests<3,>=2.21.0->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (3.2)
+Requirement already satisfied: certifi>=2017.4.17 in ./venv/lib/python3.7/site-packages (from requests<3,>=2.21.0->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (2021.5.30)
+Requirement already satisfied: charset-normalizer~=2.0.0 in ./venv/lib/python3.7/site-packages (from requests<3,>=2.21.0->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (2.0.4)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in ./venv/lib/python3.7/site-packages (from requests<3,>=2.21.0->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (1.26.6)
+Requirement already satisfied: oauthlib>=3.0.0 in ./venv/lib/python3.7/site-packages (from requests-oauthlib>=0.7.0->google-auth-oauthlib<0.5,>=0.4.1->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (3.1.1)
+Requirement already satisfied: PyYAML>=3.10 in ./venv/lib/python3.7/site-packages (from bokeh->livelossplot->-r requirements.txt (line 12)) (5.4.1)
+Requirement already satisfied: packaging>=16.8 in ./venv/lib/python3.7/site-packages (from bokeh->livelossplot->-r requirements.txt (line 12)) (21.0)
+2021-09-12 09:26:34.483056: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-12 09:26:34.489523: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-12 09:26:34.489988: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-12 09:26:34.490616: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-09-12 09:26:34.490831: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-12 09:26:34.491287: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-12 09:26:34.491756: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-12 09:26:34.973306: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-12 09:26:34.973790: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-12 09:26:34.974182: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-12 09:26:34.974536: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 9658 MB memory:  -> device: 0, name: GeForce RTX 2080 Ti, pci bus id: 0000:01:00.0, compute capability: 7.5
+2021-09-12 09:26:35.564623: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:185] None of the MLIR Optimization Passes are enabled (registered 2)
+Deep learning model for predicting school dropout (with data from INVALSI)
+
+Configuration
+JOB_NAME: dense15
+PROBLEM_TYPE:  regression
+LEARNING_RATE:  0.001
+DROPOUT_LAYER:  False
+DROPOUT_INPUT_LAYER_RATE:  0.8
+DROPOUT_HIDDEN_LAYER_RATE:  0.5
+EPOCH:  50
+NEURONS:  128
+BATCH_SIZE:  32
+ORIGINAL_DATASET:  ../nuovi_dataset/original_dataset.csv
+CLEANED_DATASET:  ../nuovi_dataset/cleaned_dataset.csv
+CLEANED_DATASET_WITH_AP:  ../nuovi_dataset/dataset_ap.csv
+SAMPLING_TO_PERFORM:  random_undersampling
+TEST_SET_PERCENT:  0.2
+VALIDATION_SET_PERCENT:  0.2
+NUMBER_OF_LAYERS:  15
+FILL_NAN:  median
+ACTIVATION_LAYER:  leaky_relu
+EARLY_STOPPING:  True
+Class NO DROPOUT: 93,278
+Classe DROPOUT: 93,278
+Epoch 1/50
+4663/4663 - 71s - loss: 0.5953 - bin_acc: 0.1922 - fp: 220.0000 - fn: 71281.0000 - tp: 77526.0000 - tn: 189.0000 - prec: 0.9972 - rec: 0.5210 - val_loss: 0.5924 - val_bin_acc: 0.1922 - val_fp: 60.0000 - val_fn: 20055.0000 - val_tp: 17135.0000 - val_tn: 62.0000 - val_prec: 0.9965 - val_rec: 0.4607
+Epoch 2/50
+4663/4663 - 68s - loss: 0.5837 - bin_acc: 0.1929 - fp: 196.0000 - fn: 71794.0000 - tp: 77013.0000 - tn: 213.0000 - prec: 0.9975 - rec: 0.5175 - val_loss: 0.5896 - val_bin_acc: 0.1941 - val_fp: 68.0000 - val_fn: 17503.0000 - val_tp: 19687.0000 - val_tn: 54.0000 - val_prec: 0.9966 - val_rec: 0.5294
+Epoch 3/50
+4663/4663 - 67s - loss: 0.5757 - bin_acc: 0.1933 - fp: 185.0000 - fn: 71382.0000 - tp: 77425.0000 - tn: 224.0000 - prec: 0.9976 - rec: 0.5203 - val_loss: 0.5948 - val_bin_acc: 0.1910 - val_fp: 54.0000 - val_fn: 20668.0000 - val_tp: 16522.0000 - val_tn: 68.0000 - val_prec: 0.9967 - val_rec: 0.4443
+Epoch 4/50
+4663/4663 - 67s - loss: 0.5679 - bin_acc: 0.1934 - fp: 152.0000 - fn: 72538.0000 - tp: 76269.0000 - tn: 257.0000 - prec: 0.9980 - rec: 0.5125 - val_loss: 0.5963 - val_bin_acc: 0.1917 - val_fp: 58.0000 - val_fn: 18916.0000 - val_tp: 18274.0000 - val_tn: 64.0000 - val_prec: 0.9968 - val_rec: 0.4914
+Epoch 5/50
+4663/4663 - 66s - loss: 0.5602 - bin_acc: 0.1941 - fp: 138.0000 - fn: 73469.0000 - tp: 75338.0000 - tn: 271.0000 - prec: 0.9982 - rec: 0.5063 - val_loss: 0.6031 - val_bin_acc: 0.1898 - val_fp: 55.0000 - val_fn: 19933.0000 - val_tp: 17257.0000 - val_tn: 67.0000 - val_prec: 0.9968 - val_rec: 0.4640
+Epoch 6/50
+4663/4663 - 66s - loss: 0.5518 - bin_acc: 0.1944 - fp: 119.0000 - fn: 74188.0000 - tp: 74619.0000 - tn: 290.0000 - prec: 0.9984 - rec: 0.5014 - val_loss: 0.6017 - val_bin_acc: 0.1911 - val_fp: 63.0000 - val_fn: 19168.0000 - val_tp: 18022.0000 - val_tn: 59.0000 - val_prec: 0.9965 - val_rec: 0.4846
+Epoch 7/50
+4663/4663 - 66s - loss: 0.5437 - bin_acc: 0.1949 - fp: 101.0000 - fn: 75068.0000 - tp: 73739.0000 - tn: 308.0000 - prec: 0.9986 - rec: 0.4955 - val_loss: 0.6294 - val_bin_acc: 0.1897 - val_fp: 58.0000 - val_fn: 19232.0000 - val_tp: 17958.0000 - val_tn: 64.0000 - val_prec: 0.9968 - val_rec: 0.4829
+2138/2138 - 24s - loss: 0.5641 - bin_acc: 0.2529 - fp: 63.0000 - fn: 26514.0000 - tp: 41774.0000 - tn: 65.0000 - prec: 0.9985 - rec: 0.6117
+
+Results with test dataset
+Loss: 0.5641
+Accuracy: 0.2529
+False positives: 63
+False negatives: 26514
+True positives: 41774
+True negatives: 65
+Precision:  0.9985
+Recall:  0.6117
+Confusion matrix for regression currently not supported.
