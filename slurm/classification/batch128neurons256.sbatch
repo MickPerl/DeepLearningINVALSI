@@ -17,5 +17,6 @@ pip3 install --no-cache-dir -r requirements.txt
 export JOB_NAME=batch128neurons256
 export NEURONS=256
 export BATCH_SIZE=128
+export EARLY_STOPPING=True
 
 python3 src/invalsi.py

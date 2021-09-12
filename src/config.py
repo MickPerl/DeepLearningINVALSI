@@ -24,7 +24,7 @@ VALIDATION_SET_PERCENT = float(getenv(key="VALIDATION_SET_PERCENT", default="0.2
 NUMBER_OF_LAYERS = int(getenv(key="NUMBER_OF_LAYERS", default="10"))
 FILL_NAN = getenv(key="FILL_NAN", default="median")
 ACTIVATION_LAYER = getenv(key="ACTIVATION_LAYER", default="leaky_relu")
-EARLY_STOPPING = eval(getenv(key="EARLY_STOPPING", default="True"))
+EARLY_STOPPING = eval(getenv(key="EARLY_STOPPING", default="False"))
 PROBLEM_TYPE = getenv(key="PROBLEM_TYPE", default="classification")
 JOB_NAME = getenv(key="JOB_NAME", default="default")
 DROPOUT_HIDDEN_LAYER_RATE = float(getenv(key="DROPOUT_HIDDEN_LAYER_RATE", default="0.5"))
