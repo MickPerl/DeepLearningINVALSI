@@ -1,9 +1,14 @@
 import numpy as np
 
+
 def convert_question_result(result: str) -> bool:
     return result == "Corretta" # alternativamente result == "Errata"
 
+
 list_VOTI_NUMERICI = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+list_VOTI_NAN = ['Non disponibile', 'Senza voto scritto']
+
+
 def voto_orale_decode(voto_orale: str) -> float:
     if voto_orale in list_VOTI_NUMERICI:
         return float(voto_orale)
@@ -12,7 +17,7 @@ def voto_orale_decode(voto_orale: str) -> float:
     elif voto_orale == 'Non classificato': 
         return 0.0
 
-list_VOTI_NAN = ['Non disponibile', 'Senza voto scritto']
+
 def voto_scritto_decode(voto_scritto: str) -> float:
     if voto_scritto in list_VOTI_NUMERICI:
         return float(voto_scritto)
@@ -20,6 +25,7 @@ def voto_scritto_decode(voto_scritto: str) -> float:
         return np.nan
     elif voto_scritto == 'Non classificato': 
         return 0.0
+
 
 COLUMN_CONVERTERS = {
     "CODICE_SCUOLA": lambda x: int(float(x)), #identificativo della scuola (non considerato)
