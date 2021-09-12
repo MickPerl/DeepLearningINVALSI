@@ -18,5 +18,6 @@ export JOB_NAME=batch128neurons256
 export PROBLEM_TYPE=regression
 export NEURONS=256
 export BATCH_SIZE=128
+export EARLY_STOPPING=True
 
 python3 src/invalsi.py

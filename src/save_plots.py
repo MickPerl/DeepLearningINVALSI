@@ -22,6 +22,7 @@ def plot_accuracy(history: dict):
 
     plt.clf()
 
+
 def plot_loss(history: dict):
     f = plt.figure()
     plt.plot(history['loss'])
@@ -34,6 +35,7 @@ def plot_loss(history: dict):
     plt.savefig(path.join(IMAGE_FOLDER, 'loss.png'))
 
     plt.clf()
+
 
 def plot_tp(history: dict):
     f = plt.figure()
@@ -48,6 +50,7 @@ def plot_tp(history: dict):
 
     plt.clf()
 
+
 def plot_fp(history: dict):
     f = plt.figure()
     plt.plot(history['fp'])
@@ -60,6 +63,7 @@ def plot_fp(history: dict):
     plt.savefig(path.join(IMAGE_FOLDER, 'fp.png'))
 
     plt.clf()
+
 
 def plot_tn(history: dict):
     f = plt.figure()
@@ -74,6 +78,7 @@ def plot_tn(history: dict):
 
     plt.clf()
 
+
 def plot_fn(history: dict):
     f = plt.figure()
     plt.plot(history['fn'])
@@ -87,6 +92,7 @@ def plot_fn(history: dict):
 
     plt.clf()
 
+
 def plot_precision(history: dict):
     f = plt.figure()
     plt.plot(history['prec'])
@@ -99,6 +105,7 @@ def plot_precision(history: dict):
     plt.savefig(path.join(IMAGE_FOLDER, 'precision.png'))
 
     plt.clf()
+
 
 def plot_recall(history: dict):
     f = plt.figure()

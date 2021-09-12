@@ -29,9 +29,9 @@ cfg.print_config()
 """
 Impostazioni di esecuzione dello script
 """
-PRE_ML = False # Esegue la parte di analisi ed elaborazione del dataset precedente quella di ML.
-SAVE_CLEANED_DATASET = False # Salva il dataset ripulito dalle colonne non utili.
-CONVERT_DOMANDE_TO_AMBITI_PROCESSI = False # Esegue la rimozione delle colonne con domande e le sostituisce con quelle di ambito e processo.
+PRE_ML = False  # Esegue la parte di analisi ed elaborazione del dataset precedente quella di ML.
+SAVE_CLEANED_DATASET = False  # Salva il dataset ripulito dalle colonne non utili.
+CONVERT_DOMANDE_TO_AMBITI_PROCESSI = False  # Esegue la rimozione delle colonne con domande e le sostituisce con quelle di ambito e processo.
 
 """
 Import del dataset originale
@@ -99,7 +99,7 @@ if PRE_ML:
         cleaned_original_dataset.to_csv(cfg.CLEANED_DATASET, index=False)
     else:
         cleaned_original_dataset = pd.read_csv(cfg.CLEANED_DATASET)
-        
+
     if "Unnamed: 0" in cleaned_original_dataset.columns:
         cleaned_original_dataset.drop("cleaned_original_dataset", axis=1, inplace=True)
 
@@ -130,7 +130,7 @@ if PRE_ML and CONVERT_DOMANDE_TO_AMBITI_PROCESSI:
 
     for i, row in dataset_with_ambiti_processi.iterrows():
         for question, APs in MAPPING_DOMANDE_AMBITI_PROCESSI.items():
-            if row[question] == True:
+            if row[question] is True:
                 for AP in APs:
                     dataset_with_ambiti_processi.at[i, AP] += 1 / conteggio_ambiti_processi[AP]
 
@@ -151,17 +151,17 @@ if PRE_ML:
     corr_matrix.style.background_gradient(cmap='YlOrRd')
 
 interesting_to_check_if_correlated_columns = [
-    # Alta correlazione fra voti della stessa materia, abbastanza correlate fra materie diverse
-    "voto_scritto_ita",
-    "voto_orale_ita",
-    "voto_scritto_mat",
-    "voto_orale_mat",
-    # Correlazione totale, abbastanza correlate con voti
-    "pu_ma_no",
-    # Target columns
-    "LIVELLI",
-    "DROPOUT"
-] + list(ambiti_processi)
+                                                 # Alta correlazione fra voti della stessa materia, abbastanza correlate fra materie diverse
+                                                 "voto_scritto_ita",
+                                                 "voto_orale_ita",
+                                                 "voto_scritto_mat",
+                                                 "voto_orale_mat",
+                                                 # Correlazione totale, abbastanza correlate con voti
+                                                 "pu_ma_no",
+                                                 # Target columns
+                                                 "LIVELLI",
+                                                 "DROPOUT"
+                                             ] + list(ambiti_processi)
 
 if PRE_ML:
     check_corr_dataset = dataset_ap[interesting_to_check_if_correlated_columns].corr(method='pearson').round(2)
@@ -186,9 +186,10 @@ if PRE_ML:
 
 # Le colonne DROPOUT e LIVELLI non sono considerate in quanto colonne target (in particolare, DROPOUT è una regressione di LIVELLI)
 continuous_features = columns_low_ratio_null_values + \
-                      ["pu_ma_gr", "pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200", "WLE_MAT_200_CORR",
+                      ["pu_ma_gr", "pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200",
+                       "WLE_MAT_200_CORR",
                        "pu_ma_no_corr"] + \
-                      list(ambiti_processi) # Feature sui voti, feature elencate, ambiti e processi
+                      list(ambiti_processi)  # Feature sui voti, feature elencate, ambiti e processi
 if cfg.FILL_NAN == "remove":
     continuous_features.remove("voto_scritto_ita")
     continuous_features.remove("voto_orale_ita")
@@ -215,16 +216,16 @@ if cfg.FILL_NAN == "remove":
     # Rimuovere record con dati nulli in voti mat
     dataset_ap.drop(["voto_scritto_ita", "voto_orale_ita"], axis=1, inplace=True)
     dataset_ap.dropna(subset=["voto_scritto_mat", "voto_orale_mat"], inplace=True)
-else :
-    for col in columns_low_ratio_null_values : 
+else:
+    for col in columns_low_ratio_null_values:
         if cfg.FILL_NAN == "median":
             replaced_value = dataset_ap[col].median()
         elif cfg.FILL_NAN == "mean":
             replaced_value = dataset_ap[col].mean()
 
-        dataset_ap[col].fillna(value=replaced_value, inplace=True)   
+        dataset_ap[col].fillna(value=replaced_value, inplace=True)
 
-## Parte di creazione del modello ##
+"""Parte di creazione del modello"""
 
 """
 Suddivisione dataset in training, test.
@@ -264,13 +265,14 @@ if cfg.SAMPLING_TO_PERFORM == "random_undersampling":
     df_training_set = class_drop.append(class_nodrop)
     df_training_set = df_training_set.sample(frac=1, random_state=19)
 else:
-    categorical_features_indexes = [i for i in range(len(df_training_set.columns)) if df_training_set.columns[i] in str_categorical_features + int_categorical_features]
-    sm = SMOTENC(categorical_features = categorical_features_indexes, random_state=19)
+    categorical_features_indexes = [i for i in range(len(df_training_set.columns)) if
+                                    df_training_set.columns[i] in str_categorical_features + int_categorical_features]
+    sm = SMOTENC(categorical_features=categorical_features_indexes, random_state=19)
     X, y = sm.fit_resample(
         df_training_set[[col for col in df_training_set.columns if col != 'DROPOUT']],
         df_training_set['DROPOUT']
     )
-    df_training_set = pd.concat([X, y], axis = 1)
+    df_training_set = pd.concat([X, y], axis=1)
     # TODO: per farlo funzionare bisogna convertire le stringhe a interi https://stackoverflow.com/questions/65280842/smote-could-not-convert-string-to-float 
 
 if "Unnamed: 0" in df_training_set.columns:
@@ -279,11 +281,14 @@ if "Unnamed: 0" in df_training_set.columns:
 """
 Suddivisione dataset di training in training (più piccolo di quello di partenza), validation.
 """
-df_training_set, df_validation_set = train_test_split(df_training_set, test_size=cfg.VALIDATION_SET_PERCENT, random_state=19)
+df_training_set, df_validation_set = train_test_split(df_training_set, test_size=cfg.VALIDATION_SET_PERCENT,
+                                                      random_state=19)
 
 """
 Conversione da Pandas DataFrame a Tensorflow Dataset.
 """
+
+
 def convert_dropout_to_one_hot(dropout_col):
     dropout_col_one_hot = []
     for dc in dropout_col:
@@ -302,7 +307,7 @@ def pd_dataframe_to_tf_dataset(dataframe: pd.DataFrame):
         copied_df.drop("LIVELLI", axis=1, inplace=True)
     else:
         dropout_col = copied_df.pop("LIVELLI")
-        dropout_col = dropout_col.divide(other = 5)
+        dropout_col = dropout_col.divide(other=5)
         copied_df.drop("DROPOUT", axis=1, inplace=True)
 
     """
@@ -358,6 +363,7 @@ for name, column in df_training_set.items():
 Encoding delle feature in base al loro tipo.
 """
 preprocessed_features = []
+
 
 def stack_dict(inputs, fun=tf.stack):
     values = []
@@ -428,13 +434,15 @@ preprocessed = tf.concat(preprocessed_features, axis=-1)
 
 preprocessor = tf.keras.Model(input_layers, preprocessed)
 
-initializer_hidden_layer = tf.keras.initializers.HeNormal(seed=19) # inizializzatore che verrà usato per i pesi dei layer con ReLU / LeakyReLU
-initializer_output_layer = tf.keras.initializers.GlorotNormal(seed=19) # inizializzatore che verrà usato per i pesi dei layer con sigmoid
+initializer_hidden_layer = tf.keras.initializers.HeNormal(
+    seed=19)  # inizializzatore che verrà usato per i pesi dei layer con ReLU / LeakyReLU
+initializer_output_layer = tf.keras.initializers.GlorotNormal(
+    seed=19)  # inizializzatore che verrà usato per i pesi dei layer con sigmoid
 
 body = tf.keras.Sequential()
 
 if cfg.DROPOUT_LAYER:
-    body.add(tf.keras.layers.Dropout(rate=cfg.DROPOUT_INPUT_LAYER_RATE, seed=19)) # aggiunta dropout a layer di input
+    body.add(tf.keras.layers.Dropout(rate=cfg.DROPOUT_INPUT_LAYER_RATE, seed=19))  # aggiunta dropout a layer di input
 
 # segue l'aggiunta degli hidden layers
 for _ in range(cfg.NUMBER_OF_LAYERS):
@@ -443,7 +451,7 @@ for _ in range(cfg.NUMBER_OF_LAYERS):
         body.add(tf.keras.layers.LeakyReLU())
     else:
         body.add(tf.keras.layers.ReLU())
-    
+
     if cfg.DROPOUT_LAYER:
         body.add(tf.keras.layers.Dropout(rate=cfg.DROPOUT_HIDDEN_LAYER_RATE, seed=19))
 
@@ -463,19 +471,20 @@ if cfg.PROBLEM_TYPE == "classification":
     accuracy = tf.keras.metrics.Accuracy(name="acc")
     loss_function = tf.keras.losses.CategoricalCrossentropy()
 else:
-    accuracy = tf.metrics.BinaryAccuracy(name="bin_acc", threshold=0.4) # 0.4 perché LIVELLI in [0,1,2] è DROPOUT = True, LIVELLI in [3,4,5] è DROPOUT = False
+    accuracy = tf.metrics.BinaryAccuracy(name="bin_acc",
+                                         threshold=0.4)  # 0.4 perché LIVELLI in [0,1,2] è DROPOUT = True, LIVELLI in [3,4,5] è DROPOUT = False
     loss_function = tf.keras.losses.BinaryCrossentropy()
 
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE),
               loss=loss_function,
               metrics=[
-                accuracy,
-                tf.keras.metrics.FalsePositives(name="fp"),
-                tf.keras.metrics.FalseNegatives(name="fn"),
-                tf.keras.metrics.TruePositives(name="tp"),
-                tf.keras.metrics.TrueNegatives(name="tn"),
-                tf.keras.metrics.Precision(name="prec"),
-                tf.keras.metrics.Recall(name="rec")
+                  accuracy,
+                  tf.keras.metrics.FalsePositives(name="fp"),
+                  tf.keras.metrics.FalseNegatives(name="fn"),
+                  tf.keras.metrics.TruePositives(name="tp"),
+                  tf.keras.metrics.TrueNegatives(name="tn"),
+                  tf.keras.metrics.Precision(name="prec"),
+                  tf.keras.metrics.Recall(name="rec")
               ])
 
 """
@@ -488,11 +497,11 @@ early_stopper = EarlyStopping(monitor="val_loss",
                               restore_best_weights=True)
 
 history = model.fit(ds_training_set,
-          epochs=cfg.EPOCH,
-          batch_size=cfg.BATCH_SIZE,
-          validation_data=ds_validation_set,
-          callbacks=[early_stopper] if cfg.EARLY_STOPPING else [],
-          verbose=2)
+                    epochs=cfg.EPOCH,
+                    batch_size=cfg.BATCH_SIZE,
+                    validation_data=ds_validation_set,
+                    callbacks=[early_stopper] if cfg.EARLY_STOPPING else [],
+                    verbose=2)
 
 metrics = history.history
 save_plots.plot_accuracy(metrics)
@@ -524,51 +533,59 @@ if cfg.PROBLEM_TYPE == "regression":
     print("Confusion matrix for regression currently not supported.")
     sys.exit(0)
 
+
 def convert_df_for_prediction(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
     ds = tf.data.Dataset.from_tensor_slices(dict(copied_df))
 
     return ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
 
+
 target_col = "DROPOUT" if cfg.PROBLEM_TYPE == "classification" else "LIVELLI"
 
-training_x = convert_df_for_prediction(df_training_set[[col for col in df_training_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
+training_x = convert_df_for_prediction(
+    df_training_set[[col for col in df_training_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
 training_y = df_training_set[target_col]
-if len(training_x)*cfg.BATCH_SIZE - len(training_y) != 0:
-    training_y = training_y.head(len(training_x)*cfg.BATCH_SIZE - len(training_y))
+if len(training_x) * cfg.BATCH_SIZE - len(training_y) != 0:
+    training_y = training_y.head(len(training_x) * cfg.BATCH_SIZE - len(training_y))
 if cfg.PROBLEM_TYPE == "classification":
     training_y = convert_dropout_to_one_hot(training_y)
 else:
-    training_y = training_y.divide(other = 5)
+    training_y = training_y.divide(other=5)
 
-validation_x = convert_df_for_prediction(df_validation_set[[col for col in df_validation_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
+validation_x = convert_df_for_prediction(
+    df_validation_set[[col for col in df_validation_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
 validation_y = df_validation_set[target_col]
-if len(validation_x)*cfg.BATCH_SIZE - len(validation_y) != 0:
-    validation_y = validation_y.head((len(validation_x)*cfg.BATCH_SIZE) - len(validation_y))
+if len(validation_x) * cfg.BATCH_SIZE - len(validation_y) != 0:
+    validation_y = validation_y.head((len(validation_x) * cfg.BATCH_SIZE) - len(validation_y))
 if cfg.PROBLEM_TYPE == "classification":
     validation_y = convert_dropout_to_one_hot(validation_y)
 else:
-    validation_y = validation_y.divide(other = 5)
+    validation_y = validation_y.divide(other=5)
 
-test_x = convert_df_for_prediction(df_test_set[[col for col in df_test_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
+test_x = convert_df_for_prediction(
+    df_test_set[[col for col in df_test_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
 test_y = df_test_set[target_col]
-if (len(test_x)*cfg.BATCH_SIZE) - len(test_y) != 0:
-    test_y = test_y.head(len(test_x)*cfg.BATCH_SIZE - len(test_y))
+if (len(test_x) * cfg.BATCH_SIZE) - len(test_y) != 0:
+    test_y = test_y.head(len(test_x) * cfg.BATCH_SIZE - len(test_y))
 if cfg.PROBLEM_TYPE == "classification":
     test_y = convert_dropout_to_one_hot(test_y)
 else:
-    test_y = test_y.divide(other = 5)
+    test_y = test_y.divide(other=5)
 
 predicted_training_y = model.predict(training_x)
 predicted_validation_y = model.predict(validation_x)
 predicted_test_y = model.predict(test_x)
 
-training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y, dtype=tf.float32).numpy()
-validation_confusion_matrix = tf.math.confusion_matrix(labels=validation_y, predictions=predicted_validation_y, dtype=tf.float32).numpy()
+training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y,
+                                                     dtype=tf.float32).numpy()
+validation_confusion_matrix = tf.math.confusion_matrix(labels=validation_y, predictions=predicted_validation_y,
+                                                       dtype=tf.float32).numpy()
 test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y, dtype=tf.float32).numpy()
 
-def compute_metrics(name, confusion_matrix):
-    true_positives = np.diag(confusion_matrix) # vettore in cui ogni cella è il numero di TP per la classe
+
+def compute_metrics(label, confusion_matrix):
+    true_positives = np.diag(confusion_matrix)  # vettore in cui ogni cella è il numero di TP per la classe
     false_positives = confusion_matrix.sum(axis=0) - true_positives
     false_negatives = confusion_matrix.sum(axis=1) - true_positives
     true_negatives = confusion_matrix.sum() - (true_positives + false_positives + false_negatives)
@@ -577,17 +594,18 @@ def compute_metrics(name, confusion_matrix):
     precision = true_positives.sum() / (true_positives.sum() + false_positives.sum())
     recall = true_positives.sum() / (true_positives.sum() + false_negatives.sum())
 
-    print(f"Confusion Matrix Name: {name}")
+    print(f"Confusion Matrix Name: {label}")
     print(confusion_matrix)
     print(f"- TP: {int(true_positives.sum())}")
     print(f"- TN: {int(true_negatives.sum())}")
     print(f"- FP: {int(false_positives.sum())}")
     print(f"- FN: {int(false_negatives.sum())}")
-    print(f"- Accuracy: {round(accuracy, 4)}") # Attenzione: si tratta della Binary Accuracy
+    print(f"- Accuracy: {round(accuracy, 4)}")  # Attenzione: si tratta della Binary Accuracy
     print(f"- Precision: {round(precision, 4)}")
     print(f"- Recall: {round(recall, 4)}")
     print()
-    
+
+
 compute_metrics("Training", training_confusion_matrix)
 compute_metrics("Validation", validation_confusion_matrix)
 compute_metrics("Test", test_confusion_matrix)
