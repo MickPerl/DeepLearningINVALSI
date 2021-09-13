@@ -102,7 +102,7 @@ To enable them in other operations, rebuild TensorFlow with the appropriate comp
 Deep learning model for predicting school dropout (with data from INVALSI)
 
 Configuration
-JOB_NAME: noearlyepoch100
+JOB_NAME: epoch100
 PROBLEM_TYPE:  regression
 LEARNING_RATE:  0.001
 DROPOUT_LAYER:  False
