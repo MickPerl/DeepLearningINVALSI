@@ -447,6 +447,10 @@ if cfg.DROPOUT_LAYER:
 # segue l'aggiunta degli hidden layers
 for _ in range(cfg.NUMBER_OF_LAYERS):
     body.add(tf.keras.layers.Dense(cfg.NEURONS, kernel_initializer=initializer_hidden_layer))
+
+    if cfg.BATCH_NORMALIZATION == "dense_batch_activation":
+        body.add(tf.keras.layers.BatchNormalization())
+
     if cfg.ACTIVATION_LAYER == "leaky_relu":
         body.add(tf.keras.layers.LeakyReLU())
     else:
@@ -454,6 +458,12 @@ for _ in range(cfg.NUMBER_OF_LAYERS):
 
     if cfg.DROPOUT_LAYER:
         body.add(tf.keras.layers.Dropout(rate=cfg.DROPOUT_HIDDEN_LAYER_RATE, seed=19))
+
+    if cfg.BATCH_NORMALIZATION == "dense_activation_batch":
+        body.add(tf.keras.layers.BatchNormalization())
+
+if cfg.BATCH_NORMALIZATION == "before_output":
+    body.add(tf.keras.layers.BatchNormalization())
 
 # segue l'aggiunta dell'output layer
 if cfg.PROBLEM_TYPE == "classification":

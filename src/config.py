@@ -29,6 +29,7 @@ PROBLEM_TYPE = getenv(key="PROBLEM_TYPE", default="classification")
 JOB_NAME = getenv(key="JOB_NAME", default="default")
 DROPOUT_HIDDEN_LAYER_RATE = float(getenv(key="DROPOUT_HIDDEN_LAYER_RATE", default="0.5"))
 DROPOUT_INPUT_LAYER_RATE = float(getenv(key="DROPOUT_INPUT_LAYER_RATE", default="0.8"))
+BATCH_NORMALIZATION = getenv(key="BATCH_NORMALIZATION", default="no")
 
 
 def print_config():
@@ -51,6 +52,7 @@ def print_config():
     print("FILL_NAN: ", FILL_NAN)
     print("ACTIVATION_LAYER: ", ACTIVATION_LAYER)
     print("EARLY_STOPPING: ", EARLY_STOPPING)
+    print("BATCH_NORMALIZATION: ", BATCH_NORMALIZATION)
 
 
 def check_config() -> int:
@@ -108,6 +110,10 @@ def check_config() -> int:
     
     if ACTIVATION_LAYER not in ["relu", "leaky_relu"]:
         print("ACTIVATION_LAYER should either be \"relu\" or \"leaky_relu\".")
+        errors += 1
+
+    if BATCH_NORMALIZATION not in ["no", "dense_batch_activation", "dense_activation_batch", "before_output"]:
+        print("BATCH_NORMALIZATION should either be \"no\", \"dense_batch_activation\", \"dense_activation_batch\" or \"before_output\".")
         errors += 1
     
     return errors
