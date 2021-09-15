@@ -1,0 +1,270 @@
+Requirement already satisfied: tensorflow==2.6.0 in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 1)) (2.6.0)
+Requirement already satisfied: numpy in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 2)) (1.19.5)
+Requirement already satisfied: pandas in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 3)) (1.3.2)
+Requirement already satisfied: scikit-learn in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 4)) (0.24.2)
+Requirement already satisfied: imbalanced-learn in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 5)) (0.8.0)
+Requirement already satisfied: Jinja2 in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 6)) (3.0.1)
+Requirement already satisfied: ipykernel in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 7)) (6.3.1)
+Requirement already satisfied: pydot in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 8)) (1.4.2)
+Requirement already satisfied: graphviz in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 9)) (0.17)
+Requirement already satisfied: matplotlib in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 10)) (3.4.3)
+Requirement already satisfied: BeautifulTable in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 11)) (1.0.1)
+Requirement already satisfied: seaborn in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 12)) (0.11.2)
+Requirement already satisfied: livelossplot in ./venv/lib/python3.7/site-packages (from -r requirements.txt (line 13)) (0.5.4)
+Requirement already satisfied: h5py~=3.1.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (3.1.0)
+Requirement already satisfied: absl-py~=0.10 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (0.13.0)
+Requirement already satisfied: flatbuffers~=1.12.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.12)
+Requirement already satisfied: grpcio<2.0,>=1.37.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.39.0)
+Requirement already satisfied: clang~=5.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (5.0)
+Requirement already satisfied: keras~=2.6 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (2.6.0)
+Requirement already satisfied: tensorflow-estimator~=2.6 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (2.6.0)
+Requirement already satisfied: wheel~=0.35 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (0.37.0)
+Requirement already satisfied: astunparse~=1.6.3 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.6.3)
+Requirement already satisfied: tensorboard~=2.6 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (2.6.0)
+Requirement already satisfied: termcolor~=1.1.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.1.0)
+Requirement already satisfied: typing-extensions~=3.7.4 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (3.7.4.3)
+Requirement already satisfied: gast==0.4.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (0.4.0)
+Requirement already satisfied: wrapt~=1.12.1 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.12.1)
+Requirement already satisfied: six~=1.15.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.15.0)
+Requirement already satisfied: google-pasta~=0.2 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (0.2.0)
+Requirement already satisfied: opt-einsum~=3.3.0 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (3.3.0)
+Requirement already satisfied: protobuf>=3.9.2 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (3.17.3)
+Requirement already satisfied: keras-preprocessing~=1.1.2 in ./venv/lib/python3.7/site-packages (from tensorflow==2.6.0->-r requirements.txt (line 1)) (1.1.2)
+Requirement already satisfied: python-dateutil>=2.7.3 in ./venv/lib/python3.7/site-packages (from pandas->-r requirements.txt (line 3)) (2.8.2)
+Requirement already satisfied: pytz>=2017.3 in ./venv/lib/python3.7/site-packages (from pandas->-r requirements.txt (line 3)) (2021.1)
+Requirement already satisfied: joblib>=0.11 in ./venv/lib/python3.7/site-packages (from scikit-learn->-r requirements.txt (line 4)) (1.0.1)
+Requirement already satisfied: scipy>=0.19.1 in ./venv/lib/python3.7/site-packages (from scikit-learn->-r requirements.txt (line 4)) (1.7.1)
+Requirement already satisfied: threadpoolctl>=2.0.0 in ./venv/lib/python3.7/site-packages (from scikit-learn->-r requirements.txt (line 4)) (2.2.0)
+Requirement already satisfied: MarkupSafe>=2.0 in ./venv/lib/python3.7/site-packages (from Jinja2->-r requirements.txt (line 6)) (2.0.1)
+Requirement already satisfied: tornado<7.0,>=4.2 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 7)) (6.1)
+Requirement already satisfied: ipython-genutils in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 7)) (0.2.0)
+Requirement already satisfied: matplotlib-inline<0.2.0,>=0.1.0 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 7)) (0.1.2)
+Requirement already satisfied: debugpy<2.0,>=1.0.0 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 7)) (1.4.1)
+Requirement already satisfied: importlib-metadata<5 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 7)) (4.8.1)
+Requirement already satisfied: traitlets<6.0,>=4.1.0 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 7)) (5.1.0)
+Requirement already satisfied: ipython<8.0,>=7.23.1 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 7)) (7.27.0)
+Requirement already satisfied: argcomplete>=1.12.3 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 7)) (1.12.3)
+Requirement already satisfied: jupyter-client<8.0 in ./venv/lib/python3.7/site-packages (from ipykernel->-r requirements.txt (line 7)) (7.0.2)
+Requirement already satisfied: pyparsing>=2.1.4 in ./venv/lib/python3.7/site-packages (from pydot->-r requirements.txt (line 8)) (2.4.7)
+Requirement already satisfied: pillow>=6.2.0 in ./venv/lib/python3.7/site-packages (from matplotlib->-r requirements.txt (line 10)) (8.3.2)
+Requirement already satisfied: kiwisolver>=1.0.1 in ./venv/lib/python3.7/site-packages (from matplotlib->-r requirements.txt (line 10)) (1.3.2)
+Requirement already satisfied: cycler>=0.10 in ./venv/lib/python3.7/site-packages (from matplotlib->-r requirements.txt (line 10)) (0.10.0)
+Requirement already satisfied: wcwidth in ./venv/lib/python3.7/site-packages (from BeautifulTable->-r requirements.txt (line 11)) (0.2.5)
+Requirement already satisfied: bokeh in ./venv/lib/python3.7/site-packages (from livelossplot->-r requirements.txt (line 13)) (2.3.3)
+Requirement already satisfied: cached-property in ./venv/lib/python3.7/site-packages (from h5py~=3.1.0->tensorflow==2.6.0->-r requirements.txt (line 1)) (1.5.2)
+Requirement already satisfied: zipp>=0.5 in ./venv/lib/python3.7/site-packages (from importlib-metadata<5->ipykernel->-r requirements.txt (line 7)) (3.5.0)
+Requirement already satisfied: prompt-toolkit!=3.0.0,!=3.0.1,<3.1.0,>=2.0.0 in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 7)) (3.0.20)
+Requirement already satisfied: setuptools>=18.5 in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 7)) (57.5.0)
+Requirement already satisfied: pygments in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 7)) (2.10.0)
+Requirement already satisfied: jedi>=0.16 in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 7)) (0.18.0)
+Requirement already satisfied: pickleshare in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 7)) (0.7.5)
+Requirement already satisfied: pexpect>4.3 in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 7)) (4.8.0)
+Requirement already satisfied: decorator in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 7)) (5.0.9)
+Requirement already satisfied: backcall in ./venv/lib/python3.7/site-packages (from ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 7)) (0.2.0)
+Requirement already satisfied: parso<0.9.0,>=0.8.0 in ./venv/lib/python3.7/site-packages (from jedi>=0.16->ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 7)) (0.8.2)
+Requirement already satisfied: entrypoints in ./venv/lib/python3.7/site-packages (from jupyter-client<8.0->ipykernel->-r requirements.txt (line 7)) (0.3)
+Requirement already satisfied: jupyter-core>=4.6.0 in ./venv/lib/python3.7/site-packages (from jupyter-client<8.0->ipykernel->-r requirements.txt (line 7)) (4.7.1)
+Requirement already satisfied: nest-asyncio>=1.5 in ./venv/lib/python3.7/site-packages (from jupyter-client<8.0->ipykernel->-r requirements.txt (line 7)) (1.5.1)
+Requirement already satisfied: pyzmq>=13 in ./venv/lib/python3.7/site-packages (from jupyter-client<8.0->ipykernel->-r requirements.txt (line 7)) (22.2.1)
+Requirement already satisfied: ptyprocess>=0.5 in ./venv/lib/python3.7/site-packages (from pexpect>4.3->ipython<8.0,>=7.23.1->ipykernel->-r requirements.txt (line 7)) (0.7.0)
+Requirement already satisfied: requests<3,>=2.21.0 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (2.26.0)
+Requirement already satisfied: tensorboard-plugin-wit>=1.6.0 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (1.8.0)
+Requirement already satisfied: tensorboard-data-server<0.7.0,>=0.6.0 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (0.6.1)
+Requirement already satisfied: werkzeug>=0.11.15 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (2.0.1)
+Requirement already satisfied: markdown>=2.6.8 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (3.3.4)
+Requirement already satisfied: google-auth-oauthlib<0.5,>=0.4.1 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (0.4.6)
+Requirement already satisfied: google-auth<2,>=1.6.3 in ./venv/lib/python3.7/site-packages (from tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (1.35.0)
+Requirement already satisfied: cachetools<5.0,>=2.0.0 in ./venv/lib/python3.7/site-packages (from google-auth<2,>=1.6.3->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (4.2.2)
+Requirement already satisfied: rsa<5,>=3.1.4 in ./venv/lib/python3.7/site-packages (from google-auth<2,>=1.6.3->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (4.7.2)
+Requirement already satisfied: pyasn1-modules>=0.2.1 in ./venv/lib/python3.7/site-packages (from google-auth<2,>=1.6.3->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (0.2.8)
+Requirement already satisfied: requests-oauthlib>=0.7.0 in ./venv/lib/python3.7/site-packages (from google-auth-oauthlib<0.5,>=0.4.1->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (1.3.0)
+Requirement already satisfied: pyasn1<0.5.0,>=0.4.6 in ./venv/lib/python3.7/site-packages (from pyasn1-modules>=0.2.1->google-auth<2,>=1.6.3->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (0.4.8)
+Requirement already satisfied: idna<4,>=2.5 in ./venv/lib/python3.7/site-packages (from requests<3,>=2.21.0->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (3.2)
+Requirement already satisfied: certifi>=2017.4.17 in ./venv/lib/python3.7/site-packages (from requests<3,>=2.21.0->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (2021.5.30)
+Requirement already satisfied: charset-normalizer~=2.0.0 in ./venv/lib/python3.7/site-packages (from requests<3,>=2.21.0->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (2.0.4)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in ./venv/lib/python3.7/site-packages (from requests<3,>=2.21.0->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (1.26.6)
+Requirement already satisfied: oauthlib>=3.0.0 in ./venv/lib/python3.7/site-packages (from requests-oauthlib>=0.7.0->google-auth-oauthlib<0.5,>=0.4.1->tensorboard~=2.6->tensorflow==2.6.0->-r requirements.txt (line 1)) (3.1.1)
+Requirement already satisfied: PyYAML>=3.10 in ./venv/lib/python3.7/site-packages (from bokeh->livelossplot->-r requirements.txt (line 13)) (5.4.1)
+Requirement already satisfied: packaging>=16.8 in ./venv/lib/python3.7/site-packages (from bokeh->livelossplot->-r requirements.txt (line 13)) (21.0)
+2021-09-15 00:56:17.795943: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-15 00:56:17.809616: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-15 00:56:17.810126: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-15 00:56:17.810941: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-09-15 00:56:17.811210: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-15 00:56:17.811655: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-15 00:56:17.812069: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-15 00:56:18.246513: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-15 00:56:18.247035: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-15 00:56:18.247458: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-09-15 00:56:18.247863: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 9658 MB memory:  -> device: 0, name: GeForce RTX 2080 Ti, pci bus id: 0000:01:00.0, compute capability: 7.5
+2021-09-15 00:56:19.978017: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:185] None of the MLIR Optimization Passes are enabled (registered 2)
+Deep learning model for predicting school dropout (with data from INVALSI)
+
+Configuration
+JOB_NAME: 512N_7L_001LR
+PROBLEM_TYPE:  classification
+LEARNING_RATE:  0.01
+DROPOUT_LAYER:  False
+DROPOUT_INPUT_LAYER_RATE:  0.8
+DROPOUT_HIDDEN_LAYER_RATE:  0.5
+EPOCH:  50
+NEURONS:  512
+BATCH_SIZE:  32
+ORIGINAL_DATASET:  ../nuovi_dataset/original_dataset.csv
+CLEANED_DATASET:  ../nuovi_dataset/cleaned_dataset.csv
+CLEANED_DATASET_WITH_AP:  ../nuovi_dataset/dataset_ap.csv
+SAMPLING_TO_PERFORM:  random_undersampling
+TEST_SET_PERCENT:  0.2
+VALIDATION_SET_PERCENT:  0.2
+NUMBER_OF_LAYERS:  7
+FILL_NAN:  median
+ACTIVATION_LAYER:  leaky_relu
+EARLY_STOPPING:  False
+BATCH_NORMALIZATION:  no
+Class NO DROPOUT: 93,278
+Classe DROPOUT: 93,278
+Epoch 1/50
+4663/4663 - 78s - loss: 1390633.2500 - acc: 0.2100 - fp: 43751.0000 - fn: 43751.0000 - tp: 105465.0000 - tn: 105465.0000 - prec: 0.7068 - rec: 0.7068 - val_loss: 19452.4609 - val_acc: 0.5304 - val_fp: 17517.0000 - val_fn: 17517.0000 - val_tp: 19795.0000 - val_tn: 19795.0000 - val_prec: 0.5305 - val_rec: 0.5305
+Epoch 2/50
+4663/4663 - 74s - loss: 10188.5605 - acc: 0.6711 - fp: 48929.0000 - fn: 48929.0000 - tp: 100287.0000 - tn: 100287.0000 - prec: 0.6721 - rec: 0.6721 - val_loss: 2104.5291 - val_acc: 0.7325 - val_fp: 9923.0000 - val_fn: 9923.0000 - val_tp: 27389.0000 - val_tn: 27389.0000 - val_prec: 0.7341 - val_rec: 0.7341
+Epoch 3/50
+4663/4663 - 74s - loss: 1055674.0000 - acc: 0.6701 - fp: 49099.0000 - fn: 49099.0000 - tp: 100117.0000 - tn: 100117.0000 - prec: 0.6710 - rec: 0.6710 - val_loss: 2163.2292 - val_acc: 0.7018 - val_fp: 11055.0000 - val_fn: 11055.0000 - val_tp: 26257.0000 - val_tn: 26257.0000 - val_prec: 0.7037 - val_rec: 0.7037
+Epoch 4/50
+4663/4663 - 74s - loss: 7489.0938 - acc: 0.6905 - fp: 45554.0000 - fn: 45554.0000 - tp: 103662.0000 - tn: 103662.0000 - prec: 0.6947 - rec: 0.6947 - val_loss: 861.9771 - val_acc: 0.7146 - val_fp: 10474.0000 - val_fn: 10474.0000 - val_tp: 26838.0000 - val_tn: 26838.0000 - val_prec: 0.7193 - val_rec: 0.7193
+Epoch 5/50
+4663/4663 - 75s - loss: 6893836.0000 - acc: 0.6899 - fp: 45700.0000 - fn: 45700.0000 - tp: 103516.0000 - tn: 103516.0000 - prec: 0.6937 - rec: 0.6937 - val_loss: 47975.8867 - val_acc: 0.7310 - val_fp: 10031.0000 - val_fn: 10031.0000 - val_tp: 27281.0000 - val_tn: 27281.0000 - val_prec: 0.7312 - val_rec: 0.7312
+Epoch 6/50
+4663/4663 - 73s - loss: 29495.2773 - acc: 0.7018 - fp: 44464.0000 - fn: 44464.0000 - tp: 104752.0000 - tn: 104752.0000 - prec: 0.7020 - rec: 0.7020 - val_loss: 10177.4609 - val_acc: 0.7218 - val_fp: 10366.0000 - val_fn: 10366.0000 - val_tp: 26946.0000 - val_tn: 26946.0000 - val_prec: 0.7222 - val_rec: 0.7222
+Epoch 7/50
+4663/4663 - 73s - loss: 2954113.7500 - acc: 0.7087 - fp: 43337.0000 - fn: 43337.0000 - tp: 105879.0000 - tn: 105879.0000 - prec: 0.7096 - rec: 0.7096 - val_loss: 85150.4688 - val_acc: 0.7107 - val_fp: 10796.0000 - val_fn: 10796.0000 - val_tp: 26516.0000 - val_tn: 26516.0000 - val_prec: 0.7107 - val_rec: 0.7107
+Epoch 8/50
+4663/4663 - 73s - loss: 43233.4062 - acc: 0.7076 - fp: 43594.0000 - fn: 43594.0000 - tp: 105622.0000 - tn: 105622.0000 - prec: 0.7078 - rec: 0.7078 - val_loss: 2537.2009 - val_acc: 0.7142 - val_fp: 10606.0000 - val_fn: 10606.0000 - val_tp: 26706.0000 - val_tn: 26706.0000 - val_prec: 0.7157 - val_rec: 0.7157
+Epoch 9/50
+4663/4663 - 73s - loss: 2245742.0000 - acc: 0.7100 - fp: 43191.0000 - fn: 43191.0000 - tp: 106025.0000 - tn: 106025.0000 - prec: 0.7105 - rec: 0.7105 - val_loss: 27240.8125 - val_acc: 0.6091 - val_fp: 14572.0000 - val_fn: 14572.0000 - val_tp: 22740.0000 - val_tn: 22740.0000 - val_prec: 0.6095 - val_rec: 0.6095
+Epoch 10/50
+4663/4663 - 73s - loss: 11987.1699 - acc: 0.7196 - fp: 41763.0000 - fn: 41764.0000 - tp: 107452.0000 - tn: 107453.0000 - prec: 0.7201 - rec: 0.7201 - val_loss: 4106.6567 - val_acc: 0.7371 - val_fp: 9781.0000 - val_fn: 9781.0000 - val_tp: 27531.0000 - val_tn: 27531.0000 - val_prec: 0.7379 - val_rec: 0.7379
+Epoch 11/50
+4663/4663 - 72s - loss: 1775741.3750 - acc: 0.7198 - fp: 41657.0000 - fn: 41657.0000 - tp: 107559.0000 - tn: 107559.0000 - prec: 0.7208 - rec: 0.7208 - val_loss: 28211.9512 - val_acc: 0.6494 - val_fp: 13073.0000 - val_fn: 13073.0000 - val_tp: 24239.0000 - val_tn: 24239.0000 - val_prec: 0.6496 - val_rec: 0.6496
+Epoch 12/50
+4663/4663 - 72s - loss: 30924.4492 - acc: 0.7234 - fp: 41216.0000 - fn: 41216.0000 - tp: 108000.0000 - tn: 108000.0000 - prec: 0.7238 - rec: 0.7238 - val_loss: 17171.4961 - val_acc: 0.7281 - val_fp: 10137.0000 - val_fn: 10137.0000 - val_tp: 27175.0000 - val_tn: 27175.0000 - val_prec: 0.7283 - val_rec: 0.7283
+Epoch 13/50
+4663/4663 - 71s - loss: 3395185.2500 - acc: 0.7278 - fp: 40403.0000 - fn: 40403.0000 - tp: 108813.0000 - tn: 108813.0000 - prec: 0.7292 - rec: 0.7292 - val_loss: 70468.1016 - val_acc: 0.7064 - val_fp: 10956.0000 - val_fn: 10956.0000 - val_tp: 26356.0000 - val_tn: 26356.0000 - val_prec: 0.7064 - val_rec: 0.7064
+Epoch 14/50
+4663/4663 - 71s - loss: 42222.1250 - acc: 0.7183 - fp: 42017.0000 - fn: 42017.0000 - tp: 107199.0000 - tn: 107199.0000 - prec: 0.7184 - rec: 0.7184 - val_loss: 12050.4238 - val_acc: 0.7316 - val_fp: 10004.0000 - val_fn: 10004.0000 - val_tp: 27308.0000 - val_tn: 27308.0000 - val_prec: 0.7319 - val_rec: 0.7319
+Epoch 15/50
+4663/4663 - 71s - loss: 1134875.7500 - acc: 0.7262 - fp: 40791.0000 - fn: 40791.0000 - tp: 108425.0000 - tn: 108425.0000 - prec: 0.7266 - rec: 0.7266 - val_loss: 20739.3340 - val_acc: 0.6826 - val_fp: 11838.0000 - val_fn: 11838.0000 - val_tp: 25474.0000 - val_tn: 25474.0000 - val_prec: 0.6827 - val_rec: 0.6827
+Epoch 16/50
+4663/4663 - 73s - loss: 17514.2520 - acc: 0.7223 - fp: 41371.0000 - fn: 41371.0000 - tp: 107845.0000 - tn: 107845.0000 - prec: 0.7227 - rec: 0.7227 - val_loss: 3124.3406 - val_acc: 0.6219 - val_fp: 14056.0000 - val_fn: 14056.0000 - val_tp: 23256.0000 - val_tn: 23256.0000 - val_prec: 0.6233 - val_rec: 0.6233
+Epoch 17/50
+4663/4663 - 71s - loss: 3057422.2500 - acc: 0.7264 - fp: 40666.0000 - fn: 40666.0000 - tp: 108550.0000 - tn: 108550.0000 - prec: 0.7275 - rec: 0.7275 - val_loss: 139553.2812 - val_acc: 0.6969 - val_fp: 11309.0000 - val_fn: 11309.0000 - val_tp: 26003.0000 - val_tn: 26003.0000 - val_prec: 0.6969 - val_rec: 0.6969
+Epoch 18/50
+4663/4663 - 71s - loss: 33404.8242 - acc: 0.7269 - fp: 40735.0000 - fn: 40735.0000 - tp: 108481.0000 - tn: 108481.0000 - prec: 0.7270 - rec: 0.7270 - val_loss: 15758.0273 - val_acc: 0.5991 - val_fp: 14949.0000 - val_fn: 14949.0000 - val_tp: 22363.0000 - val_tn: 22363.0000 - val_prec: 0.5994 - val_rec: 0.5994
+Epoch 19/50
+4663/4663 - 71s - loss: 1887391.2500 - acc: 0.7305 - fp: 40167.0000 - fn: 40167.0000 - tp: 109049.0000 - tn: 109049.0000 - prec: 0.7308 - rec: 0.7308 - val_loss: 61701.5625 - val_acc: 0.6227 - val_fp: 14073.0000 - val_fn: 14073.0000 - val_tp: 23239.0000 - val_tn: 23239.0000 - val_prec: 0.6228 - val_rec: 0.6228
+Epoch 20/50
+4663/4663 - 71s - loss: 26001.5449 - acc: 0.7306 - fp: 40142.0000 - fn: 40142.0000 - tp: 109074.0000 - tn: 109074.0000 - prec: 0.7310 - rec: 0.7310 - val_loss: 8393.0498 - val_acc: 0.6683 - val_fp: 12361.0000 - val_fn: 12361.0000 - val_tp: 24951.0000 - val_tn: 24951.0000 - val_prec: 0.6687 - val_rec: 0.6687
+Epoch 21/50
+4663/4663 - 70s - loss: 5376055.5000 - acc: 0.7182 - fp: 42020.0000 - fn: 42020.0000 - tp: 107196.0000 - tn: 107196.0000 - prec: 0.7184 - rec: 0.7184 - val_loss: 183244.3281 - val_acc: 0.5727 - val_fp: 15944.0000 - val_fn: 15944.0000 - val_tp: 21368.0000 - val_tn: 21368.0000 - val_prec: 0.5727 - val_rec: 0.5727
+Epoch 22/50
+4663/4663 - 71s - loss: 44098.4688 - acc: 0.7324 - fp: 39905.0000 - fn: 39905.0000 - tp: 109311.0000 - tn: 109311.0000 - prec: 0.7326 - rec: 0.7326 - val_loss: 39325.0156 - val_acc: 0.6993 - val_fp: 11217.0000 - val_fn: 11217.0000 - val_tp: 26095.0000 - val_tn: 26095.0000 - val_prec: 0.6994 - val_rec: 0.6994
+Epoch 23/50
+4663/4663 - 70s - loss: 7979910.0000 - acc: 0.7287 - fp: 40464.0000 - fn: 40464.0000 - tp: 108752.0000 - tn: 108752.0000 - prec: 0.7288 - rec: 0.7288 - val_loss: 215742.7812 - val_acc: 0.7133 - val_fp: 10696.0000 - val_fn: 10696.0000 - val_tp: 26616.0000 - val_tn: 26616.0000 - val_prec: 0.7133 - val_rec: 0.7133
+Epoch 24/50
+4663/4663 - 70s - loss: 90472.6016 - acc: 0.7384 - fp: 39022.0000 - fn: 39022.0000 - tp: 110194.0000 - tn: 110194.0000 - prec: 0.7385 - rec: 0.7385 - val_loss: 61044.0547 - val_acc: 0.6318 - val_fp: 13735.0000 - val_fn: 13735.0000 - val_tp: 23577.0000 - val_tn: 23577.0000 - val_prec: 0.6319 - val_rec: 0.6319
+Epoch 25/50
+4663/4663 - 70s - loss: 2273485.0000 - acc: 0.7402 - fp: 38751.0000 - fn: 38751.0000 - tp: 110465.0000 - tn: 110465.0000 - prec: 0.7403 - rec: 0.7403 - val_loss: 38262.0703 - val_acc: 0.6968 - val_fp: 11311.0000 - val_fn: 11311.0000 - val_tp: 26001.0000 - val_tn: 26001.0000 - val_prec: 0.6969 - val_rec: 0.6969
+Epoch 26/50
+4663/4663 - 70s - loss: 20500.5410 - acc: 0.7421 - fp: 38445.0000 - fn: 38445.0000 - tp: 110771.0000 - tn: 110771.0000 - prec: 0.7424 - rec: 0.7424 - val_loss: 16463.0215 - val_acc: 0.5828 - val_fp: 15558.0000 - val_fn: 15558.0000 - val_tp: 21754.0000 - val_tn: 21754.0000 - val_prec: 0.5830 - val_rec: 0.5830
+Epoch 27/50
+4663/4663 - 71s - loss: 11056105.0000 - acc: 0.7294 - fp: 40370.0000 - fn: 40370.0000 - tp: 108846.0000 - tn: 108846.0000 - prec: 0.7295 - rec: 0.7295 - val_loss: 129329.7188 - val_acc: 0.7183 - val_fp: 10511.0000 - val_fn: 10511.0000 - val_tp: 26801.0000 - val_tn: 26801.0000 - val_prec: 0.7183 - val_rec: 0.7183
+Epoch 28/50
+4663/4663 - 71s - loss: 66498.9297 - acc: 0.7441 - fp: 38169.0000 - fn: 38169.0000 - tp: 111047.0000 - tn: 111047.0000 - prec: 0.7442 - rec: 0.7442 - val_loss: 84195.7266 - val_acc: 0.6404 - val_fp: 13417.0000 - val_fn: 13417.0000 - val_tp: 23895.0000 - val_tn: 23895.0000 - val_prec: 0.6404 - val_rec: 0.6404
+Epoch 29/50
+4663/4663 - 70s - loss: 2602891.0000 - acc: 0.7360 - fp: 39384.0000 - fn: 39384.0000 - tp: 109832.0000 - tn: 109832.0000 - prec: 0.7361 - rec: 0.7361 - val_loss: 60064.5625 - val_acc: 0.7204 - val_fp: 10431.0000 - val_fn: 10431.0000 - val_tp: 26881.0000 - val_tn: 26881.0000 - val_prec: 0.7204 - val_rec: 0.7204
+Epoch 30/50
+4663/4663 - 70s - loss: 3619172.7500 - acc: 0.7422 - fp: 38447.0000 - fn: 38447.0000 - tp: 110769.0000 - tn: 110769.0000 - prec: 0.7423 - rec: 0.7423 - val_loss: 785218.5000 - val_acc: 0.7142 - val_fp: 10662.0000 - val_fn: 10662.0000 - val_tp: 26650.0000 - val_tn: 26650.0000 - val_prec: 0.7142 - val_rec: 0.7142
+Epoch 31/50
+4663/4663 - 70s - loss: 60433.8359 - acc: 0.7428 - fp: 38369.0000 - fn: 38369.0000 - tp: 110847.0000 - tn: 110847.0000 - prec: 0.7429 - rec: 0.7429 - val_loss: 24576.4668 - val_acc: 0.6435 - val_fp: 13296.0000 - val_fn: 13296.0000 - val_tp: 24016.0000 - val_tn: 24016.0000 - val_prec: 0.6437 - val_rec: 0.6437
+Epoch 32/50
+4663/4663 - 70s - loss: 2885931.0000 - acc: 0.7416 - fp: 38534.0000 - fn: 38534.0000 - tp: 110682.0000 - tn: 110682.0000 - prec: 0.7418 - rec: 0.7418 - val_loss: 117368.2891 - val_acc: 0.6725 - val_fp: 12217.0000 - val_fn: 12217.0000 - val_tp: 25095.0000 - val_tn: 25095.0000 - val_prec: 0.6726 - val_rec: 0.6726
+Epoch 33/50
+4663/4663 - 71s - loss: 40552.9531 - acc: 0.7468 - fp: 37767.0000 - fn: 37767.0000 - tp: 111449.0000 - tn: 111449.0000 - prec: 0.7469 - rec: 0.7469 - val_loss: 44034.2188 - val_acc: 0.6943 - val_fp: 11403.0000 - val_fn: 11403.0000 - val_tp: 25909.0000 - val_tn: 25909.0000 - val_prec: 0.6944 - val_rec: 0.6944
+Epoch 34/50
+4663/4663 - 70s - loss: 4115699.5000 - acc: 0.7476 - fp: 37617.0000 - fn: 37617.0000 - tp: 111599.0000 - tn: 111599.0000 - prec: 0.7479 - rec: 0.7479 - val_loss: 189971.2812 - val_acc: 0.7001 - val_fp: 11189.0000 - val_fn: 11189.0000 - val_tp: 26123.0000 - val_tn: 26123.0000 - val_prec: 0.7001 - val_rec: 0.7001
+Epoch 35/50
+4663/4663 - 70s - loss: 53817.0898 - acc: 0.7442 - fp: 38158.0000 - fn: 38158.0000 - tp: 111058.0000 - tn: 111058.0000 - prec: 0.7443 - rec: 0.7443 - val_loss: 63446.6289 - val_acc: 0.6424 - val_fp: 13340.0000 - val_fn: 13340.0000 - val_tp: 23972.0000 - val_tn: 23972.0000 - val_prec: 0.6425 - val_rec: 0.6425
+Epoch 36/50
+4663/4663 - 71s - loss: 3948546.7500 - acc: 0.7516 - fp: 37039.0000 - fn: 37039.0000 - tp: 112177.0000 - tn: 112177.0000 - prec: 0.7518 - rec: 0.7518 - val_loss: 1688550.2500 - val_acc: 0.6241 - val_fp: 14026.0000 - val_fn: 14026.0000 - val_tp: 23286.0000 - val_tn: 23286.0000 - val_prec: 0.6241 - val_rec: 0.6241
+Epoch 37/50
+4663/4663 - 71s - loss: 149694.8125 - acc: 0.7400 - fp: 38791.0000 - fn: 38791.0000 - tp: 110425.0000 - tn: 110425.0000 - prec: 0.7400 - rec: 0.7400 - val_loss: 44249.3242 - val_acc: 0.6951 - val_fp: 11372.0000 - val_fn: 11372.0000 - val_tp: 25940.0000 - val_tn: 25940.0000 - val_prec: 0.6952 - val_rec: 0.6952
+Epoch 38/50
+4663/4663 - 72s - loss: 3606819.5000 - acc: 0.7522 - fp: 36961.0000 - fn: 36961.0000 - tp: 112255.0000 - tn: 112255.0000 - prec: 0.7523 - rec: 0.7523 - val_loss: 642153.0625 - val_acc: 0.7115 - val_fp: 10762.0000 - val_fn: 10762.0000 - val_tp: 26550.0000 - val_tn: 26550.0000 - val_prec: 0.7116 - val_rec: 0.7116
+Epoch 39/50
+4663/4663 - 71s - loss: 67939.9062 - acc: 0.7414 - fp: 38577.0000 - fn: 38577.0000 - tp: 110639.0000 - tn: 110639.0000 - prec: 0.7415 - rec: 0.7415 - val_loss: 45637.0391 - val_acc: 0.7323 - val_fp: 9988.0000 - val_fn: 9988.0000 - val_tp: 27324.0000 - val_tn: 27324.0000 - val_prec: 0.7323 - val_rec: 0.7323
+Epoch 40/50
+4663/4663 - 71s - loss: 6797828.5000 - acc: 0.7387 - fp: 38984.0000 - fn: 38984.0000 - tp: 110232.0000 - tn: 110232.0000 - prec: 0.7387 - rec: 0.7387 - val_loss: 385988.3750 - val_acc: 0.6610 - val_fp: 12647.0000 - val_fn: 12647.0000 - val_tp: 24665.0000 - val_tn: 24665.0000 - val_prec: 0.6610 - val_rec: 0.6610
+Epoch 41/50
+4663/4663 - 71s - loss: 120946.8203 - acc: 0.7429 - fp: 38354.0000 - fn: 38354.0000 - tp: 110862.0000 - tn: 110862.0000 - prec: 0.7430 - rec: 0.7430 - val_loss: 24348.7168 - val_acc: 0.7197 - val_fp: 10452.0000 - val_fn: 10452.0000 - val_tp: 26860.0000 - val_tn: 26860.0000 - val_prec: 0.7199 - val_rec: 0.7199
+Epoch 42/50
+4663/4663 - 70s - loss: 7619269.0000 - acc: 0.7460 - fp: 37885.0000 - fn: 37885.0000 - tp: 111331.0000 - tn: 111331.0000 - prec: 0.7461 - rec: 0.7461 - val_loss: 2630713.7500 - val_acc: 0.5801 - val_fp: 15666.0000 - val_fn: 15666.0000 - val_tp: 21646.0000 - val_tn: 21646.0000 - val_prec: 0.5801 - val_rec: 0.5801
+Epoch 43/50
+4663/4663 - 70s - loss: 305352.5000 - acc: 0.7447 - fp: 38086.0000 - fn: 38086.0000 - tp: 111130.0000 - tn: 111130.0000 - prec: 0.7448 - rec: 0.7448 - val_loss: 132196.4531 - val_acc: 0.7003 - val_fp: 11182.0000 - val_fn: 11182.0000 - val_tp: 26130.0000 - val_tn: 26130.0000 - val_prec: 0.7003 - val_rec: 0.7003
+Epoch 44/50
+4663/4663 - 71s - loss: 6695044.5000 - acc: 0.7517 - fp: 37039.0000 - fn: 37039.0000 - tp: 112177.0000 - tn: 112177.0000 - prec: 0.7518 - rec: 0.7518 - val_loss: 517449.3438 - val_acc: 0.5748 - val_fp: 15866.0000 - val_fn: 15866.0000 - val_tp: 21446.0000 - val_tn: 21446.0000 - val_prec: 0.5748 - val_rec: 0.5748
+Epoch 45/50
+4663/4663 - 70s - loss: 146286.3125 - acc: 0.7539 - fp: 36709.0000 - fn: 36709.0000 - tp: 112507.0000 - tn: 112507.0000 - prec: 0.7540 - rec: 0.7540 - val_loss: 59731.2656 - val_acc: 0.7110 - val_fp: 10782.0000 - val_fn: 10782.0000 - val_tp: 26530.0000 - val_tn: 26530.0000 - val_prec: 0.7110 - val_rec: 0.7110
+Epoch 46/50
+4663/4663 - 71s - loss: 1406654.6250 - acc: 0.7560 - fp: 36404.0000 - fn: 36404.0000 - tp: 112812.0000 - tn: 112812.0000 - prec: 0.7560 - rec: 0.7560 - val_loss: 107599.9766 - val_acc: 0.7156 - val_fp: 10610.0000 - val_fn: 10610.0000 - val_tp: 26702.0000 - val_tn: 26702.0000 - val_prec: 0.7156 - val_rec: 0.7156
+Epoch 47/50
+4663/4663 - 70s - loss: 43108.6719 - acc: 0.7618 - fp: 35521.0000 - fn: 35521.0000 - tp: 113695.0000 - tn: 113695.0000 - prec: 0.7619 - rec: 0.7619 - val_loss: 49854.0117 - val_acc: 0.6328 - val_fp: 13699.0000 - val_fn: 13699.0000 - val_tp: 23613.0000 - val_tn: 23613.0000 - val_prec: 0.6329 - val_rec: 0.6329
+Epoch 48/50
+4663/4663 - 70s - loss: 2686600.5000 - acc: 0.7513 - fp: 37106.0000 - fn: 37106.0000 - tp: 112110.0000 - tn: 112110.0000 - prec: 0.7513 - rec: 0.7513 - val_loss: 78201.8047 - val_acc: 0.7219 - val_fp: 10374.0000 - val_fn: 10374.0000 - val_tp: 26938.0000 - val_tn: 26938.0000 - val_prec: 0.7220 - val_rec: 0.7220
+Epoch 49/50
+4663/4663 - 71s - loss: 2331690.7500 - acc: 0.7485 - fp: 37528.0000 - fn: 37528.0000 - tp: 111688.0000 - tn: 111688.0000 - prec: 0.7485 - rec: 0.7485 - val_loss: 221425.3594 - val_acc: 0.6409 - val_fp: 13400.0000 - val_fn: 13400.0000 - val_tp: 23912.0000 - val_tn: 23912.0000 - val_prec: 0.6409 - val_rec: 0.6409
+Epoch 50/50
+4663/4663 - 71s - loss: 50968.1797 - acc: 0.7561 - fp: 36388.0000 - fn: 36388.0000 - tp: 112828.0000 - tn: 112828.0000 - prec: 0.7561 - rec: 0.7561 - val_loss: 54944.3516 - val_acc: 0.6419 - val_fp: 13358.0000 - val_fn: 13358.0000 - val_tp: 23954.0000 - val_tn: 23954.0000 - val_prec: 0.6420 - val_rec: 0.6420
+2138/2138 - 24s - loss: 64878.3984 - acc: 0.5438 - fp: 31211.0000 - fn: 31211.0000 - tp: 37205.0000 - tn: 37205.0000 - prec: 0.5438 - rec: 0.5438
+
+Results with test dataset
+Loss: 64878.3984
+Accuracy: 0.5438
+False positives: 31211
+False negatives: 31211
+True positives: 37205
+True negatives: 37205
+Precision:  0.5438
+Recall:  0.5438
+Confusion Matrix Name: Training
+[[     0 101487]
+ [196945      0]]
+- TP: 0
+- TN: -298432
+- FP: 298432
+- FN: 298432
+- Accuracy: -1.0
+- Precision: 0.0
+- Recall: 0.0
+
+Confusion Matrix Name: Validation
+[[    2 25265]
+ [49357     0]]
+- TP: 2
+- TN: -74622
+- FP: 74622
+- FN: 74622
+- Accuracy: -0.9999
+- Precision: 0.0
+- Recall: 0.0
+
+Confusion Matrix Name: Test
+[[    1 60162]
+ [76669     0]]
+- TP: 1
+- TN: -136831
+- FP: 136831
+- FN: 136831
+- Accuracy: -1.0
+- Precision: 0.0
+- Recall: 0.0
+
