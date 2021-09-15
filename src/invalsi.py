@@ -201,7 +201,7 @@ str_categorical_features = [
     "sesso", "mese", "anno", "luogo", "eta", "freq_asilo_nido", "freq_scuola_materna",
     "luogo_padre", "titolo_padre", "prof_padre", "luogo_madre", "titolo_madre", "prof_madre",
     "regolarità", "cittadinanza", "cod_provincia_ISTAT", "Nome_reg",
-    "Cod_reg", "Areageo_3", "Areageo_4", "Areageo_5", "Areageo_5_Istat"
+    "Cod_reg", "Areageo_3", "Areageo_4", "Areageo_5", "Areageo_5_Istat", "sigla_provincia_istat"
 ]
 bool_features = ["Pon"]
 
@@ -267,13 +267,26 @@ if cfg.SAMPLING_TO_PERFORM == "random_undersampling":
 else:
     categorical_features_indexes = [i for i in range(len(df_training_set.columns)) if
                                     df_training_set.columns[i] in str_categorical_features + int_categorical_features]
+
+    df_training_set = df_training_set.apply(lambda col: pd.factorize(col)[0] if col.name in str_categorical_features else col)
+    df_test_set = df_test_set.apply(lambda col: pd.factorize(col)[0] if col.name in str_categorical_features else col)
+
     sm = SMOTENC(categorical_features=categorical_features_indexes, random_state=19)
-    X, y = sm.fit_resample(
+    X_train, y_train = sm.fit_resample(
         df_training_set[[col for col in df_training_set.columns if col != 'DROPOUT']],
         df_training_set['DROPOUT']
     )
-    df_training_set = pd.concat([X, y], axis=1)
-    # TODO: per farlo funzionare bisogna convertire le stringhe a interi https://stackoverflow.com/questions/65280842/smote-could-not-convert-string-to-float 
+    df_training_set = pd.concat([X_train, y_train], axis=1)
+
+    X_test, y_test = sm.fit_resample(
+        df_test_set[[col for col in df_test_set.columns if col != 'DROPOUT']],
+        df_test_set['DROPOUT']
+    )
+    df_test_set = pd.concat([X_test, y_test], axis=1)
+
+    # If SMOTENC was performed, every string categorical feature was transformed into a numerical categorical feature
+    int_categorical_features = int_categorical_features + str_categorical_features
+    str_categorical_features = []
 
 if "Unnamed: 0" in df_training_set.columns:
     df_training_set.drop("Unnamed: 0", axis=1, inplace=True)
