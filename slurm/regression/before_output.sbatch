@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=before_output_cla
+#SBATCH --job-name=before_output_reg
 #SBATCH --mail-type=END
 #SBATCH --mail-user=marco.ferrati@studio.unibo.it
 #SBATCH --time=10:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --output=before_output_cla
+#SBATCH --output=before_output_reg
 #SBATCH --gres=gpu:1
 
 cd ../../

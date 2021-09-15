@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=dense_activation_batch_cla
+#SBATCH --job-name=dense_activation_batch_reg
 #SBATCH --mail-type=END
 #SBATCH --mail-user=marco.ferrati@studio.unibo.it
 #SBATCH --time=10:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --output=dense_activation_batch_cla
+#SBATCH --output=dense_activation_batch_reg
 #SBATCH --gres=gpu:1
 
 cd ../../

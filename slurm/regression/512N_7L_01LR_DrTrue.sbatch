@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=512N_7L_01LR_DrTrue_cla
+#SBATCH --job-name=512N_7L_01LR_DrTrue_reg
 #SBATCH --mail-type=END
 #SBATCH --mail-user=marco.ferrati@studio.unibo.it
 #SBATCH --time=10:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --output=512N_7L_01LR_DrTrue_cla
+#SBATCH --output=512N_7L_01LR_DrTrue_reg
 #SBATCH --gres=gpu:1
 
 cd ../../
