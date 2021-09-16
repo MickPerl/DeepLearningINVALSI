@@ -519,6 +519,7 @@ early_stopper = EarlyStopping(monitor="val_loss",
                               mode="min",
                               restore_best_weights=True)
 
+print("[Training]")
 history = model.fit(ds_training_set,
                     epochs=cfg.EPOCH,
                     batch_size=cfg.BATCH_SIZE,
@@ -536,6 +537,7 @@ save_plots.plot_fn(metrics)
 save_plots.plot_recall(metrics)
 save_plots.plot_precision(metrics)
 
+print("[Test]")
 score = model.evaluate(ds_test_set, verbose=2)
 
 print()
