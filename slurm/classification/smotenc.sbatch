@@ -16,5 +16,7 @@ pip3 install --no-cache-dir -r requirements.txt
 
 export JOB_NAME=smotenc
 export SAMPLING_TO_PERFORM=SMOTENC
+export TEST_SET_PERCENT=0.25
+export VALIDATION_SET_PERCENT=0.25
 
 python3 src/invalsi.py
