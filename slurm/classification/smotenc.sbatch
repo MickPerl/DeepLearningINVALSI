@@ -15,6 +15,6 @@ cd ../../
 pip3 install --no-cache-dir -r requirements.txt
 
 export JOB_NAME=smotenc
-export SAMPLING_TO_PERFORM="SMOTENC"
+export SAMPLING_TO_PERFORM=SMOTE
 
 python3 src/invalsi.py
