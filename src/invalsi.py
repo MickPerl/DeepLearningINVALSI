@@ -115,7 +115,7 @@ conteggio_ambiti_processi = {AP: list_ambiti_processi.count(AP) for AP in ambiti
 if PRE_ML:
     dataset_with_ambiti_processi = cleaned_original_dataset.copy()
     for AP in ambiti_processi:
-        # Aggiunge una colonna al dataset chiamata AP e inizializza tutti i record a 0.0
+        # Aggiunge una colonna al dataset chiamata AP e inizializza tutti i record a 0.0.
         dataset_with_ambiti_processi[AP] = 0.0
 
 """
@@ -184,7 +184,7 @@ if PRE_ML:
     print("Lista colonne e tipi:")
     print(dataset_ap.info())
 
-# Le colonne DROPOUT e LIVELLI non sono considerate in quanto colonne target (in particolare, DROPOUT è una regressione di LIVELLI)
+# Le colonne DROPOUT e LIVELLI non sono considerate in quanto colonne target (in particolare, DROPOUT è una regressione di LIVELLI).
 continuous_features = columns_low_ratio_null_values + \
                       ["pu_ma_gr", "pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200",
                        "WLE_MAT_200_CORR",
@@ -212,15 +212,15 @@ Aggiustamento colonne con valori nulli.
 dataset_ap["sigla_provincia_istat"].fillna(value="ND", inplace=True)
 
 if cfg.FILL_NAN == "remove":
-    # Rimuovere colonne voti ita
-    # Rimuovere record con dati nulli in voti mat
+    # Rimuovere colonne voti ita.
+    # Rimuovere record con dati nulli in voti mat.
     dataset_ap.drop(["voto_scritto_ita", "voto_orale_ita"], axis=1, inplace=True)
     dataset_ap.dropna(subset=["voto_scritto_mat", "voto_orale_mat"], inplace=True)
 else:
     for col in columns_low_ratio_null_values:
         if cfg.FILL_NAN == "median":
             replaced_value = dataset_ap[col].median()
-        elif cfg.FILL_NAN == "mean":
+        else: # cfg.FILL_NAN == "mean"
             replaced_value = dataset_ap[col].mean()
 
         dataset_ap[col].fillna(value=replaced_value, inplace=True)
@@ -256,7 +256,7 @@ if cfg.SAMPLING_TO_PERFORM == "random_undersampling":
     # class_drop contiene i record della classe sottorappresentata, ovvero CON DROPOUT.
     class_drop = df_training_set[df_training_set['DROPOUT'] == True]
 
-    # Sotto campionamento di class_drop in modo che abbia stessa cardinalità di class_nodrop
+    # Sotto campionamento di class_drop in modo che abbia stessa cardinalità di class_nodrop.
     class_nodrop = class_nodrop.sample(len(class_drop), random_state=19)
 
     print(f'Class NO DROPOUT: {len(class_nodrop):,}')
@@ -264,7 +264,7 @@ if cfg.SAMPLING_TO_PERFORM == "random_undersampling":
 
     df_training_set = class_drop.append(class_nodrop)
     df_training_set = df_training_set.sample(frac=1, random_state=19)
-else:
+else: # cfg.SAMPLING_TO_PERFORM == "SMOTENC"
     categorical_features_indexes = [i for i in range(len(df_training_set.columns)) if
                                     df_training_set.columns[i] in str_categorical_features + int_categorical_features]
 
@@ -284,7 +284,7 @@ else:
     )
     df_test_set = pd.concat([X_test, y_test], axis=1)
 
-    # If SMOTENC was performed, every string categorical feature was transformed into a numerical categorical feature
+    # Se SMOTENC viene eseguito, ogni feature categorica stringa viene trasformata in feature categorica intera.
     int_categorical_features = int_categorical_features + str_categorical_features
     str_categorical_features = []
 
@@ -367,7 +367,7 @@ for name, column in df_training_set.items():
         dtype = tf.float32
     elif name in ordinal_features or name in int_categorical_features or name in bool_features:
         dtype = tf.int64
-    else:  # str_categorical_features
+    else:  # name in str_categorical_features
         dtype = tf.string
 
     input_layers[name] = tf.keras.Input(shape=(), name=name, dtype=dtype)
