@@ -16,6 +16,6 @@ pip3 install --no-cache-dir -r requirements.txt
 
 export JOB_NAME=smotenc
 export PROBLEM_TYPE=regression
-export SAMPLING_TO_PERFORM=SMOTE
+export SAMPLING_TO_PERFORM=SMOTENC
 
 python3 src/invalsi.py

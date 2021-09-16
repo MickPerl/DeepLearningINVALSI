@@ -88,8 +88,8 @@ def check_config() -> int:
         print("BATCH_SIZE should be greater than 0.")
         errors += 1
     
-    if SAMPLING_TO_PERFORM not in ["random_undersampling", "SMOTE"]:
-        print("SAMPLING_TO_PERFORM should either be \"random_undersampling\" or \"SMOTE\".")
+    if SAMPLING_TO_PERFORM not in ["random_undersampling", "SMOTENC"]:
+        print("SAMPLING_TO_PERFORM should either be \"random_undersampling\" or \"SMOTENC\".")
         errors += 1
 
     if TEST_SET_PERCENT < 0 or TEST_SET_PERCENT > 1:
