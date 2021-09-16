@@ -15,7 +15,8 @@ cd ../../
 pip3 install --no-cache-dir -r requirements.txt
 
 export JOB_NAME=great
-export NUMBER_OF_LAYERS=20
+export NUMBER_OF_LAYERS=15
 export NEURONS=512
+export LEARNING_RATE=0.005
 
 python3 src/invalsi.py

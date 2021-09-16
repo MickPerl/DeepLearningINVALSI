@@ -18,5 +18,6 @@ export JOB_NAME=great
 export PROBLEM_TYPE=regression
 export NUMBER_OF_LAYERS=20
 export NEURONS=512
+export LEARNING_RATE=0.005
 
 python3 src/invalsi.py
