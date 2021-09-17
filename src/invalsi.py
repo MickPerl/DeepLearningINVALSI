@@ -302,7 +302,7 @@ Conversione da Pandas DataFrame a Tensorflow Dataset.
 """
 
 
-def convert_dropout_to_one_hot(dropout_col):
+def convert_dropout_column_to_one_hot(dropout_col):
     dropout_col_one_hot = []
     for dc in dropout_col:
         if dc == 1:
@@ -316,15 +316,15 @@ def pd_dataframe_to_tf_dataset(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
     if cfg.PROBLEM_TYPE == "classification":
         dropout_col = copied_df.pop("DROPOUT")
-        dropout_col = convert_dropout_to_one_hot(dropout_col)
+        dropout_col = convert_dropout_column_to_one_hot(dropout_col)
         copied_df.drop("LIVELLI", axis=1, inplace=True)
     else:
         dropout_col = copied_df.pop("LIVELLI")
-        dropout_col = dropout_col.divide(other=5)
+        dropout_col = dropout_col.divide(other = 5) # Normalizzazione da [0..5] a [0..1].
         copied_df.drop("DROPOUT", axis=1, inplace=True)
 
     """
-    Dato che il dataframe ha dati eterogenei lo convertiamo a dizionario,
+    Dato che il dataframe ha dati eterogenei lo convertiamo a dizionario (i.e. dict(copied_df)),
     in cui le chiavi sono i nomi delle colonne e i valori sono i valori della colonna.
     Infine bisogna indicare la colonna target.
     """
@@ -571,7 +571,7 @@ training_y = df_training_set[target_col]
 if len(training_x) * cfg.BATCH_SIZE - len(training_y) != 0:
     training_y = training_y.head(len(training_x) * cfg.BATCH_SIZE - len(training_y))
 if cfg.PROBLEM_TYPE == "classification":
-    training_y = convert_dropout_to_one_hot(training_y)
+    training_y = convert_dropout_column_to_one_hot(training_y)
 
 validation_x = convert_df_for_prediction(
     df_validation_set[[col for col in df_validation_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
@@ -579,7 +579,7 @@ validation_y = df_validation_set[target_col]
 if len(validation_x) * cfg.BATCH_SIZE - len(validation_y) != 0:
     validation_y = validation_y.head((len(validation_x) * cfg.BATCH_SIZE) - len(validation_y))
 if cfg.PROBLEM_TYPE == "classification":
-    validation_y = convert_dropout_to_one_hot(validation_y)
+    validation_y = convert_dropout_column_to_one_hot(validation_y)
 
 test_x = convert_df_for_prediction(
     df_test_set[[col for col in df_test_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
@@ -587,7 +587,7 @@ test_y = df_test_set[target_col]
 if (len(test_x) * cfg.BATCH_SIZE) - len(test_y) != 0:
     test_y = test_y.head(len(test_x) * cfg.BATCH_SIZE - len(test_y))
 if cfg.PROBLEM_TYPE == "classification":
-    test_y = convert_dropout_to_one_hot(test_y)
+    test_y = convert_dropout_column_to_one_hot(test_y)
 
 predicted_training_y = model.predict(training_x)
 predicted_validation_y = model.predict(validation_x)
