@@ -608,22 +608,32 @@ test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=pred
 
 
 def compute_metrics(label, confusion_matrix):
-    true_positives = np.diag(confusion_matrix)  # vettore in cui ogni cella è il numero di TP per la classe
-    false_positives = confusion_matrix.sum(axis=0) - true_positives
-    false_negatives = confusion_matrix.sum(axis=1) - true_positives
-    true_negatives = confusion_matrix.sum() - (true_positives.sum() + false_positives.sum() + false_negatives.sum())
+    if cfg.PROBLEM_TYPE == "classification":
+        true_positives = confusion_matrix[0, 0]
+        false_positives = confusion_matrix[0, 1]
+        false_negatives = confusion_matrix[1, 0]
+        true_negatives = confusion_matrix[1, 1]
+    else:
+        true_positives = np.diag(confusion_matrix)  # vettore in cui ogni cella è il numero di TP per la classe
+        false_positives = confusion_matrix.sum(axis=0) - true_positives
+        false_negatives = confusion_matrix.sum(axis=1) - true_positives
+        true_negatives = confusion_matrix.sum() - (true_positives.sum() + false_positives.sum() + false_negatives.sum())
+        # Sovrascrivo TP, FP, FN per effettuare i calcoli delle metriche successivamente
+        true_positives = true_positives.sum()
+        false_positives = false_positives.sum()
+        false_negatives = false_negatives.sum()
 
-    accuracy = (true_positives.sum() + true_negatives.sum()) / confusion_matrix.sum()
-    precision = true_positives.sum() / (true_positives.sum() + false_positives.sum())
-    recall = true_positives.sum() / (true_positives.sum() + false_negatives.sum())
+    accuracy = (true_positives + true_negatives) / confusion_matrix.sum()
+    precision = true_positives / (true_positives + false_positives)
+    recall = true_positives / (true_positives + false_negatives)
 
     print(f"Confusion Matrix Name: {label}")
     print(confusion_matrix)
-    print(f"- TP: {int(true_positives.sum())}")
-    print(f"- TN: {int(true_negatives.sum())}")
-    print(f"- FP: {int(false_positives.sum())}")
-    print(f"- FN: {int(false_negatives.sum())}")
-    print(f"- Accuracy: {round(accuracy, 4)}")  # Attenzione: si tratta della Binary Accuracy
+    print(f"- TP: {int(true_positives)}")
+    print(f"- TN: {int(true_negatives)}")
+    print(f"- FP: {int(false_positives)}")
+    print(f"- FN: {int(false_negatives)}")
+    print(f"- Accuracy: {round(accuracy, 4)}")
     print(f"- Precision: {round(precision, 4)}")
     print(f"- Recall: {round(recall, 4)}")
     print()
