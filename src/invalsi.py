@@ -569,7 +569,7 @@ Matrici di confusione per training e test.
 
 # Selezione delle colonne delle feature (utilizzo di dataset_ap, ma uno qualsiasi fra df_training_set,
 # df_test_set e df_validation_set andava bene lo stesso)
-feature_columns = dataset_ap[[col for col in dataset_ap.columns if col not in ["DROPOUT", "LIVELLI"]]]
+feature_columns = [col for col in dataset_ap.columns if col not in ["DROPOUT", "LIVELLI"]]
 target_col = "DROPOUT" if cfg.PROBLEM_TYPE == "classification" else "LIVELLI"
 
 def convert_df_for_prediction(dataframe: pd.DataFrame):
