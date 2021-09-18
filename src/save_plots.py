@@ -9,16 +9,22 @@ IMAGE_FOLDER = path.join("src", "img", cfg.JOB_NAME, cfg.PROBLEM_TYPE)
 makedirs(IMAGE_FOLDER, exist_ok=True)
 
 
-def plot_accuracy(history: dict):
+def plot_main_metric(history: dict):
     f = plt.figure()
-    plt.plot(history['acc' if cfg.PROBLEM_TYPE == "classification" else 'bin_acc'])
-    plt.plot(history['val_acc' if cfg.PROBLEM_TYPE == "classification" else 'val_bin_acc'])
-    plt.title("Accuracy during training")
-    plt.ylabel('Accuracy')
+    if cfg.PROBLEM_TYPE == "classification":
+        main_metric_name = 'acc'
+    elif cfg.PROBLEM_TYPE == "regression":
+        main_metric_name = 'bin_acc'
+    else: # cfg.PROBLEM_TYPE == "pure_regression"
+        main_metric_name = 'mae'
+    plt.plot(history[main_metric_name])
+    plt.plot(history[f'val_{main_metric_name}'])
+    plt.title("Accuracy" if cfg.PROBLEM_TYPE != "pure_regression" else "MAE" + " during training")
+    plt.ylabel("Accuracy" if cfg.PROBLEM_TYPE != "pure_regression" else "MAE")
     plt.xlabel('Epochs')
     plt.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.savefig(path.join(IMAGE_FOLDER, 'accuracy.png'))
+    plt.savefig(path.join(IMAGE_FOLDER, "accuracy.png" if cfg.PROBLEM_TYPE != "pure_regression" else "mae.png"))
 
     plt.clf()
 

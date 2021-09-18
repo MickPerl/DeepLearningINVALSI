@@ -540,7 +540,7 @@ history = model.fit(ds_training_set,
                     verbose=2)
 
 metrics = history.history
-save_plots.plot_accuracy(metrics)
+save_plots.plot_main_metric(metrics)
 save_plots.plot_loss(metrics)
 save_plots.plot_tp(metrics)
 save_plots.plot_tn(metrics)
