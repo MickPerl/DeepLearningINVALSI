@@ -319,8 +319,13 @@ def pd_dataframe_to_tf_dataset(dataframe: pd.DataFrame):
         dropout_col = convert_dropout_column_to_one_hot(dropout_col)
         copied_df.drop("LIVELLI", axis=1, inplace=True)
     else:
+        # La colonna target LIVELLI viene presa, invertiti i valori (0 -> 5, 1 -> 4, ..., 5 -> 0) e poi li divido per 5.
+        # Questo viene fatto per poter associare a valori sopra 0.6 (corrispondente all'originale 4) il concetto di
+        # "Dropout Sì" e a quelli inferiori il concetto di "Dropout no".
         dropout_col = copied_df.pop("LIVELLI")
-        dropout_col = dropout_col.divide(other = 5) # Normalizzazione da [0..5] a [0..1].
+        dropout_col = dropout_col.subtract(5)
+        dropout_col = dropout_col.abs()
+        dropout_col = dropout_col.divide(5) # Normalizzazione dei valori della colonna da [0..5] a [0..1].
         copied_df.drop("DROPOUT", axis=1, inplace=True)
 
     """
@@ -447,10 +452,10 @@ preprocessed = tf.concat(preprocessed_features, axis=-1)
 
 preprocessor = tf.keras.Model(input_layers, preprocessed)
 
-initializer_hidden_layer = tf.keras.initializers.HeNormal(
-    seed=19)  # inizializzatore che verrà usato per i pesi dei layer con ReLU / LeakyReLU
-initializer_output_layer = tf.keras.initializers.GlorotNormal(
-    seed=19)  # inizializzatore che verrà usato per i pesi dei layer con sigmoid
+# inizializzatore che verrà usato per i pesi dei layer con ReLU / LeakyReLU
+initializer_hidden_layer = tf.keras.initializers.HeNormal(seed=19)
+# inizializzatore che verrà usato per i pesi dei layer con sigmoid
+initializer_output_layer = tf.keras.initializers.GlorotNormal(seed=19)
 
 body = tf.keras.Sequential()
 
@@ -494,8 +499,8 @@ if cfg.PROBLEM_TYPE == "classification":
     accuracy = tf.keras.metrics.Accuracy(name="acc")
     loss_function = tf.keras.losses.CategoricalCrossentropy()
 else:
-    accuracy = tf.metrics.BinaryAccuracy(name="bin_acc",
-                                         threshold=0.4)  # 0.4 perché LIVELLI in [0,1,2] è DROPOUT = True, LIVELLI in [3,4,5] è DROPOUT = False
+    # 0.6 perché dopo il preprocessing, i LIVELLI in [3,4,5] è DROPOUT = True, LIVELLI in [0,1,2] è DROPOUT = False
+    accuracy = tf.metrics.BinaryAccuracy(name="bin_acc", threshold=0.6)  
     loss_function = tf.keras.losses.BinaryCrossentropy()
 
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE),
@@ -555,6 +560,10 @@ print('Recall: ', round(score[7], 4))
 Matrici di confusione per training e test.
 """
 
+# Selezione delle colonne delle feature (utilizzo di dataset_ap, ma uno qualsiasi fra df_training_set,
+# df_test_set e df_validation_set andava bene lo stesso)
+feature_columns = dataset_ap[[col for col in dataset_ap.columns if col not in ["DROPOUT", "LIVELLI"]]]
+target_col = "DROPOUT" if cfg.PROBLEM_TYPE == "classification" else "LIVELLI"
 
 def convert_df_for_prediction(dataframe: pd.DataFrame):
     copied_df = dataframe.copy()
@@ -563,31 +572,26 @@ def convert_df_for_prediction(dataframe: pd.DataFrame):
     return ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
 
 
-target_col = "DROPOUT" if cfg.PROBLEM_TYPE == "classification" else "LIVELLI"
+def convert_for_confusion_matrix(dataframe: pd.DataFrame):
+    X = convert_df_for_prediction(dataframe[feature_columns])
+    y = dataframe[target_col]
+    len_X = len(X) * cfg.BATCH_SIZE
+    len_y = len(y)
+    
+    if len_X != len_y:
+        y = y.head(len_X - len_y)
+    if cfg.PROBLEM_TYPE == "classification":
+        y = convert_dropout_column_to_one_hot(y)
+    else: # cfg.PROBLEM_TYPE == "regression"
+        y = y.subtract(5)
+        y = y.abs()
+    
+    return X, y
 
-training_x = convert_df_for_prediction(
-    df_training_set[[col for col in df_training_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
-training_y = df_training_set[target_col]
-if len(training_x) * cfg.BATCH_SIZE - len(training_y) != 0:
-    training_y = training_y.head(len(training_x) * cfg.BATCH_SIZE - len(training_y))
-if cfg.PROBLEM_TYPE == "classification":
-    training_y = convert_dropout_column_to_one_hot(training_y)
 
-validation_x = convert_df_for_prediction(
-    df_validation_set[[col for col in df_validation_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
-validation_y = df_validation_set[target_col]
-if len(validation_x) * cfg.BATCH_SIZE - len(validation_y) != 0:
-    validation_y = validation_y.head((len(validation_x) * cfg.BATCH_SIZE) - len(validation_y))
-if cfg.PROBLEM_TYPE == "classification":
-    validation_y = convert_dropout_column_to_one_hot(validation_y)
-
-test_x = convert_df_for_prediction(
-    df_test_set[[col for col in df_test_set.columns if col not in ["DROPOUT", "LIVELLI"]]])
-test_y = df_test_set[target_col]
-if (len(test_x) * cfg.BATCH_SIZE) - len(test_y) != 0:
-    test_y = test_y.head(len(test_x) * cfg.BATCH_SIZE - len(test_y))
-if cfg.PROBLEM_TYPE == "classification":
-    test_y = convert_dropout_column_to_one_hot(test_y)
+training_x, training_y = convert_for_confusion_matrix(df_training_set)
+validation_x, validation_y = convert_for_confusion_matrix(df_validation_set)
+test_x, test_y = convert_for_confusion_matrix(df_test_set)
 
 predicted_training_y = model.predict(training_x)
 predicted_validation_y = model.predict(validation_x)
