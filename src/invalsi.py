@@ -318,13 +318,17 @@ def pd_dataframe_to_tf_dataset(dataframe: pd.DataFrame):
         dropout_col = copied_df.pop("DROPOUT")
         dropout_col = convert_dropout_column_to_one_hot(dropout_col)
         copied_df.drop("LIVELLI", axis=1, inplace=True)
-    else:
+    elif cfg.PROBLEM_TYPE == "regression":
         # La colonna target LIVELLI viene presa, invertiti i valori (0 -> 5, 1 -> 4, ..., 5 -> 0) e poi li divido per 5.
         # Questo viene fatto per poter associare a valori sopra 0.6 (corrispondente all'originale 4) il concetto di
         # "Dropout Sì" e a quelli inferiori il concetto di "Dropout no".
         dropout_col = copied_df.pop("LIVELLI")
         dropout_col = dropout_col.subtract(5)
         dropout_col = dropout_col.abs()
+        dropout_col = dropout_col.divide(5) # Normalizzazione dei valori della colonna da [0..5] a [0..1].
+        copied_df.drop("DROPOUT", axis=1, inplace=True)
+    else: # cfg.PROBLEM_TYPE == "pure_regression"
+        dropout_col = copied_df.pop("LIVELLI")
         dropout_col = dropout_col.divide(5) # Normalizzazione dei valori della colonna da [0..5] a [0..1].
         copied_df.drop("DROPOUT", axis=1, inplace=True)
 
@@ -486,7 +490,7 @@ if cfg.BATCH_NORMALIZATION == "before_output":
 # segue l'aggiunta dell'output layer
 if cfg.PROBLEM_TYPE == "classification":
     body.add(tf.keras.layers.Dense(2, activation="softmax", kernel_initializer=initializer_output_layer))
-else:
+else: # cfg.PROBLEM_TYPE == "regression" or cfg.PROBLEM_TYPE == "pure_regression"
     body.add(tf.keras.layers.Dense(1, activation="sigmoid", kernel_initializer=initializer_output_layer))
 
 x = preprocessor(input_layers)
@@ -496,17 +500,20 @@ result = body(x)
 model = tf.keras.Model(input_layers, result)
 
 if cfg.PROBLEM_TYPE == "classification":
-    accuracy = tf.keras.metrics.Accuracy(name="acc")
+    main_metric = tf.keras.metrics.Accuracy(name="acc")
     loss_function = tf.keras.losses.CategoricalCrossentropy()
-else:
+elif cfg.PROBLEM_TYPE == "regression":
     # 0.6 perché dopo il preprocessing, i LIVELLI in [3,4,5] è DROPOUT = True, LIVELLI in [0,1,2] è DROPOUT = False
-    accuracy = tf.metrics.BinaryAccuracy(name="bin_acc", threshold=0.6)  
+    main_metric = tf.keras.metrics.BinaryAccuracy(name="bin_acc", threshold=0.6)  
     loss_function = tf.keras.losses.BinaryCrossentropy()
+else: # cfg.PROBLEM_TYPE == "pure_regression"
+    main_metric = tf.keras.metrics.MeanAbsoluteError(name="mae")
+    loss_function = tf.keras.losses.MeanSquaredError()
 
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=cfg.LEARNING_RATE),
               loss=loss_function,
               metrics=[
-                  accuracy,
+                  main_metric,
                   tf.keras.metrics.FalsePositives(name="fp"),
                   tf.keras.metrics.FalseNegatives(name="fn"),
                   tf.keras.metrics.TruePositives(name="tp"),
@@ -582,9 +589,10 @@ def convert_for_confusion_matrix(dataframe: pd.DataFrame):
         y = y.head(len_X - len_y)
     if cfg.PROBLEM_TYPE == "classification":
         y = convert_dropout_column_to_one_hot(y)
-    else: # cfg.PROBLEM_TYPE == "regression"
+    elif cfg.PROBLEM_TYPE == "regression":
         y = y.subtract(5)
         y = y.abs()
+    # Non c'è nulla da fare per cfg.PROBLEM_TYPE == "pure_regression"
     
     return X, y
 
@@ -597,7 +605,7 @@ predicted_training_y = model.predict(training_x)
 predicted_validation_y = model.predict(validation_x)
 predicted_test_y = model.predict(test_x)
 
-if cfg.PROBLEM_TYPE == "regression":
+if cfg.PROBLEM_TYPE != "classification":
     predicted_training_y = np.round(predicted_training_y * 5)
     predicted_validation_y = np.round(predicted_validation_y * 5)
     predicted_test_y = np.round(predicted_test_y * 5)
@@ -613,7 +621,7 @@ def compute_metrics(label, confusion_matrix):
         false_positives = confusion_matrix[0, 1]
         false_negatives = confusion_matrix[1, 0]
         true_negatives = confusion_matrix[1, 1]
-    else:
+    else: # cfg.PROBLEM_TYPE == "regression" or cfg.PROBLEM_TYPE == "pure_regression"
         true_positives = np.diag(confusion_matrix)  # vettore in cui ogni cella è il numero di TP per la classe
         false_positives = confusion_matrix.sum(axis=0) - true_positives
         false_negatives = confusion_matrix.sum(axis=1) - true_positives
