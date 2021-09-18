@@ -51,8 +51,8 @@ def check_config() -> int:
     Checks the configuration, prints to console the errors and return how many there are.
     """
     errors = 0
-    if PROBLEM_TYPE not in ["classification", "regression"]:
-        print("PROBLEM_TYPE should be either \"classification\" or \"regression\".")
+    if PROBLEM_TYPE not in ["classification", "regression", "pure_regression"]:
+        print("PROBLEM_TYPE should be either \"classification\", \"regression\" or \"pure_regression\".")
         errors += 1
     
     if LEARNING_RATE < 0 or LEARNING_RATE > 1:
