@@ -319,9 +319,10 @@ def pd_dataframe_to_tf_dataset(dataframe: pd.DataFrame):
         dropout_col = convert_dropout_column_to_one_hot(dropout_col)
         copied_df.drop("LIVELLI", axis=1, inplace=True)
     elif cfg.PROBLEM_TYPE == "regression":
-        # La colonna target LIVELLI viene presa, invertiti i valori (0 -> 5, 1 -> 4, ..., 5 -> 0) e poi li divido per 5.
-        # Questo viene fatto per poter associare a valori sopra 0.6 (corrispondente all'originale 4) il concetto di
-        # "Dropout Sì" e a quelli inferiori il concetto di "Dropout no".
+        # Si invertono i valori della colonna target LIVELLI secondo la ratio (0 -> 5, 1 -> 4, ..., 5 -> 0),
+        # per poi dividerli per 5, così da mapparli nel range [0,1].
+        # Tale standardizzazione vien fatta affinché le predizioni restituite dal modello possano essere associate
+        # al concetto "Dropout Sì", nel caso siano > 0.6 o a "Dropout no" altrimenti.
         dropout_col = copied_df.pop("LIVELLI")
         dropout_col = dropout_col.subtract(5)
         dropout_col = dropout_col.abs()
