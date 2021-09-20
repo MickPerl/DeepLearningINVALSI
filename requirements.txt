@@ -12,3 +12,4 @@ BeautifulTable
 seaborn
 livelossplot
 pandoc
+h5py

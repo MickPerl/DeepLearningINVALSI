@@ -11,6 +11,7 @@ from tensorflow.keras.layers.experimental.preprocessing import IntegerLookup
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
 from tensorflow.keras.layers.experimental.preprocessing import StringLookup
 from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.python.keras.callbacks import ModelCheckpoint
 from imblearn.over_sampling import SMOTENC
 
 import save_plots
@@ -532,12 +533,17 @@ early_stopper = EarlyStopping(monitor="val_loss",
                               mode="min",
                               restore_best_weights=True)
 
+"""
+Definizione della callback che permette durante il training di salvare il miglior modello calcolato.
+"""
+model_checkpoint = ModelCheckpoint("best_" + cfg.PROBLEM_TYPE + ".h5", monitor='val_loss', mode='min', save_best_only=True)
+
 print("[Training]")
 history = model.fit(ds_training_set,
                     epochs=cfg.EPOCH,
                     batch_size=cfg.BATCH_SIZE,
                     validation_data=ds_validation_set,
-                    callbacks=[early_stopper] if cfg.EARLY_STOPPING else [],
+                    callbacks=([early_stopper] if cfg.EARLY_STOPPING else []) + [model_checkpoint],
                     verbose=2)
 
 metrics = history.history
@@ -563,91 +569,3 @@ print('True positives:', int(score[4]))
 print('True negatives:', int(score[5]))
 print('Precision: ', round(score[6], 4))
 print('Recall: ', round(score[7], 4))
-
-"""
-Matrici di confusione per training e test.
-"""
-
-# Selezione delle colonne delle feature (utilizzo di dataset_ap, ma uno qualsiasi fra df_training_set,
-# df_test_set e df_validation_set andava bene lo stesso)
-feature_columns = [col for col in dataset_ap.columns if col not in ["DROPOUT", "LIVELLI"]]
-target_col = "DROPOUT" if cfg.PROBLEM_TYPE == "classification" else "LIVELLI"
-
-def convert_df_for_prediction(dataframe: pd.DataFrame):
-    copied_df = dataframe.copy()
-    ds = tf.data.Dataset.from_tensor_slices(dict(copied_df))
-
-    return ds.batch(cfg.BATCH_SIZE, drop_remainder=True)
-
-
-def convert_for_confusion_matrix(dataframe: pd.DataFrame):
-    X = convert_df_for_prediction(dataframe[feature_columns])
-    y = dataframe[target_col]
-    len_X = len(X) * cfg.BATCH_SIZE
-    len_y = len(y)
-    
-    if len_X != len_y:
-        y = y.head(len_X - len_y)
-    if cfg.PROBLEM_TYPE == "classification":
-        y = convert_dropout_column_to_one_hot(y)
-    elif cfg.PROBLEM_TYPE == "regression":
-        y = y.subtract(5)
-        y = y.abs()
-    # Non c'è nulla da fare per cfg.PROBLEM_TYPE == "pure_regression"
-    
-    return X, y
-
-
-training_x, training_y = convert_for_confusion_matrix(df_training_set)
-validation_x, validation_y = convert_for_confusion_matrix(df_validation_set)
-test_x, test_y = convert_for_confusion_matrix(df_test_set)
-
-predicted_training_y = model.predict(training_x)
-predicted_validation_y = model.predict(validation_x)
-predicted_test_y = model.predict(test_x)
-
-if cfg.PROBLEM_TYPE != "classification":
-    predicted_training_y = np.round(predicted_training_y * 5)
-    predicted_validation_y = np.round(predicted_validation_y * 5)
-    predicted_test_y = np.round(predicted_test_y * 5)
-
-training_confusion_matrix = tf.math.confusion_matrix(labels=training_y, predictions=predicted_training_y).numpy()
-validation_confusion_matrix = tf.math.confusion_matrix(labels=validation_y, predictions=predicted_validation_y).numpy()
-test_confusion_matrix = tf.math.confusion_matrix(labels=test_y, predictions=predicted_test_y).numpy()
-
-
-def compute_metrics(label, confusion_matrix):
-    if cfg.PROBLEM_TYPE == "classification":
-        true_positives = confusion_matrix[0, 0]
-        false_positives = confusion_matrix[0, 1]
-        false_negatives = confusion_matrix[1, 0]
-        true_negatives = confusion_matrix[1, 1]
-    else: # cfg.PROBLEM_TYPE == "regression" or cfg.PROBLEM_TYPE == "pure_regression"
-        true_positives = np.diag(confusion_matrix)  # vettore in cui ogni cella è il numero di TP per la classe
-        false_positives = confusion_matrix.sum(axis=0) - true_positives
-        false_negatives = confusion_matrix.sum(axis=1) - true_positives
-        true_negatives = confusion_matrix.sum() - (true_positives.sum() + false_positives.sum() + false_negatives.sum())
-        # Sovrascrivo TP, FP, FN per effettuare i calcoli delle metriche successivamente
-        true_positives = true_positives.sum()
-        false_positives = false_positives.sum()
-        false_negatives = false_negatives.sum()
-
-    accuracy = (true_positives + true_negatives) / confusion_matrix.sum()
-    precision = true_positives / (true_positives + false_positives)
-    recall = true_positives / (true_positives + false_negatives)
-
-    print(f"Confusion Matrix Name: {label}")
-    print(confusion_matrix)
-    print(f"- TP: {int(true_positives)}")
-    print(f"- TN: {int(true_negatives)}")
-    print(f"- FP: {int(false_positives)}")
-    print(f"- FN: {int(false_negatives)}")
-    print(f"- Accuracy: {round(accuracy, 4)}")
-    print(f"- Precision: {round(precision, 4)}")
-    print(f"- Recall: {round(recall, 4)}")
-    print()
-
-
-compute_metrics("Training", training_confusion_matrix)
-compute_metrics("Validation", validation_confusion_matrix)
-compute_metrics("Test", test_confusion_matrix)
