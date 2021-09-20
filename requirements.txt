@@ -11,3 +11,4 @@ matplotlib
 BeautifulTable
 seaborn
 livelossplot
+pandoc
