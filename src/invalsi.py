@@ -185,7 +185,7 @@ if PRE_ML:
     print("Lista colonne e tipi:")
     print(dataset_ap.info())
 
-# Le colonne DROPOUT e LIVELLI non sono considerate in quanto colonne target (in particolare, DROPOUT è una regressione di LIVELLI).
+# Le colonne DROPOUT e LIVELLI non sono considerate in quanto colonne target (in particolare, DROPOUT è una trasformazione di LIVELLI).
 continuous_features = columns_low_ratio_null_values + \
                       ["pu_ma_gr", "pu_ma_no", "Fattore_correzione_new", "Cheating", "WLE_MAT", "WLE_MAT_200",
                        "WLE_MAT_200_CORR",
