@@ -4916,10 +4916,10 @@ span.bp3-icon:empty{
   content:"⌄"; }
 
 .bp3-icon-caret-left::before{
-  content:"〈"; }
+  content:"〈"; }
 
 .bp3-icon-caret-right::before{
-  content:"〉"; }
+  content:"〉"; }
 
 .bp3-icon-caret-up::before{
   content:"⌃"; }
@@ -14406,7 +14406,7 @@ Al fine di rendere il codice del notebook quanto più flessibile, abbiamo creato
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -14482,10 +14482,10 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="2.1---Ricerca-di-colonne-con-alte-percentuali-di-valori-nulli">2.1 - Ricerca di colonne con alte percentuali di valori nulli<a class="anchor-link" href="#2.1---Ricerca-di-colonne-con-alte-percentuali-di-valori-nulli">&#182;</a></h2>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Columns with high null values percentages:&quot;</span><span class="p">)</span>
@@ -14511,10 +14511,54 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Columns with high null values percentages:
++=======================+=========+===================+
+|                       | Type    | Ratio null values |
++=======================+=========+===================+
+| LIVELLI               | int64   | 0.0               |
++-----------------------+---------+-------------------+
+| DROPOUT               | int64   | 0.0               |
++-----------------------+---------+-------------------+
+| voto_orale_ita        | float64 | 0.113             |
++-----------------------+---------+-------------------+
+| voto_orale_mat        | float64 | 0.114             |
++-----------------------+---------+-------------------+
+| voto_scritto_ita      | float64 | 0.683             |
++-----------------------+---------+-------------------+
+| voto_scritto_mat      | float64 | 0.683             |
++-----------------------+---------+-------------------+
+| PesoClasse            | float64 | 0.946             |
++-----------------------+---------+-------------------+
+| PesoScuola            | float64 | 0.946             |
++-----------------------+---------+-------------------+
+| PesoTotale_Matematica | float64 | 0.946             |
++-----------------------+---------+-------------------+
+| codice_orario         | float64 | 1.0               |
++-----------------------+---------+-------------------+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">columns_high_ratio_null_values</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;codice_orario&quot;</span><span class="p">,</span> <span class="s2">&quot;PesoClasse&quot;</span><span class="p">,</span> <span class="s2">&quot;PesoScuola&quot;</span><span class="p">,</span> <span class="s2">&quot;PesoTotale_Matematica&quot;</span><span class="p">]</span>
@@ -14536,10 +14580,10 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="2.2---Ricerca-colonne-con-un-numero-basso-di-valori-distinti">2.2 - Ricerca colonne con un numero basso di valori distinti<a class="anchor-link" href="#2.2---Ricerca-colonne-con-un-numero-basso-di-valori-distinti">&#182;</a></h2>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Columns with unique values:&quot;</span><span class="p">)</span>
@@ -14549,7 +14593,7 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 
 <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">original_dataset</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">ratio_unique_vals</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">original_dataset</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">original_dataset</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">ratio_unique_vals</span>  <span class="o">&gt;</span> <span class="mf">0.1</span> <span class="p">:</span>
+    <span class="k">if</span> <span class="n">ratio_unique_vals</span> <span class="o">&gt;</span> <span class="mf">0.1</span><span class="p">:</span>
         <span class="n">table</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">col</span><span class="p">,</span> <span class="n">ratio_unique_vals</span><span class="p">])</span> 
 
 <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">alignment</span> <span class="o">=</span> <span class="n">BeautifulTable</span><span class="o">.</span><span class="n">ALIGN_LEFT</span>
@@ -14563,6 +14607,38 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Columns with unique values:
++==================+=======================+
+|                  | Ratio distinct values |
++==================+=======================+
+| WLE_MAT_200_CORR | 0.464                 |
++------------------+-----------------------+
+| pu_ma_no_corr    | 0.494                 |
++------------------+-----------------------+
+| Unnamed: 0       | 1.0                   |
++------------------+-----------------------+
+| CODICE_STUDENTE  | 1.0                   |
++------------------+-----------------------+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
@@ -14572,7 +14648,7 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">columns_with_unique_values</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Unnamed: 0&quot;</span><span class="p">,</span> <span class="s2">&quot;CODICE_STUDENTE&quot;</span><span class="p">]</span>
@@ -14588,10 +14664,10 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="2.3---Ricerca-colonne-con-un-singolo-valore">2.3 - Ricerca colonne con un singolo valore<a class="anchor-link" href="#2.3---Ricerca-colonne-con-un-singolo-valore">&#182;</a></h2>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Columns with just one value:&quot;</span><span class="p">)</span>
@@ -14606,6 +14682,29 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Columns with just one value:
+macrotipologia
+livello
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
@@ -14615,7 +14714,7 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">columns_with_just_one_value</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;macrotipologia&quot;</span><span class="p">,</span> <span class="s2">&quot;livello&quot;</span><span class="p">]</span>
@@ -14654,10 +14753,10 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -14672,10 +14771,26 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+</div>
+
+</div>
+
+</div>
+
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="s2">&quot;Unnamed: 0&quot;</span> <span class="ow">in</span> <span class="n">cleaned_original_dataset</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
@@ -14702,7 +14817,7 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">list_ambiti_processi</span> <span class="o">=</span> <span class="p">[</span><span class="n">AP</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">MAPPING_DOMANDE_AMBITI_PROCESSI</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">AP</span> <span class="ow">in</span> <span class="n">val</span><span class="p">]</span>
@@ -14776,7 +14891,7 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -14794,7 +14909,7 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="s2">&quot;Unnamed: 0&quot;</span> <span class="ow">in</span> <span class="n">dataset_ap</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
@@ -14841,7 +14956,7 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">interesting_to_check_if_correlated_columns</span> <span class="o">=</span> <span class="p">[</span>
@@ -14863,19 +14978,1041 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">check_corr_dataset</span> <span class="o">=</span> <span class="n">dataset_ap</span><span class="p">[</span><span class="n">interesting_to_check_if_correlated_columns</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;pearson&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">check_corr_dataset</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;YlOrRd&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">check_corr_dataset</span> <span class="o">=</span> <span class="n">dataset_ap</span><span class="p">[</span><span class="n">interesting_to_check_if_correlated_columns</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">check_corr_dataset</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;Rappresentare relazioni e dati e, in situazioni significative, utilizzare le rappresentazioni per ricavare informazioni, formulare giudizi e prendere decisioni&quot;</span><span class="p">:</span> <span class="s2">&quot;Relazioni e dati&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Acquisire progressivamente forme tipiche del pensiero matematico&quot;</span><span class="p">:</span> <span class="s2">&quot;Pensiero matematico&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Conoscere e padroneggiare i contenuti specifici della matematica&quot;</span><span class="p">:</span> <span class="s2">&quot;Contenuti matematica&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Utilizzare strumenti, modelli e rappresentazioni nel trattamento quantitativo dell&#39;informazione in ambito scientifico, tecnologico, economico e sociale&quot;</span><span class="p">:</span> <span class="s2">&quot;Rappresentazione quantitativa&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Riconoscere in contesti diversi il carattere misurabile di oggetti e fenomeni, utilizzare strumenti di misura, misurare grandezze, stimare misure di grandezze&quot;</span><span class="p">:</span> <span class="s2">&quot;Utilizzo strumenti misura&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Risolvere problemi utilizzando strategie in ambiti diversi – numerico, geometrico, algebrico –&quot;</span><span class="p">:</span> <span class="s2">&quot;Risoluzione problemi&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Riconoscere le forme nello spazio e utilizzarle per la risoluzione di problemi geometrici o di modellizzazione&quot;</span><span class="p">:</span> <span class="s2">&quot;Forme nello spazio&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Conoscere e utilizzare algoritmi e procedure&quot;</span><span class="p">:</span> <span class="s2">&quot;Algoritmi e procedure&quot;</span>
+<span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">corr_result</span> <span class="o">=</span> <span class="n">check_corr_dataset</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;pearson&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># Ridenominazione colonne per ragioni di spazio e comprensibilità.</span>
+<span class="n">corr_result</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;YlOrRd&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[31]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<style type="text/css">
+#T_a6399_row0_col0, #T_a6399_row1_col1, #T_a6399_row2_col2, #T_a6399_row3_col3, #T_a6399_row4_col4, #T_a6399_row5_col5, #T_a6399_row6_col6, #T_a6399_row7_col7, #T_a6399_row8_col8, #T_a6399_row9_col9, #T_a6399_row10_col10, #T_a6399_row11_col11, #T_a6399_row12_col12, #T_a6399_row13_col13, #T_a6399_row14_col14, #T_a6399_row15_col15, #T_a6399_row16_col16, #T_a6399_row17_col17, #T_a6399_row18_col18 {
+  background-color: #800026;
+  color: #f1f1f1;
+}
+#T_a6399_row0_col1, #T_a6399_row8_col14, #T_a6399_row14_col8 {
+  background-color: #ae0026;
+  color: #f1f1f1;
+}
+#T_a6399_row0_col2, #T_a6399_row13_col17 {
+  background-color: #ce0c22;
+  color: #f1f1f1;
+}
+#T_a6399_row0_col3, #T_a6399_row9_col4 {
+  background-color: #df171d;
+  color: #f1f1f1;
+}
+#T_a6399_row0_col4, #T_a6399_row9_col13, #T_a6399_row10_col12, #T_a6399_row17_col5 {
+  background-color: #fc592d;
+  color: #f1f1f1;
+}
+#T_a6399_row0_col5, #T_a6399_row10_col11, #T_a6399_row11_col8, #T_a6399_row16_col5 {
+  background-color: #f54026;
+  color: #f1f1f1;
+}
+#T_a6399_row0_col6 {
+  background-color: #fecc68;
+  color: #000000;
+}
+#T_a6399_row0_col7 {
+  background-color: #fece6a;
+  color: #000000;
+}
+#T_a6399_row0_col8, #T_a6399_row3_col12, #T_a6399_row5_col0, #T_a6399_row10_col15, #T_a6399_row15_col2, #T_a6399_row17_col18 {
+  background-color: #fd8439;
+  color: #f1f1f1;
+}
+#T_a6399_row0_col9, #T_a6399_row15_col1, #T_a6399_row16_col1 {
+  background-color: #fd9841;
+  color: #000000;
+}
+#T_a6399_row0_col10, #T_a6399_row0_col14, #T_a6399_row4_col7, #T_a6399_row8_col1, #T_a6399_row12_col9, #T_a6399_row14_col1 {
+  background-color: #fd863a;
+  color: #f1f1f1;
+}
+#T_a6399_row0_col11, #T_a6399_row1_col13, #T_a6399_row1_col14, #T_a6399_row3_col9, #T_a6399_row5_col9, #T_a6399_row10_col1, #T_a6399_row13_col1 {
+  background-color: #fd8239;
+  color: #f1f1f1;
+}
+#T_a6399_row0_col12, #T_a6399_row2_col15, #T_a6399_row12_col15 {
+  background-color: #fd9c42;
+  color: #000000;
+}
+#T_a6399_row0_col13, #T_a6399_row2_col9, #T_a6399_row16_col9, #T_a6399_row17_col10, #T_a6399_row17_col11 {
+  background-color: #fd8a3b;
+  color: #f1f1f1;
+}
+#T_a6399_row0_col15 {
+  background-color: #feab49;
+  color: #000000;
+}
+#T_a6399_row0_col16, #T_a6399_row5_col15, #T_a6399_row17_col12 {
+  background-color: #fea245;
+  color: #000000;
+}
+#T_a6399_row0_col17, #T_a6399_row5_col7, #T_a6399_row16_col7 {
+  background-color: #feb953;
+  color: #000000;
+}
+#T_a6399_row0_col18 {
+  background-color: #fd7c37;
+  color: #f1f1f1;
+}
+#T_a6399_row1_col0 {
+  background-color: #b00026;
+  color: #f1f1f1;
+}
+#T_a6399_row1_col2 {
+  background-color: #e31a1c;
+  color: #f1f1f1;
+}
+#T_a6399_row1_col3 {
+  background-color: #d30f20;
+  color: #f1f1f1;
+}
+#T_a6399_row1_col4, #T_a6399_row9_col11, #T_a6399_row16_col18 {
+  background-color: #fc512b;
+  color: #f1f1f1;
+}
+#T_a6399_row1_col5 {
+  background-color: #f23924;
+  color: #f1f1f1;
+}
+#T_a6399_row1_col6, #T_a6399_row11_col6, #T_a6399_row13_col6 {
+  background-color: #fed16e;
+  color: #000000;
+}
+#T_a6399_row1_col7 {
+  background-color: #fecb67;
+  color: #000000;
+}
+#T_a6399_row1_col8, #T_a6399_row15_col16, #T_a6399_row16_col2, #T_a6399_row18_col15 {
+  background-color: #fd8038;
+  color: #f1f1f1;
+}
+#T_a6399_row1_col9, #T_a6399_row12_col1 {
+  background-color: #fd933f;
+  color: #000000;
+}
+#T_a6399_row1_col10, #T_a6399_row1_col11, #T_a6399_row11_col1, #T_a6399_row18_col1 {
+  background-color: #fd7e38;
+  color: #f1f1f1;
+}
+#T_a6399_row1_col12, #T_a6399_row3_col15, #T_a6399_row7_col8, #T_a6399_row7_col18, #T_a6399_row9_col15, #T_a6399_row12_col0, #T_a6399_row17_col16 {
+  background-color: #fd9941;
+  color: #000000;
+}
+#T_a6399_row1_col15 {
+  background-color: #fea848;
+  color: #000000;
+}
+#T_a6399_row1_col16, #T_a6399_row15_col0 {
+  background-color: #fd9e43;
+  color: #000000;
+}
+#T_a6399_row1_col17 {
+  background-color: #feb54f;
+  color: #000000;
+}
+#T_a6399_row1_col18, #T_a6399_row9_col2, #T_a6399_row12_col2 {
+  background-color: #fd7836;
+  color: #f1f1f1;
+}
+#T_a6399_row2_col0, #T_a6399_row9_col10 {
+  background-color: #d00d21;
+  color: #f1f1f1;
+}
+#T_a6399_row2_col1, #T_a6399_row3_col0, #T_a6399_row3_col5, #T_a6399_row4_col9 {
+  background-color: #e51e1d;
+  color: #f1f1f1;
+}
+#T_a6399_row2_col3 {
+  background-color: #a80026;
+  color: #f1f1f1;
+}
+#T_a6399_row2_col4, #T_a6399_row5_col3, #T_a6399_row9_col5, #T_a6399_row14_col18 {
+  background-color: #f43d25;
+  color: #f1f1f1;
+}
+#T_a6399_row2_col5 {
+  background-color: #e9261f;
+  color: #f1f1f1;
+}
+#T_a6399_row2_col6 {
+  background-color: #fed977;
+  color: #000000;
+}
+#T_a6399_row2_col7 {
+  background-color: #fec45f;
+  color: #000000;
+}
+#T_a6399_row2_col8, #T_a6399_row9_col8, #T_a6399_row14_col2 {
+  background-color: #fd6e33;
+  color: #f1f1f1;
+}
+#T_a6399_row2_col10, #T_a6399_row4_col0, #T_a6399_row9_col14, #T_a6399_row14_col16, #T_a6399_row15_col10, #T_a6399_row18_col12 {
+  background-color: #fc6c33;
+  color: #f1f1f1;
+}
+#T_a6399_row2_col11, #T_a6399_row2_col18, #T_a6399_row3_col13, #T_a6399_row5_col11, #T_a6399_row7_col5, #T_a6399_row13_col2 {
+  background-color: #fc6330;
+  color: #f1f1f1;
+}
+#T_a6399_row2_col12, #T_a6399_row3_col16, #T_a6399_row5_col12, #T_a6399_row8_col15, #T_a6399_row9_col16, #T_a6399_row14_col15, #T_a6399_row16_col15, #T_a6399_row17_col3, #T_a6399_row17_col14 {
+  background-color: #fd8c3c;
+  color: #f1f1f1;
+}
+#T_a6399_row2_col13, #T_a6399_row8_col2, #T_a6399_row9_col3, #T_a6399_row12_col3, #T_a6399_row12_col13 {
+  background-color: #fc6a32;
+  color: #f1f1f1;
+}
+#T_a6399_row2_col14, #T_a6399_row5_col1, #T_a6399_row15_col14, #T_a6399_row16_col3, #T_a6399_row18_col9 {
+  background-color: #fd7234;
+  color: #f1f1f1;
+}
+#T_a6399_row2_col16 {
+  background-color: #fd903d;
+  color: #000000;
+}
+#T_a6399_row2_col17, #T_a6399_row5_col17, #T_a6399_row9_col17 {
+  background-color: #feac49;
+  color: #000000;
+}
+#T_a6399_row3_col1 {
+  background-color: #d6111f;
+  color: #f1f1f1;
+}
+#T_a6399_row3_col2 {
+  background-color: #aa0026;
+  color: #f1f1f1;
+}
+#T_a6399_row3_col4, #T_a6399_row4_col15, #T_a6399_row5_col4 {
+  background-color: #ef3323;
+  color: #f1f1f1;
+}
+#T_a6399_row3_col6 {
+  background-color: #fedd7e;
+  color: #000000;
+}
+#T_a6399_row3_col7, #T_a6399_row12_col7, #T_a6399_row15_col7 {
+  background-color: #fec15d;
+  color: #000000;
+}
+#T_a6399_row3_col8, #T_a6399_row5_col13, #T_a6399_row9_col18, #T_a6399_row10_col2, #T_a6399_row15_col18 {
+  background-color: #fc6631;
+  color: #f1f1f1;
+}
+#T_a6399_row3_col10, #T_a6399_row4_col1, #T_a6399_row5_col10, #T_a6399_row5_col14, #T_a6399_row16_col14 {
+  background-color: #fc612f;
+  color: #f1f1f1;
+}
+#T_a6399_row3_col11, #T_a6399_row7_col4, #T_a6399_row8_col3, #T_a6399_row11_col2, #T_a6399_row14_col3, #T_a6399_row16_col10, #T_a6399_row18_col16 {
+  background-color: #fc5d2e;
+  color: #f1f1f1;
+}
+#T_a6399_row3_col14, #T_a6399_row8_col12, #T_a6399_row8_col16, #T_a6399_row10_col16, #T_a6399_row12_col14 {
+  background-color: #fc6832;
+  color: #f1f1f1;
+}
+#T_a6399_row3_col17, #T_a6399_row15_col17 {
+  background-color: #fea747;
+  color: #000000;
+}
+#T_a6399_row3_col18, #T_a6399_row12_col8, #T_a6399_row13_col15, #T_a6399_row16_col8 {
+  background-color: #fc5b2e;
+  color: #f1f1f1;
+}
+#T_a6399_row4_col2, #T_a6399_row10_col7, #T_a6399_row12_col5 {
+  background-color: #f64227;
+  color: #f1f1f1;
+}
+#T_a6399_row4_col3 {
+  background-color: #f03523;
+  color: #f1f1f1;
+}
+#T_a6399_row4_col5 {
+  background-color: #e1191d;
+  color: #f1f1f1;
+}
+#T_a6399_row4_col6 {
+  background-color: #fede80;
+  color: #000000;
+}
+#T_a6399_row4_col8 {
+  background-color: #cb0a22;
+  color: #f1f1f1;
+}
+#T_a6399_row4_col10 {
+  background-color: #c30424;
+  color: #f1f1f1;
+}
+#T_a6399_row4_col11 {
+  background-color: #bd0026;
+  color: #f1f1f1;
+}
+#T_a6399_row4_col12 {
+  background-color: #e2191c;
+  color: #f1f1f1;
+}
+#T_a6399_row4_col13 {
+  background-color: #c40524;
+  color: #f1f1f1;
+}
+#T_a6399_row4_col14 {
+  background-color: #cd0b22;
+  color: #f1f1f1;
+}
+#T_a6399_row4_col16, #T_a6399_row8_col18, #T_a6399_row18_col8 {
+  background-color: #e41c1d;
+  color: #f1f1f1;
+}
+#T_a6399_row4_col17, #T_a6399_row8_col10, #T_a6399_row11_col14, #T_a6399_row13_col10 {
+  background-color: #f84528;
+  color: #f1f1f1;
+}
+#T_a6399_row4_col18, #T_a6399_row8_col4, #T_a6399_row14_col4, #T_a6399_row17_col13 {
+  background-color: #c90823;
+  color: #f1f1f1;
+}
+#T_a6399_row5_col2, #T_a6399_row8_col13, #T_a6399_row12_col10 {
+  background-color: #fc4d2a;
+  color: #f1f1f1;
+}
+#T_a6399_row5_col6, #T_a6399_row6_col0, #T_a6399_row6_col1, #T_a6399_row6_col2, #T_a6399_row6_col3, #T_a6399_row6_col4, #T_a6399_row6_col5, #T_a6399_row6_col7, #T_a6399_row6_col8, #T_a6399_row6_col9, #T_a6399_row6_col10, #T_a6399_row6_col11, #T_a6399_row6_col12, #T_a6399_row6_col13, #T_a6399_row6_col14, #T_a6399_row6_col15, #T_a6399_row6_col16, #T_a6399_row6_col17, #T_a6399_row6_col18 {
+  background-color: #ffffcc;
+  color: #000000;
+}
+#T_a6399_row5_col8, #T_a6399_row5_col18, #T_a6399_row12_col18, #T_a6399_row13_col9, #T_a6399_row18_col2 {
+  background-color: #fc5f2f;
+  color: #f1f1f1;
+}
+#T_a6399_row5_col16, #T_a6399_row9_col12, #T_a6399_row11_col0, #T_a6399_row12_col16, #T_a6399_row16_col12, #T_a6399_row17_col8, #T_a6399_row18_col0 {
+  background-color: #fd883b;
+  color: #f1f1f1;
+}
+#T_a6399_row7_col0 {
+  background-color: #feba55;
+  color: #000000;
+}
+#T_a6399_row7_col1 {
+  background-color: #feb34d;
+  color: #000000;
+}
+#T_a6399_row7_col2 {
+  background-color: #fea647;
+  color: #000000;
+}
+#T_a6399_row7_col3, #T_a6399_row7_col13, #T_a6399_row14_col17, #T_a6399_row17_col9 {
+  background-color: #fd9f44;
+  color: #000000;
+}
+#T_a6399_row7_col6 {
+  background-color: #feb852;
+  color: #000000;
+}
+#T_a6399_row7_col9 {
+  background-color: #fead4a;
+  color: #000000;
+}
+#T_a6399_row7_col10, #T_a6399_row8_col5, #T_a6399_row10_col5, #T_a6399_row11_col5, #T_a6399_row14_col5, #T_a6399_row18_col5 {
+  background-color: #ed3022;
+  color: #f1f1f1;
+}
+#T_a6399_row7_col11, #T_a6399_row8_col17, #T_a6399_row10_col17 {
+  background-color: #fd9d43;
+  color: #000000;
+}
+#T_a6399_row7_col12 {
+  background-color: #feb04b;
+  color: #000000;
+}
+#T_a6399_row7_col14, #T_a6399_row11_col17, #T_a6399_row18_col17 {
+  background-color: #fd9a42;
+  color: #000000;
+}
+#T_a6399_row7_col15, #T_a6399_row17_col6 {
+  background-color: #febb56;
+  color: #000000;
+}
+#T_a6399_row7_col16, #T_a6399_row17_col0 {
+  background-color: #fea948;
+  color: #000000;
+}
+#T_a6399_row7_col17 {
+  background-color: #fec561;
+  color: #000000;
+}
+#T_a6399_row8_col0, #T_a6399_row10_col0, #T_a6399_row13_col0, #T_a6399_row14_col0 {
+  background-color: #fd8e3c;
+  color: #f1f1f1;
+}
+#T_a6399_row8_col6, #T_a6399_row18_col6 {
+  background-color: #fed673;
+  color: #000000;
+}
+#T_a6399_row8_col7, #T_a6399_row11_col7, #T_a6399_row14_col7, #T_a6399_row18_col7 {
+  background-color: #feb24c;
+  color: #000000;
+}
+#T_a6399_row8_col9, #T_a6399_row15_col3 {
+  background-color: #fd7a37;
+  color: #f1f1f1;
+}
+#T_a6399_row8_col11, #T_a6399_row10_col8, #T_a6399_row11_col13, #T_a6399_row13_col11 {
+  background-color: #f74327;
+  color: #f1f1f1;
+}
+#T_a6399_row9_col0 {
+  background-color: #fd9740;
+  color: #000000;
+}
+#T_a6399_row9_col1, #T_a6399_row15_col9 {
+  background-color: #fd8f3d;
+  color: #f1f1f1;
+}
+#T_a6399_row9_col6 {
+  background-color: #feca66;
+  color: #000000;
+}
+#T_a6399_row9_col7 {
+  background-color: #febe59;
+  color: #000000;
+}
+#T_a6399_row10_col3, #T_a6399_row11_col9, #T_a6399_row13_col3 {
+  background-color: #fc572c;
+  color: #f1f1f1;
+}
+#T_a6399_row10_col4, #T_a6399_row13_col4 {
+  background-color: #c10325;
+  color: #f1f1f1;
+}
+#T_a6399_row10_col6, #T_a6399_row14_col6 {
+  background-color: #fed572;
+  color: #000000;
+}
+#T_a6399_row10_col9 {
+  background-color: #d41020;
+  color: #f1f1f1;
+}
+#T_a6399_row10_col13, #T_a6399_row14_col11 {
+  background-color: #f84628;
+  color: #f1f1f1;
+}
+#T_a6399_row10_col14, #T_a6399_row11_col18, #T_a6399_row14_col10 {
+  background-color: #e7231e;
+  color: #f1f1f1;
+}
+#T_a6399_row10_col18, #T_a6399_row18_col10 {
+  background-color: #f33b25;
+  color: #f1f1f1;
+}
+#T_a6399_row11_col3, #T_a6399_row15_col5 {
+  background-color: #fc4f2a;
+  color: #f1f1f1;
+}
+#T_a6399_row11_col4 {
+  background-color: #b90026;
+  color: #f1f1f1;
+}
+#T_a6399_row11_col10, #T_a6399_row18_col14 {
+  background-color: #f43e26;
+  color: #f1f1f1;
+}
+#T_a6399_row11_col12 {
+  background-color: #c80723;
+  color: #f1f1f1;
+}
+#T_a6399_row11_col15, #T_a6399_row11_col16 {
+  background-color: #ec2c21;
+  color: #f1f1f1;
+}
+#T_a6399_row12_col4 {
+  background-color: #da141e;
+  color: #f1f1f1;
+}
+#T_a6399_row12_col6, #T_a6399_row16_col6, #T_a6399_row17_col7 {
+  background-color: #fec965;
+  color: #000000;
+}
+#T_a6399_row12_col11, #T_a6399_row18_col4 {
+  background-color: #c70723;
+  color: #f1f1f1;
+}
+#T_a6399_row12_col17 {
+  background-color: #feae4a;
+  color: #000000;
+}
+#T_a6399_row13_col5, #T_a6399_row16_col13 {
+  background-color: #ee3122;
+  color: #f1f1f1;
+}
+#T_a6399_row13_col7 {
+  background-color: #feb44e;
+  color: #000000;
+}
+#T_a6399_row13_col8, #T_a6399_row14_col13, #T_a6399_row15_col13 {
+  background-color: #fa4a29;
+  color: #f1f1f1;
+}
+#T_a6399_row13_col12, #T_a6399_row14_col12 {
+  background-color: #fd7435;
+  color: #f1f1f1;
+}
+#T_a6399_row13_col14 {
+  background-color: #f94828;
+  color: #f1f1f1;
+}
+#T_a6399_row13_col16 {
+  background-color: #f13624;
+  color: #f1f1f1;
+}
+#T_a6399_row13_col18, #T_a6399_row15_col4 {
+  background-color: #e61f1d;
+  color: #f1f1f1;
+}
+#T_a6399_row14_col9 {
+  background-color: #fd7636;
+  color: #f1f1f1;
+}
+#T_a6399_row15_col6 {
+  background-color: #febd57;
+  color: #000000;
+}
+#T_a6399_row15_col8 {
+  background-color: #fd7034;
+  color: #f1f1f1;
+}
+#T_a6399_row15_col11, #T_a6399_row18_col13 {
+  background-color: #e6211e;
+  color: #f1f1f1;
+}
+#T_a6399_row15_col12 {
+  background-color: #fd923e;
+  color: #000000;
+}
+#T_a6399_row16_col0 {
+  background-color: #fea044;
+  color: #000000;
+}
+#T_a6399_row16_col4 {
+  background-color: #dc151e;
+  color: #f1f1f1;
+}
+#T_a6399_row16_col11 {
+  background-color: #e92720;
+  color: #f1f1f1;
+}
+#T_a6399_row16_col17, #T_a6399_row17_col15 {
+  background-color: #fea546;
+  color: #000000;
+}
+#T_a6399_row17_col1 {
+  background-color: #fea446;
+  color: #000000;
+}
+#T_a6399_row17_col2 {
+  background-color: #fd953f;
+  color: #000000;
+}
+#T_a6399_row17_col4 {
+  background-color: #ed2e21;
+  color: #f1f1f1;
+}
+#T_a6399_row18_col3 {
+  background-color: #fc532b;
+  color: #f1f1f1;
+}
+#T_a6399_row18_col11 {
+  background-color: #e8241f;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_a6399_">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >voto_scritto_ita</th>
+      <th class="col_heading level0 col1" >voto_orale_ita</th>
+      <th class="col_heading level0 col2" >voto_scritto_mat</th>
+      <th class="col_heading level0 col3" >voto_orale_mat</th>
+      <th class="col_heading level0 col4" >pu_ma_no</th>
+      <th class="col_heading level0 col5" >LIVELLI</th>
+      <th class="col_heading level0 col6" >DROPOUT</th>
+      <th class="col_heading level0 col7" >Relazioni e dati</th>
+      <th class="col_heading level0 col8" >Dati e previsioni</th>
+      <th class="col_heading level0 col9" >Pensiero matematico</th>
+      <th class="col_heading level0 col10" >Relazioni e funzioni</th>
+      <th class="col_heading level0 col11" >Numeri</th>
+      <th class="col_heading level0 col12" >Contenuti matematica</th>
+      <th class="col_heading level0 col13" >Spazio figure</th>
+      <th class="col_heading level0 col14" >Rappresentazione quantitativa</th>
+      <th class="col_heading level0 col15" >Utilizzo strumenti misura</th>
+      <th class="col_heading level0 col16" >Risoluzione problemi</th>
+      <th class="col_heading level0 col17" >Forme nello spazio</th>
+      <th class="col_heading level0 col18" >Algoritmi e procedure</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_a6399_level0_row0" class="row_heading level0 row0" >voto_scritto_ita</th>
+      <td id="T_a6399_row0_col0" class="data row0 col0" >1.000000</td>
+      <td id="T_a6399_row0_col1" class="data row0 col1" >0.870000</td>
+      <td id="T_a6399_row0_col2" class="data row0 col2" >0.750000</td>
+      <td id="T_a6399_row0_col3" class="data row0 col3" >0.660000</td>
+      <td id="T_a6399_row0_col4" class="data row0 col4" >0.430000</td>
+      <td id="T_a6399_row0_col5" class="data row0 col5" >0.370000</td>
+      <td id="T_a6399_row0_col6" class="data row0 col6" >-0.310000</td>
+      <td id="T_a6399_row0_col7" class="data row0 col7" >0.150000</td>
+      <td id="T_a6399_row0_col8" class="data row0 col8" >0.340000</td>
+      <td id="T_a6399_row0_col9" class="data row0 col9" >0.300000</td>
+      <td id="T_a6399_row0_col10" class="data row0 col10" >0.340000</td>
+      <td id="T_a6399_row0_col11" class="data row0 col11" >0.360000</td>
+      <td id="T_a6399_row0_col12" class="data row0 col12" >0.290000</td>
+      <td id="T_a6399_row0_col13" class="data row0 col13" >0.340000</td>
+      <td id="T_a6399_row0_col14" class="data row0 col14" >0.340000</td>
+      <td id="T_a6399_row0_col15" class="data row0 col15" >0.270000</td>
+      <td id="T_a6399_row0_col16" class="data row0 col16" >0.260000</td>
+      <td id="T_a6399_row0_col17" class="data row0 col17" >0.220000</td>
+      <td id="T_a6399_row0_col18" class="data row0 col18" >0.360000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row1" class="row_heading level0 row1" >voto_orale_ita</th>
+      <td id="T_a6399_row1_col0" class="data row1 col0" >0.870000</td>
+      <td id="T_a6399_row1_col1" class="data row1 col1" >1.000000</td>
+      <td id="T_a6399_row1_col2" class="data row1 col2" >0.650000</td>
+      <td id="T_a6399_row1_col3" class="data row1 col3" >0.720000</td>
+      <td id="T_a6399_row1_col4" class="data row1 col4" >0.450000</td>
+      <td id="T_a6399_row1_col5" class="data row1 col5" >0.400000</td>
+      <td id="T_a6399_row1_col6" class="data row1 col6" >-0.340000</td>
+      <td id="T_a6399_row1_col7" class="data row1 col7" >0.160000</td>
+      <td id="T_a6399_row1_col8" class="data row1 col8" >0.350000</td>
+      <td id="T_a6399_row1_col9" class="data row1 col9" >0.320000</td>
+      <td id="T_a6399_row1_col10" class="data row1 col10" >0.360000</td>
+      <td id="T_a6399_row1_col11" class="data row1 col11" >0.370000</td>
+      <td id="T_a6399_row1_col12" class="data row1 col12" >0.300000</td>
+      <td id="T_a6399_row1_col13" class="data row1 col13" >0.360000</td>
+      <td id="T_a6399_row1_col14" class="data row1 col14" >0.350000</td>
+      <td id="T_a6399_row1_col15" class="data row1 col15" >0.280000</td>
+      <td id="T_a6399_row1_col16" class="data row1 col16" >0.280000</td>
+      <td id="T_a6399_row1_col17" class="data row1 col17" >0.230000</td>
+      <td id="T_a6399_row1_col18" class="data row1 col18" >0.370000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row2" class="row_heading level0 row2" >voto_scritto_mat</th>
+      <td id="T_a6399_row2_col0" class="data row2 col0" >0.750000</td>
+      <td id="T_a6399_row2_col1" class="data row2 col1" >0.650000</td>
+      <td id="T_a6399_row2_col2" class="data row2 col2" >1.000000</td>
+      <td id="T_a6399_row2_col3" class="data row2 col3" >0.880000</td>
+      <td id="T_a6399_row2_col4" class="data row2 col4" >0.520000</td>
+      <td id="T_a6399_row2_col5" class="data row2 col5" >0.480000</td>
+      <td id="T_a6399_row2_col6" class="data row2 col6" >-0.390000</td>
+      <td id="T_a6399_row2_col7" class="data row2 col7" >0.190000</td>
+      <td id="T_a6399_row2_col8" class="data row2 col8" >0.400000</td>
+      <td id="T_a6399_row2_col9" class="data row2 col9" >0.360000</td>
+      <td id="T_a6399_row2_col10" class="data row2 col10" >0.410000</td>
+      <td id="T_a6399_row2_col11" class="data row2 col11" >0.440000</td>
+      <td id="T_a6399_row2_col12" class="data row2 col12" >0.360000</td>
+      <td id="T_a6399_row2_col13" class="data row2 col13" >0.420000</td>
+      <td id="T_a6399_row2_col14" class="data row2 col14" >0.390000</td>
+      <td id="T_a6399_row2_col15" class="data row2 col15" >0.330000</td>
+      <td id="T_a6399_row2_col16" class="data row2 col16" >0.340000</td>
+      <td id="T_a6399_row2_col17" class="data row2 col17" >0.270000</td>
+      <td id="T_a6399_row2_col18" class="data row2 col18" >0.430000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row3" class="row_heading level0 row3" >voto_orale_mat</th>
+      <td id="T_a6399_row3_col0" class="data row3 col0" >0.660000</td>
+      <td id="T_a6399_row3_col1" class="data row3 col1" >0.720000</td>
+      <td id="T_a6399_row3_col2" class="data row3 col2" >0.880000</td>
+      <td id="T_a6399_row3_col3" class="data row3 col3" >1.000000</td>
+      <td id="T_a6399_row3_col4" class="data row3 col4" >0.550000</td>
+      <td id="T_a6399_row3_col5" class="data row3 col5" >0.520000</td>
+      <td id="T_a6399_row3_col6" class="data row3 col6" >-0.430000</td>
+      <td id="T_a6399_row3_col7" class="data row3 col7" >0.200000</td>
+      <td id="T_a6399_row3_col8" class="data row3 col8" >0.420000</td>
+      <td id="T_a6399_row3_col9" class="data row3 col9" >0.380000</td>
+      <td id="T_a6399_row3_col10" class="data row3 col10" >0.440000</td>
+      <td id="T_a6399_row3_col11" class="data row3 col11" >0.460000</td>
+      <td id="T_a6399_row3_col12" class="data row3 col12" >0.380000</td>
+      <td id="T_a6399_row3_col13" class="data row3 col13" >0.440000</td>
+      <td id="T_a6399_row3_col14" class="data row3 col14" >0.420000</td>
+      <td id="T_a6399_row3_col15" class="data row3 col15" >0.340000</td>
+      <td id="T_a6399_row3_col16" class="data row3 col16" >0.360000</td>
+      <td id="T_a6399_row3_col17" class="data row3 col17" >0.290000</td>
+      <td id="T_a6399_row3_col18" class="data row3 col18" >0.450000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row4" class="row_heading level0 row4" >pu_ma_no</th>
+      <td id="T_a6399_row4_col0" class="data row4 col0" >0.430000</td>
+      <td id="T_a6399_row4_col1" class="data row4 col1" >0.450000</td>
+      <td id="T_a6399_row4_col2" class="data row4 col2" >0.520000</td>
+      <td id="T_a6399_row4_col3" class="data row4 col3" >0.550000</td>
+      <td id="T_a6399_row4_col4" class="data row4 col4" >1.000000</td>
+      <td id="T_a6399_row4_col5" class="data row4 col5" >0.550000</td>
+      <td id="T_a6399_row4_col6" class="data row4 col6" >-0.440000</td>
+      <td id="T_a6399_row4_col7" class="data row4 col7" >0.420000</td>
+      <td id="T_a6399_row4_col8" class="data row4 col8" >0.760000</td>
+      <td id="T_a6399_row4_col9" class="data row4 col9" >0.660000</td>
+      <td id="T_a6399_row4_col10" class="data row4 col10" >0.800000</td>
+      <td id="T_a6399_row4_col11" class="data row4 col11" >0.830000</td>
+      <td id="T_a6399_row4_col12" class="data row4 col12" >0.680000</td>
+      <td id="T_a6399_row4_col13" class="data row4 col13" >0.800000</td>
+      <td id="T_a6399_row4_col14" class="data row4 col14" >0.760000</td>
+      <td id="T_a6399_row4_col15" class="data row4 col15" >0.620000</td>
+      <td id="T_a6399_row4_col16" class="data row4 col16" >0.670000</td>
+      <td id="T_a6399_row4_col17" class="data row4 col17" >0.570000</td>
+      <td id="T_a6399_row4_col18" class="data row4 col18" >0.770000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row5" class="row_heading level0 row5" >LIVELLI</th>
+      <td id="T_a6399_row5_col0" class="data row5 col0" >0.370000</td>
+      <td id="T_a6399_row5_col1" class="data row5 col1" >0.400000</td>
+      <td id="T_a6399_row5_col2" class="data row5 col2" >0.480000</td>
+      <td id="T_a6399_row5_col3" class="data row5 col3" >0.520000</td>
+      <td id="T_a6399_row5_col4" class="data row5 col4" >0.550000</td>
+      <td id="T_a6399_row5_col5" class="data row5 col5" >1.000000</td>
+      <td id="T_a6399_row5_col6" class="data row5 col6" >-0.850000</td>
+      <td id="T_a6399_row5_col7" class="data row5 col7" >0.230000</td>
+      <td id="T_a6399_row5_col8" class="data row5 col8" >0.440000</td>
+      <td id="T_a6399_row5_col9" class="data row5 col9" >0.380000</td>
+      <td id="T_a6399_row5_col10" class="data row5 col10" >0.440000</td>
+      <td id="T_a6399_row5_col11" class="data row5 col11" >0.440000</td>
+      <td id="T_a6399_row5_col12" class="data row5 col12" >0.360000</td>
+      <td id="T_a6399_row5_col13" class="data row5 col13" >0.430000</td>
+      <td id="T_a6399_row5_col14" class="data row5 col14" >0.440000</td>
+      <td id="T_a6399_row5_col15" class="data row5 col15" >0.300000</td>
+      <td id="T_a6399_row5_col16" class="data row5 col16" >0.370000</td>
+      <td id="T_a6399_row5_col17" class="data row5 col17" >0.270000</td>
+      <td id="T_a6399_row5_col18" class="data row5 col18" >0.440000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row6" class="row_heading level0 row6" >DROPOUT</th>
+      <td id="T_a6399_row6_col0" class="data row6 col0" >-0.310000</td>
+      <td id="T_a6399_row6_col1" class="data row6 col1" >-0.340000</td>
+      <td id="T_a6399_row6_col2" class="data row6 col2" >-0.390000</td>
+      <td id="T_a6399_row6_col3" class="data row6 col3" >-0.430000</td>
+      <td id="T_a6399_row6_col4" class="data row6 col4" >-0.440000</td>
+      <td id="T_a6399_row6_col5" class="data row6 col5" >-0.850000</td>
+      <td id="T_a6399_row6_col6" class="data row6 col6" >1.000000</td>
+      <td id="T_a6399_row6_col7" class="data row6 col7" >-0.190000</td>
+      <td id="T_a6399_row6_col8" class="data row6 col8" >-0.370000</td>
+      <td id="T_a6399_row6_col9" class="data row6 col9" >-0.300000</td>
+      <td id="T_a6399_row6_col10" class="data row6 col10" >-0.360000</td>
+      <td id="T_a6399_row6_col11" class="data row6 col11" >-0.340000</td>
+      <td id="T_a6399_row6_col12" class="data row6 col12" >-0.290000</td>
+      <td id="T_a6399_row6_col13" class="data row6 col13" >-0.340000</td>
+      <td id="T_a6399_row6_col14" class="data row6 col14" >-0.360000</td>
+      <td id="T_a6399_row6_col15" class="data row6 col15" >-0.220000</td>
+      <td id="T_a6399_row6_col16" class="data row6 col16" >-0.290000</td>
+      <td id="T_a6399_row6_col17" class="data row6 col17" >-0.210000</td>
+      <td id="T_a6399_row6_col18" class="data row6 col18" >-0.370000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row7" class="row_heading level0 row7" >Relazioni e dati</th>
+      <td id="T_a6399_row7_col0" class="data row7 col0" >0.150000</td>
+      <td id="T_a6399_row7_col1" class="data row7 col1" >0.160000</td>
+      <td id="T_a6399_row7_col2" class="data row7 col2" >0.190000</td>
+      <td id="T_a6399_row7_col3" class="data row7 col3" >0.200000</td>
+      <td id="T_a6399_row7_col4" class="data row7 col4" >0.420000</td>
+      <td id="T_a6399_row7_col5" class="data row7 col5" >0.230000</td>
+      <td id="T_a6399_row7_col6" class="data row7 col6" >-0.190000</td>
+      <td id="T_a6399_row7_col7" class="data row7 col7" >1.000000</td>
+      <td id="T_a6399_row7_col8" class="data row7 col8" >0.260000</td>
+      <td id="T_a6399_row7_col9" class="data row7 col9" >0.210000</td>
+      <td id="T_a6399_row7_col10" class="data row7 col10" >0.590000</td>
+      <td id="T_a6399_row7_col11" class="data row7 col11" >0.260000</td>
+      <td id="T_a6399_row7_col12" class="data row7 col12" >0.200000</td>
+      <td id="T_a6399_row7_col13" class="data row7 col13" >0.250000</td>
+      <td id="T_a6399_row7_col14" class="data row7 col14" >0.260000</td>
+      <td id="T_a6399_row7_col15" class="data row7 col15" >0.200000</td>
+      <td id="T_a6399_row7_col16" class="data row7 col16" >0.230000</td>
+      <td id="T_a6399_row7_col17" class="data row7 col17" >0.170000</td>
+      <td id="T_a6399_row7_col18" class="data row7 col18" >0.260000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row8" class="row_heading level0 row8" >Dati e previsioni</th>
+      <td id="T_a6399_row8_col0" class="data row8 col0" >0.340000</td>
+      <td id="T_a6399_row8_col1" class="data row8 col1" >0.350000</td>
+      <td id="T_a6399_row8_col2" class="data row8 col2" >0.400000</td>
+      <td id="T_a6399_row8_col3" class="data row8 col3" >0.420000</td>
+      <td id="T_a6399_row8_col4" class="data row8 col4" >0.760000</td>
+      <td id="T_a6399_row8_col5" class="data row8 col5" >0.440000</td>
+      <td id="T_a6399_row8_col6" class="data row8 col6" >-0.370000</td>
+      <td id="T_a6399_row8_col7" class="data row8 col7" >0.260000</td>
+      <td id="T_a6399_row8_col8" class="data row8 col8" >1.000000</td>
+      <td id="T_a6399_row8_col9" class="data row8 col9" >0.400000</td>
+      <td id="T_a6399_row8_col10" class="data row8 col10" >0.520000</td>
+      <td id="T_a6399_row8_col11" class="data row8 col11" >0.530000</td>
+      <td id="T_a6399_row8_col12" class="data row8 col12" >0.450000</td>
+      <td id="T_a6399_row8_col13" class="data row8 col13" >0.500000</td>
+      <td id="T_a6399_row8_col14" class="data row8 col14" >0.870000</td>
+      <td id="T_a6399_row8_col15" class="data row8 col15" >0.390000</td>
+      <td id="T_a6399_row8_col16" class="data row8 col16" >0.450000</td>
+      <td id="T_a6399_row8_col17" class="data row8 col17" >0.330000</td>
+      <td id="T_a6399_row8_col18" class="data row8 col18" >0.650000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row9" class="row_heading level0 row9" >Pensiero matematico</th>
+      <td id="T_a6399_row9_col0" class="data row9 col0" >0.300000</td>
+      <td id="T_a6399_row9_col1" class="data row9 col1" >0.320000</td>
+      <td id="T_a6399_row9_col2" class="data row9 col2" >0.360000</td>
+      <td id="T_a6399_row9_col3" class="data row9 col3" >0.380000</td>
+      <td id="T_a6399_row9_col4" class="data row9 col4" >0.660000</td>
+      <td id="T_a6399_row9_col5" class="data row9 col5" >0.380000</td>
+      <td id="T_a6399_row9_col6" class="data row9 col6" >-0.300000</td>
+      <td id="T_a6399_row9_col7" class="data row9 col7" >0.210000</td>
+      <td id="T_a6399_row9_col8" class="data row9 col8" >0.400000</td>
+      <td id="T_a6399_row9_col9" class="data row9 col9" >1.000000</td>
+      <td id="T_a6399_row9_col10" class="data row9 col10" >0.740000</td>
+      <td id="T_a6399_row9_col11" class="data row9 col11" >0.490000</td>
+      <td id="T_a6399_row9_col12" class="data row9 col12" >0.370000</td>
+      <td id="T_a6399_row9_col13" class="data row9 col13" >0.470000</td>
+      <td id="T_a6399_row9_col14" class="data row9 col14" >0.410000</td>
+      <td id="T_a6399_row9_col15" class="data row9 col15" >0.340000</td>
+      <td id="T_a6399_row9_col16" class="data row9 col16" >0.360000</td>
+      <td id="T_a6399_row9_col17" class="data row9 col17" >0.270000</td>
+      <td id="T_a6399_row9_col18" class="data row9 col18" >0.420000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row10" class="row_heading level0 row10" >Relazioni e funzioni</th>
+      <td id="T_a6399_row10_col0" class="data row10 col0" >0.340000</td>
+      <td id="T_a6399_row10_col1" class="data row10 col1" >0.360000</td>
+      <td id="T_a6399_row10_col2" class="data row10 col2" >0.410000</td>
+      <td id="T_a6399_row10_col3" class="data row10 col3" >0.440000</td>
+      <td id="T_a6399_row10_col4" class="data row10 col4" >0.800000</td>
+      <td id="T_a6399_row10_col5" class="data row10 col5" >0.440000</td>
+      <td id="T_a6399_row10_col6" class="data row10 col6" >-0.360000</td>
+      <td id="T_a6399_row10_col7" class="data row10 col7" >0.590000</td>
+      <td id="T_a6399_row10_col8" class="data row10 col8" >0.520000</td>
+      <td id="T_a6399_row10_col9" class="data row10 col9" >0.740000</td>
+      <td id="T_a6399_row10_col10" class="data row10 col10" >1.000000</td>
+      <td id="T_a6399_row10_col11" class="data row10 col11" >0.540000</td>
+      <td id="T_a6399_row10_col12" class="data row10 col12" >0.490000</td>
+      <td id="T_a6399_row10_col13" class="data row10 col13" >0.520000</td>
+      <td id="T_a6399_row10_col14" class="data row10 col14" >0.630000</td>
+      <td id="T_a6399_row10_col15" class="data row10 col15" >0.410000</td>
+      <td id="T_a6399_row10_col16" class="data row10 col16" >0.450000</td>
+      <td id="T_a6399_row10_col17" class="data row10 col17" >0.330000</td>
+      <td id="T_a6399_row10_col18" class="data row10 col18" >0.550000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row11" class="row_heading level0 row11" >Numeri</th>
+      <td id="T_a6399_row11_col0" class="data row11 col0" >0.360000</td>
+      <td id="T_a6399_row11_col1" class="data row11 col1" >0.370000</td>
+      <td id="T_a6399_row11_col2" class="data row11 col2" >0.440000</td>
+      <td id="T_a6399_row11_col3" class="data row11 col3" >0.460000</td>
+      <td id="T_a6399_row11_col4" class="data row11 col4" >0.830000</td>
+      <td id="T_a6399_row11_col5" class="data row11 col5" >0.440000</td>
+      <td id="T_a6399_row11_col6" class="data row11 col6" >-0.340000</td>
+      <td id="T_a6399_row11_col7" class="data row11 col7" >0.260000</td>
+      <td id="T_a6399_row11_col8" class="data row11 col8" >0.530000</td>
+      <td id="T_a6399_row11_col9" class="data row11 col9" >0.490000</td>
+      <td id="T_a6399_row11_col10" class="data row11 col10" >0.540000</td>
+      <td id="T_a6399_row11_col11" class="data row11 col11" >1.000000</td>
+      <td id="T_a6399_row11_col12" class="data row11 col12" >0.790000</td>
+      <td id="T_a6399_row11_col13" class="data row11 col13" >0.530000</td>
+      <td id="T_a6399_row11_col14" class="data row11 col14" >0.520000</td>
+      <td id="T_a6399_row11_col15" class="data row11 col15" >0.640000</td>
+      <td id="T_a6399_row11_col16" class="data row11 col16" >0.620000</td>
+      <td id="T_a6399_row11_col17" class="data row11 col17" >0.340000</td>
+      <td id="T_a6399_row11_col18" class="data row11 col18" >0.630000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row12" class="row_heading level0 row12" >Contenuti matematica</th>
+      <td id="T_a6399_row12_col0" class="data row12 col0" >0.290000</td>
+      <td id="T_a6399_row12_col1" class="data row12 col1" >0.300000</td>
+      <td id="T_a6399_row12_col2" class="data row12 col2" >0.360000</td>
+      <td id="T_a6399_row12_col3" class="data row12 col3" >0.380000</td>
+      <td id="T_a6399_row12_col4" class="data row12 col4" >0.680000</td>
+      <td id="T_a6399_row12_col5" class="data row12 col5" >0.360000</td>
+      <td id="T_a6399_row12_col6" class="data row12 col6" >-0.290000</td>
+      <td id="T_a6399_row12_col7" class="data row12 col7" >0.200000</td>
+      <td id="T_a6399_row12_col8" class="data row12 col8" >0.450000</td>
+      <td id="T_a6399_row12_col9" class="data row12 col9" >0.370000</td>
+      <td id="T_a6399_row12_col10" class="data row12 col10" >0.490000</td>
+      <td id="T_a6399_row12_col11" class="data row12 col11" >0.790000</td>
+      <td id="T_a6399_row12_col12" class="data row12 col12" >1.000000</td>
+      <td id="T_a6399_row12_col13" class="data row12 col13" >0.420000</td>
+      <td id="T_a6399_row12_col14" class="data row12 col14" >0.420000</td>
+      <td id="T_a6399_row12_col15" class="data row12 col15" >0.330000</td>
+      <td id="T_a6399_row12_col16" class="data row12 col16" >0.370000</td>
+      <td id="T_a6399_row12_col17" class="data row12 col17" >0.260000</td>
+      <td id="T_a6399_row12_col18" class="data row12 col18" >0.440000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row13" class="row_heading level0 row13" >Spazio figure</th>
+      <td id="T_a6399_row13_col0" class="data row13 col0" >0.340000</td>
+      <td id="T_a6399_row13_col1" class="data row13 col1" >0.360000</td>
+      <td id="T_a6399_row13_col2" class="data row13 col2" >0.420000</td>
+      <td id="T_a6399_row13_col3" class="data row13 col3" >0.440000</td>
+      <td id="T_a6399_row13_col4" class="data row13 col4" >0.800000</td>
+      <td id="T_a6399_row13_col5" class="data row13 col5" >0.430000</td>
+      <td id="T_a6399_row13_col6" class="data row13 col6" >-0.340000</td>
+      <td id="T_a6399_row13_col7" class="data row13 col7" >0.250000</td>
+      <td id="T_a6399_row13_col8" class="data row13 col8" >0.500000</td>
+      <td id="T_a6399_row13_col9" class="data row13 col9" >0.470000</td>
+      <td id="T_a6399_row13_col10" class="data row13 col10" >0.520000</td>
+      <td id="T_a6399_row13_col11" class="data row13 col11" >0.530000</td>
+      <td id="T_a6399_row13_col12" class="data row13 col12" >0.420000</td>
+      <td id="T_a6399_row13_col13" class="data row13 col13" >1.000000</td>
+      <td id="T_a6399_row13_col14" class="data row13 col14" >0.510000</td>
+      <td id="T_a6399_row13_col15" class="data row13 col15" >0.510000</td>
+      <td id="T_a6399_row13_col16" class="data row13 col16" >0.590000</td>
+      <td id="T_a6399_row13_col17" class="data row13 col17" >0.780000</td>
+      <td id="T_a6399_row13_col18" class="data row13 col18" >0.640000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row14" class="row_heading level0 row14" >Rappresentazione quantitativa</th>
+      <td id="T_a6399_row14_col0" class="data row14 col0" >0.340000</td>
+      <td id="T_a6399_row14_col1" class="data row14 col1" >0.350000</td>
+      <td id="T_a6399_row14_col2" class="data row14 col2" >0.390000</td>
+      <td id="T_a6399_row14_col3" class="data row14 col3" >0.420000</td>
+      <td id="T_a6399_row14_col4" class="data row14 col4" >0.760000</td>
+      <td id="T_a6399_row14_col5" class="data row14 col5" >0.440000</td>
+      <td id="T_a6399_row14_col6" class="data row14 col6" >-0.360000</td>
+      <td id="T_a6399_row14_col7" class="data row14 col7" >0.260000</td>
+      <td id="T_a6399_row14_col8" class="data row14 col8" >0.870000</td>
+      <td id="T_a6399_row14_col9" class="data row14 col9" >0.410000</td>
+      <td id="T_a6399_row14_col10" class="data row14 col10" >0.630000</td>
+      <td id="T_a6399_row14_col11" class="data row14 col11" >0.520000</td>
+      <td id="T_a6399_row14_col12" class="data row14 col12" >0.420000</td>
+      <td id="T_a6399_row14_col13" class="data row14 col13" >0.510000</td>
+      <td id="T_a6399_row14_col14" class="data row14 col14" >1.000000</td>
+      <td id="T_a6399_row14_col15" class="data row14 col15" >0.390000</td>
+      <td id="T_a6399_row14_col16" class="data row14 col16" >0.440000</td>
+      <td id="T_a6399_row14_col17" class="data row14 col17" >0.320000</td>
+      <td id="T_a6399_row14_col18" class="data row14 col18" >0.540000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row15" class="row_heading level0 row15" >Utilizzo strumenti misura</th>
+      <td id="T_a6399_row15_col0" class="data row15 col0" >0.270000</td>
+      <td id="T_a6399_row15_col1" class="data row15 col1" >0.280000</td>
+      <td id="T_a6399_row15_col2" class="data row15 col2" >0.330000</td>
+      <td id="T_a6399_row15_col3" class="data row15 col3" >0.340000</td>
+      <td id="T_a6399_row15_col4" class="data row15 col4" >0.620000</td>
+      <td id="T_a6399_row15_col5" class="data row15 col5" >0.300000</td>
+      <td id="T_a6399_row15_col6" class="data row15 col6" >-0.220000</td>
+      <td id="T_a6399_row15_col7" class="data row15 col7" >0.200000</td>
+      <td id="T_a6399_row15_col8" class="data row15 col8" >0.390000</td>
+      <td id="T_a6399_row15_col9" class="data row15 col9" >0.340000</td>
+      <td id="T_a6399_row15_col10" class="data row15 col10" >0.410000</td>
+      <td id="T_a6399_row15_col11" class="data row15 col11" >0.640000</td>
+      <td id="T_a6399_row15_col12" class="data row15 col12" >0.330000</td>
+      <td id="T_a6399_row15_col13" class="data row15 col13" >0.510000</td>
+      <td id="T_a6399_row15_col14" class="data row15 col14" >0.390000</td>
+      <td id="T_a6399_row15_col15" class="data row15 col15" >1.000000</td>
+      <td id="T_a6399_row15_col16" class="data row15 col16" >0.390000</td>
+      <td id="T_a6399_row15_col17" class="data row15 col17" >0.290000</td>
+      <td id="T_a6399_row15_col18" class="data row15 col18" >0.420000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row16" class="row_heading level0 row16" >Risoluzione problemi</th>
+      <td id="T_a6399_row16_col0" class="data row16 col0" >0.260000</td>
+      <td id="T_a6399_row16_col1" class="data row16 col1" >0.280000</td>
+      <td id="T_a6399_row16_col2" class="data row16 col2" >0.340000</td>
+      <td id="T_a6399_row16_col3" class="data row16 col3" >0.360000</td>
+      <td id="T_a6399_row16_col4" class="data row16 col4" >0.670000</td>
+      <td id="T_a6399_row16_col5" class="data row16 col5" >0.370000</td>
+      <td id="T_a6399_row16_col6" class="data row16 col6" >-0.290000</td>
+      <td id="T_a6399_row16_col7" class="data row16 col7" >0.230000</td>
+      <td id="T_a6399_row16_col8" class="data row16 col8" >0.450000</td>
+      <td id="T_a6399_row16_col9" class="data row16 col9" >0.360000</td>
+      <td id="T_a6399_row16_col10" class="data row16 col10" >0.450000</td>
+      <td id="T_a6399_row16_col11" class="data row16 col11" >0.620000</td>
+      <td id="T_a6399_row16_col12" class="data row16 col12" >0.370000</td>
+      <td id="T_a6399_row16_col13" class="data row16 col13" >0.590000</td>
+      <td id="T_a6399_row16_col14" class="data row16 col14" >0.440000</td>
+      <td id="T_a6399_row16_col15" class="data row16 col15" >0.390000</td>
+      <td id="T_a6399_row16_col16" class="data row16 col16" >1.000000</td>
+      <td id="T_a6399_row16_col17" class="data row16 col17" >0.300000</td>
+      <td id="T_a6399_row16_col18" class="data row16 col18" >0.480000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row17" class="row_heading level0 row17" >Forme nello spazio</th>
+      <td id="T_a6399_row17_col0" class="data row17 col0" >0.220000</td>
+      <td id="T_a6399_row17_col1" class="data row17 col1" >0.230000</td>
+      <td id="T_a6399_row17_col2" class="data row17 col2" >0.270000</td>
+      <td id="T_a6399_row17_col3" class="data row17 col3" >0.290000</td>
+      <td id="T_a6399_row17_col4" class="data row17 col4" >0.570000</td>
+      <td id="T_a6399_row17_col5" class="data row17 col5" >0.270000</td>
+      <td id="T_a6399_row17_col6" class="data row17 col6" >-0.210000</td>
+      <td id="T_a6399_row17_col7" class="data row17 col7" >0.170000</td>
+      <td id="T_a6399_row17_col8" class="data row17 col8" >0.330000</td>
+      <td id="T_a6399_row17_col9" class="data row17 col9" >0.270000</td>
+      <td id="T_a6399_row17_col10" class="data row17 col10" >0.330000</td>
+      <td id="T_a6399_row17_col11" class="data row17 col11" >0.340000</td>
+      <td id="T_a6399_row17_col12" class="data row17 col12" >0.260000</td>
+      <td id="T_a6399_row17_col13" class="data row17 col13" >0.780000</td>
+      <td id="T_a6399_row17_col14" class="data row17 col14" >0.320000</td>
+      <td id="T_a6399_row17_col15" class="data row17 col15" >0.290000</td>
+      <td id="T_a6399_row17_col16" class="data row17 col16" >0.300000</td>
+      <td id="T_a6399_row17_col17" class="data row17 col17" >1.000000</td>
+      <td id="T_a6399_row17_col18" class="data row17 col18" >0.340000</td>
+    </tr>
+    <tr>
+      <th id="T_a6399_level0_row18" class="row_heading level0 row18" >Algoritmi e procedure</th>
+      <td id="T_a6399_row18_col0" class="data row18 col0" >0.360000</td>
+      <td id="T_a6399_row18_col1" class="data row18 col1" >0.370000</td>
+      <td id="T_a6399_row18_col2" class="data row18 col2" >0.430000</td>
+      <td id="T_a6399_row18_col3" class="data row18 col3" >0.450000</td>
+      <td id="T_a6399_row18_col4" class="data row18 col4" >0.770000</td>
+      <td id="T_a6399_row18_col5" class="data row18 col5" >0.440000</td>
+      <td id="T_a6399_row18_col6" class="data row18 col6" >-0.370000</td>
+      <td id="T_a6399_row18_col7" class="data row18 col7" >0.260000</td>
+      <td id="T_a6399_row18_col8" class="data row18 col8" >0.650000</td>
+      <td id="T_a6399_row18_col9" class="data row18 col9" >0.420000</td>
+      <td id="T_a6399_row18_col10" class="data row18 col10" >0.550000</td>
+      <td id="T_a6399_row18_col11" class="data row18 col11" >0.630000</td>
+      <td id="T_a6399_row18_col12" class="data row18 col12" >0.440000</td>
+      <td id="T_a6399_row18_col13" class="data row18 col13" >0.640000</td>
+      <td id="T_a6399_row18_col14" class="data row18 col14" >0.540000</td>
+      <td id="T_a6399_row18_col15" class="data row18 col15" >0.420000</td>
+      <td id="T_a6399_row18_col16" class="data row18 col16" >0.480000</td>
+      <td id="T_a6399_row18_col17" class="data row18 col17" >0.340000</td>
+      <td id="T_a6399_row18_col18" class="data row18 col18" >1.000000</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -14922,7 +16059,7 @@ Il concetto di <em>dropout</em> può essere declinato su due livelli:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Le colonne DROPOUT e LIVELLI non sono considerate fra le feature in quanto colonne target (in particolare, DROPOUT è una trasformazione di LIVELLI).</span>
@@ -14966,7 +16103,7 @@ Vi sono diverse tecniche per gestirli, tra cui:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">dataset_ap</span><span class="p">[</span><span class="s2">&quot;sigla_provincia_istat&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;ND&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -15004,7 +16141,7 @@ Vi sono diverse tecniche per gestirli, tra cui:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_training_set</span><span class="p">,</span> <span class="n">df_test_set</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">dataset_ap</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">TEST_SET_PERCENT</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">19</span><span class="p">)</span>
@@ -15020,10 +16157,10 @@ Vi sono diverse tecniche per gestirli, tra cui:</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="3.2---Analisi-dello-sbilanciamento-del-dataset">3.2 - Analisi dello sbilanciamento del dataset<a class="anchor-link" href="#3.2---Analisi-dello-sbilanciamento-del-dataset">&#182;</a></h2>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">nr_nodrop</span><span class="p">,</span> <span class="n">nr_drop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">dataset_ap</span><span class="p">[</span><span class="s1">&#39;DROPOUT&#39;</span><span class="p">])</span>
@@ -15045,6 +16182,35 @@ Vi sono diverse tecniche per gestirli, tra cui:</p>
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Total number of records: 342226
+        
+Total num. DROPOUT: 116782
+Total num. NO DROPOUT: 225444
+    
+Ratio DROPOUT/TOTAL: 0.34
+Ratio NO DROPOUT/TOTAL: 0.66
+    
+Ratio DROPOUT/NO DROPOUT: 0.52
+</pre>
+</div>
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -15083,7 +16249,7 @@ Vi sono diverse tecniche per gestirli, tra cui:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -15170,7 +16336,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[38]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="s2">&quot;Unnamed: 0&quot;</span> <span class="ow">in</span> <span class="n">df_training_set</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
@@ -15195,7 +16361,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_training_set</span><span class="p">,</span> <span class="n">df_validation_set</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df_training_set</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">VALIDATION_SET_PERCENT</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">19</span><span class="p">)</span>
@@ -15214,7 +16380,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">convert_dropout_column_to_one_hot</span><span class="p">(</span><span class="n">dropout_col</span><span class="p">):</span>
@@ -15235,7 +16401,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">pd_dataframe_to_tf_dataset</span><span class="p">(</span><span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
@@ -15277,7 +16443,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds_training_set</span> <span class="o">=</span> <span class="n">pd_dataframe_to_tf_dataset</span><span class="p">(</span><span class="n">df_training_set</span><span class="p">)</span>
@@ -15299,7 +16465,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[43]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds_training_set</span> <span class="o">=</span> <span class="n">ds_training_set</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="n">drop_remainder</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -15320,7 +16486,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">input_layers</span> <span class="o">=</span> <span class="p">{}</span>
@@ -15351,7 +16517,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">preprocessed_features</span> <span class="o">=</span> <span class="p">[]</span>
@@ -15372,7 +16538,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[46]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Preprocessing colonne con dati booleani</span>
@@ -15391,7 +16557,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[47]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Preprocessing colonne con dati interi ordinali</span>
@@ -15414,7 +16580,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Preprocessing colonne con dati continui</span>
@@ -15443,7 +16609,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[49]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Preprocessing colonne con dati categorici stringa</span>
@@ -15466,7 +16632,7 @@ Classe DROPOUT: 93,278
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[50]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Preprocessing colonne con dati categorici interi</span>
@@ -15538,7 +16704,7 @@ L'algoritmo di ottimizzazione richiede un punto di partenza nello spazio dei pos
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">preprocessed</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">preprocessed_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># Tensore</span>
@@ -15581,7 +16747,7 @@ Gli studi a tal proposito in letteratura suggeriscono di sperimentare l'applicaz
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">body</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
@@ -15670,7 +16836,7 @@ Trattasi di una misura derivante dal campo della <em>Teoria dell'informazione</e
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[53]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">PROBLEM_TYPE</span> <span class="o">==</span> <span class="s2">&quot;classification&quot;</span><span class="p">:</span>
@@ -15721,7 +16887,7 @@ Ulteriormente abbiamo settato a <code>True</code> il parametro <code>restore_bes
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[54]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -15752,7 +16918,7 @@ Così facendo, in via successiva, è possibile caricare il modello in oggetto co
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -17187,3 +18353,5 @@ python3 src/base.py
 
 
 </html>
+
+
